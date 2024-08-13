@@ -1,92 +1,10 @@
-// /** @type {import('tailwindcss').Config} */
-// module.exports = {
-//   darkMode: ['class'],
-//   content: [
-//     './pages/**/*.{ts,tsx}',
-//     './components/**/*.{ts,tsx}',
-//     './app/**/*.{ts,tsx}',
-//     './src/**/*.{ts,tsx}',
-//   ],
-//   prefix: '',
-//   theme: {
-//     container: {
-//       center: true,
-//       padding: '2rem',
-//       screens: {
-//         '2xl': '1400px',
-//       },
-//     },
-//     extend: {
-//       colors: {
-//         border: 'hsl(var(--border))',
-//         input: 'hsl(var(--input))',
-//         ring: 'hsl(var(--ring))',
-//         background: 'hsl(var(--background))',
-//         foreground: 'hsl(var(--foreground))',
-//         primary: {
-//           DEFAULT: 'hsl(var(--primary))',
-//           foreground: 'hsl(var(--primary-foreground))',
-//         },
-//         secondary: {
-//           DEFAULT: 'hsl(var(--secondary))',
-//           foreground: 'hsl(var(--secondary-foreground))',
-//         },
-//         destructive: {
-//           DEFAULT: 'hsl(var(--destructive))',
-//           foreground: 'hsl(var(--destructive-foreground))',
-//         },
-//         muted: {
-//           DEFAULT: 'hsl(var(--muted))',
-//           foreground: 'hsl(var(--muted-foreground))',
-//         },
-//         accent: {
-//           DEFAULT: 'hsl(var(--accent))',
-//           foreground: 'hsl(var(--accent-foreground))',
-//         },
-//         popover: {
-//           DEFAULT: 'hsl(var(--popover))',
-//           foreground: 'hsl(var(--popover-foreground))',
-//         },
-//         card: {
-//           DEFAULT: 'hsl(var(--card))',
-//           foreground: 'hsl(var(--card-foreground))',
-//         },
-//       },
-//       borderRadius: {
-//         lg: 'var(--radius)',
-//         md: 'calc(var(--radius) - 2px)',
-//         sm: 'calc(var(--radius) - 4px)',
-//       },
-//       keyframes: {
-//         'accordion-down': {
-//           from: { height: '0' },
-//           to: { height: 'var(--radix-accordion-content-height)' },
-//         },
-//         'accordion-up': {
-//           from: { height: 'var(--radix-accordion-content-height)' },
-//           to: { height: '0' },
-//         },
-//       },
-//       animation: {
-//         'accordion-down': 'accordion-down 0.2s ease-out',
-//         'accordion-up': 'accordion-up 0.2s ease-out',
-//       },
-//     },
-//   },
-//   plugins: [require('tailwindcss-animate')],
-// };
-
-/** @type {import('tailwindcss').Config} */
+/** @type {import("tailwindcss").Config} */
 
 function responsiveFontSize(webSize: string, mobileSize: string) {
-  return [
-    webSize,
-    {
-      '@screen sm': {
-        fontSize: mobileSize,
-      },
-    },
-  ];
+  return {
+    DEFAULT: webSize,
+    mobile: mobileSize,
+  };
 }
 
 module.exports = {
@@ -99,10 +17,10 @@ module.exports = {
   prefix: '',
   theme: {
     screens: {
-      sm: '360px',
-      md: '768px',
-      lg: '1280px',
-      xl: '1617px',
+      mobile: '360px',
+      tablet: '768px',
+      desktop1: '1280px',
+      desktop2: '1617px',
     },
     extend: {
       colors: {
@@ -183,44 +101,89 @@ module.exports = {
       },
       fontSize: {
         // Display styles
-        'display-lg': responsiveFontSize('66px', '40px'),
-        'display-base': responsiveFontSize('50px', '32px'),
-        'display-sm': responsiveFontSize('40px', '25px'),
+        'display-lg': '66px',
+        'display-lg-m': '40px',
+
+        'display-base': '50px',
+        'display-base-m': '32px',
+
+        'display-sm': '40px',
+        'display-sm-m': '25px',
 
         // Heading styles
-        'heading-lg': responsiveFontSize('50px', '40px'),
-        'heading-base': responsiveFontSize('40px', '32px'),
-        'heading-sm': responsiveFontSize('32px', '20px'),
+        'heading-lg': '50px',
+        'heading-lg-m': '40px',
+
+        'heading-base': '40px',
+        'heading-base-m': '32px',
+
+        'heading-sm': '32px',
+        'heading-sm-m': '20px',
 
         // Title styles
-        'title-2xl': responsiveFontSize('32px', '23px'),
-        'title-xl': responsiveFontSize('25px', '21px'),
-        'title-lg': responsiveFontSize('21px', '19px'),
-        'title-base': responsiveFontSize('19px', '17px'),
-        'title-sm': responsiveFontSize('17px', '15px'),
-        'title-xs': responsiveFontSize('15px', '13px'),
+        'title-2xl': '32px',
+        'title-2xl-m': '23px',
+
+        'title-xl': '25px',
+        'title-xl-m': '21px',
+
+        'title-lg': '21px',
+        'title-lg-m': '19px',
+
+        'title-base': '19px',
+        'title-base-m': '17px',
+
+        'title-sm': '17px',
+        'title-sm-m': '15px',
+
+        'title-xs': '15px',
+        'title-xs-m': '13px',
 
         // Body styles
-        'body-lg': responsiveFontSize('19px', '17px'),
-        'body-base': responsiveFontSize('17px', '15px'),
-        'body-sm': responsiveFontSize('15px', '13px'),
+        'body-lg': '19px',
+        'body-lg-m': '17px',
+
+        'body-base': '17px',
+        'body-base-m': '15px',
+
+        'body-sm': '15px',
+        'body-sm-m': '13px',
 
         // Detail styles
-        'detail-xl': responsiveFontSize('19px', '17px'),
-        'detail-lg': responsiveFontSize('17px', '15px'),
-        'detail-base': responsiveFontSize('15px', '13px'),
-        'detail-sm': responsiveFontSize('13px', '11px'),
+        'detail-xl': '19px',
+        'detail-xl-m': '17px',
+
+        'detail-lg': '17px',
+        'detail-lg-m': '15px',
+
+        'detail-base': '15px',
+        'detail-base-m': '13px',
+
+        'detail-sm': '13px',
+        'detail-sm-m': '11px',
 
         // Label styles
-        'label-lg': responsiveFontSize('19px', '15px'),
-        'label-base': responsiveFontSize('17px', '13px'),
-        'label-sm': responsiveFontSize('15px', '11px'),
-        'label-xs': responsiveFontSize('13px', '9px'),
+        'label-lg': '19px',
+        'label-lg-m': '15px',
+
+        'label-base': '17px',
+        'label-base-m': '13px',
+
+        'label-sm': '15px',
+        'label-sm-m': '11px',
+
+        'label-xs': '13px',
+        'label-xs-m': '9px',
 
         // Links styles
-        'links-lg': responsiveFontSize('19px', '17px'),
-        'links-base': responsiveFontSize('17px', '15px'),
-        'links-sm': responsiveFontSize('15px', '13px'),
+        'links-lg': '19px',
+        'links-lg-m': '17px',
+
+        'links-base': '17px',
+        'links-base-m': '15px',
+
+        'links-sm': '15px',
+        'links-sm-m': '13px',
       },
       spacing: {
         '0': '0px',
@@ -235,7 +198,6 @@ module.exports = {
         '9': '40px',
         '10': '48px',
       },
-      borderRadius: {},
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
