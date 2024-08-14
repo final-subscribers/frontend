@@ -18,13 +18,44 @@ export default function Login() {
             </p>
             <img className="mx-auto place-content-center" src={buildingImg} alt="buildings"></img>
           </article>
-          <article>
-            <form>
-              <input type="text" placeholder="Username" />
-              <input type="password" placeholder="Password" />
-              <button type="submit">Login</button>
-            </form>
-          </article>
+          <form className="flex-col p-16 max-w-[576px] rounded-[32px] shadow-[0_4px_40px_0_rgba(70,69,107,0.15)]">
+            <h1 className="mb-8 text-center font-pretendard font-bold text-heading-lg leading-[150%]">
+              로그인
+            </h1>
+            <label className="font-pretendard font-bold text-title-base">
+              이메일(아이디)
+              <input
+                className="mt-3 mb-6 w-full h-[53px] px-4 py-3 border rounded-5 font-pretendard font-normal text-label-lg"
+                type="text"
+                placeholder="이메일(아이디)을 입력해주세요"
+              />
+            </label>
+            <label className="font-pretendard font-bold text-title-base">
+              비밀번호
+              <input
+                className="mt-3 mb-9 w-full h-[53px] px-4 py-3 border rounded-5 font-pretendard font-normal text-label-lg"
+                type="password"
+                placeholder="비밀번호를 입력해주세요"
+              />
+            </label>
+            <button
+              type="submit"
+              className="w-full h-[61px] px-4 py-3 bg-primary-50 text-white border rounded-5 font-pretendard font-bold text-label-lg">
+              로그인
+            </button>
+            <div className="flex mt-[60px] gap-4">
+              <button
+                type="submit"
+                className=" w-1/2 h-[61px] px-4 py-3 border rounded-5 font-pretendard font-bold text-label-lg">
+                고객으로 가입하기
+              </button>
+              <button
+                type="submit"
+                className=" w-1/2 h-[61px] px-4 py-3 border rounded-5 font-pretendard font-bold text-label-lg">
+                담당자로 가입하기
+              </button>
+            </div>
+          </form>
         </section>
       </main>
     </>
