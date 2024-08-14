@@ -1,4 +1,4 @@
-import './App.css'
+import './App.css';
 
 function App() {
   return (
@@ -7,7 +7,7 @@ function App() {
       <div className="text-display-lg-m text-red-30">display-lg-m</div>
       <div className="text-display-lg-m text-red-30">display-lg-m</div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
