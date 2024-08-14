@@ -99,9 +99,6 @@ module.exports = {
           '90': '#0B3C4E',
         },
       },
-      fontFamily: {
-        pretendard: ['Pretendard'],
-      },
       fontSize: {
         // Display styles
         'display-lg': '66px',
@@ -214,6 +211,22 @@ module.exports = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+      },
+      borderRadius: {
+        '0': '0px',
+        '1': '2px',
+        '2': '4px',
+        '3': '6px',
+        '4': '8px',
+        '5': '12px',
+        '6': '16px',
+        '7': '20px',
+        '8': '24px',
+        '9': '40px',
+        '10': '1000px',
+      },
+      fontFamily: {
+        pretendard: ['Pretendard'],
       },
     },
   },
