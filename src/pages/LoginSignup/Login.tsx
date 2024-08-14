@@ -1,10 +1,11 @@
+import { Link } from 'react-router-dom';
 import buildingImg from '../../assets/buildings.svg';
 
 export default function Login() {
   return (
-    <>
-      <main className="flex min-w-[1280px] h-[1080px] items-center justify-center">
-        <section className="flex max-w-[1536px] py-[80px] items-center gap-[64px]">
+    <main className="flex w-full h-[1080px] items-center justify-center">
+      <section className="flex max-w-[1536px] py-[80px] justify-center gap-[64px]">
+        <div className="hidden desktop1:block">
           <article className="flex-col w-[896px]">
             <h1 className="mb-10 font-pretendard font-bold text-heading-base leading-[150%]">
               미분양 플랫폼 <br />
@@ -18,7 +19,9 @@ export default function Login() {
             </p>
             <img className="mx-auto place-content-center" src={buildingImg} alt="buildings"></img>
           </article>
-          <form className="flex-col p-16 max-w-[576px] rounded-[32px] shadow-[0_4px_40px_0_rgba(70,69,107,0.15)]">
+        </div>
+        <div className="flex justify-center w-full">
+          <form className="flex-col p-16 w-[576px] rounded-[32px] shadow-[0_4px_40px_0_rgba(70,69,107,0.15)]">
             <h1 className="mb-8 text-center font-pretendard font-bold text-heading-lg leading-[150%]">
               로그인
             </h1>
@@ -49,15 +52,17 @@ export default function Login() {
                 className=" w-1/2 h-[61px] px-4 py-3 border rounded-5 font-pretendard font-bold text-label-lg">
                 고객으로 가입하기
               </button>
-              <button
-                type="submit"
-                className=" w-1/2 h-[61px] px-4 py-3 border rounded-5 font-pretendard font-bold text-label-lg">
-                담당자로 가입하기
-              </button>
+              <Link to="/signup-terms" className="w-1/2">
+                <button
+                  type="submit"
+                  className=" w-full h-[61px] px-4 py-3 border rounded-5 font-pretendard font-bold text-label-lg">
+                  담당자로 가입하기
+                </button>
+              </Link>
             </div>
           </form>
-        </section>
-      </main>
-    </>
+        </div>
+      </section>
+    </main>
   );
 }

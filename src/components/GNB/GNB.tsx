@@ -106,9 +106,11 @@ const GNB = () => {
             />
             {/* 이후 button component로 대체 */}
             {/* 로그인 후 내용 변경 이후 추가 */}
-            <button className="bg-white text-neutral-80 px-7 py-4 border border-neutral-30 rounded-4 text-label-sm font-bold">
-              로그인/회원가입
-            </button>
+            <Link to="/login">
+              <button className="bg-white text-neutral-80 px-7 py-4 border border-neutral-30 rounded-4 text-label-sm font-bold">
+                로그인/회원가입
+              </button>
+            </Link>
           </div>
 
           {/* Tablet (1279px ~ 768px), Mobile (767px ~ 360px) */}
