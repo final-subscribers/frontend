@@ -99,6 +99,9 @@ module.exports = {
           '90': '#0B3C4E',
         },
       },
+      fontFamily: {
+        pretendard: ['Pretendard'],
+      },
       fontSize: {
         // Display styles
         'display-lg': '66px',
