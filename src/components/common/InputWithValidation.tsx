@@ -1,28 +1,37 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 import { Input, InputProps } from '../ui/input';
 
 export interface InputWithValidationProps extends InputProps {
   validationSchema: z.ZodSchema<any>;
   errorMessage?: string;
+  success: string;
   children?: React.ReactNode;
 }
 
 const InputWithValidation = React.forwardRef<HTMLInputElement, InputWithValidationProps>(
-  ({ className, validationSchema, errorMessage, children, ...props }, ref) => {
+  ({ className, validationSchema, success, children, ...props }, ref) => {
     const [value, setValue] = React.useState('');
     const [isValid, setIsValid] = React.useState<boolean | null>(null);
+    const [isMessage, setIsMessage] = React.useState('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setValue(e.target.value);
+      e.preventDefault();
 
       try {
         validationSchema.parse(e.target.value);
         setIsValid(true);
-      } catch {
-        setIsValid(false);
+        setIsMessage(success);
+      } catch (error) {
+        if (error instanceof ZodError) {
+          setIsValid(false);
+          setIsMessage(error.errors[0].message);
+        } else {
+          console.error(error);
+        }
       }
     };
 
@@ -56,9 +65,10 @@ const InputWithValidation = React.forwardRef<HTMLInputElement, InputWithValidati
             </div>
           )}
         </div>
-        {!isValid && value && errorMessage && (
-          <p className="absolute left-0 top-full mt-3 text-detail-lg mobile:text-detail-lg-m text-accent-error">
-            {errorMessage}
+        {value && isMessage && (
+          <p
+            className={`absolute left-0 top-full mt-3 text-detail-lg mobile:text-detail-lg-m ${!isValid ? 'text-accent-error' : 'text-primary-default'}`}>
+            {isMessage}
           </p>
         )}
       </div>

@@ -15,7 +15,7 @@ function App() {
           type="text"
           label="이름"
           validationSchema={nameSchema}
-          errorMessage="Please enter a valid username."
+          success="유효한 이름입니다."
           placeholder="이름을 입력해주세요."
         />
         <InputFieldWithBtn
@@ -23,21 +23,21 @@ function App() {
           label="이메일(아이디)"
           btnLabel="이메일 인증"
           validationSchema={emailSchema}
-          errorMessage="유효하지 않은 이메일입니다."
+          success="유효한 이메일형식입니다."
           placeholder="이메일을 입력해주세요."
         />
         <InputField
           type="password"
           label="비밀번호"
           validationSchema={passwordSchema}
-          errorMessage="유효하지 않은 비밀번호입니다."
+          success="유효하지 않은 비밀번호입니다."
           placeholder="비밀번호를 입력해주세요."
         />
         <InputField
           type="password"
           label="비밀번호 확인"
           validationSchema={nameSchema}
-          errorMessage="비밀번호가 일치하지 않습니다."
+          success="비밀번호가 일치하지 않습니다."
           placeholder="비밀번호를 입력해주세요."
         />
 
