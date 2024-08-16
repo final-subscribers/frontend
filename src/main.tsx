@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './index.css';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './routes/router.tsx';
-
 const queryClient = new QueryClient();
 // async function deferRender() {
 //   const { worker } = await import('./mocks/browser.ts');
