@@ -10,10 +10,9 @@ module.exports = {
   prefix: '',
   theme: {
     screens: {
-      mobile: { max: '360px' },
-      tablet: { max: '768px' },
-      desktop1: { max: '1280px' },
-      desktop2: { max: '1617px' },
+      mobile: { max: '767px' }, // Mobile: 360px ~ 767px
+      tablet: { min: '768px', max: '1279px' }, // Tablet: 768px ~ 1279px
+      desktop: { min: '1280px', max: '1920px' }, // Desktop: 1280px ~ 1920px
     },
     extend: {
       colors: {
