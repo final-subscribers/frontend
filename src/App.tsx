@@ -10,7 +10,7 @@ const passwordSchema = z.string().min(6, '비밀번호는 최소 6자 이상이�
 function App() {
   return (
     <>
-      <div>
+      <div className="h-[1000px]">
         <InputField
           type="text"
           label="이름"
@@ -48,6 +48,9 @@ function App() {
             확인
           </Button>
         </div>
+        <Button variant="assistive" size="sm">
+          확인
+        </Button>
       </div>
     </>
   );

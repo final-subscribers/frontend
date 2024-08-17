@@ -4,8 +4,8 @@ import GNB from './GNB/GNB';
 function Layout() {
   return (
     <>
+      <GNB />
       <main>
-        <GNB />
         <Outlet />
       </main>
     </>
