@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { CaretDown, CaretUp, List, MagnifyingGlass, X } from '@phosphor-icons/react';
 import { useLocation } from 'react-router-dom';
 import useResponsive from '../../hooks/useResponsive';
+import { Button } from '../ui/button';
+import { InputWithExtras } from '../common/InputWithExtras';
 
 const GNB = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -80,7 +82,6 @@ const GNB = () => {
               </Link>
             </div>
 
-            {/* Desktop (1616px ~ 1280px)*/}
             <div className="hidden desktop:flex items-center w-[771px]">
               <ul className="flex text-assistive-detail text-links-lg font-bold h-full w-full">
                 <Link
@@ -115,19 +116,21 @@ const GNB = () => {
               </ul>
             </div>
           </div>
+
           <div className="flex items-center justify-between gap-6" ref={buttonGroupRef}>
             {!isSearchOpen ? (
               <>
+                {/* location 수정하기 */}
                 <MagnifyingGlass
                   size={32}
                   weight="bold"
-                  className={`hidden desktop:block text-assistive-strong cursor-pointer ${location.pathname === '/1' || location.pathname === '/login' || location.pathname === '/search' ? 'desktop:hidden' : 'block'}`}
+                  className={`hidden desktop:block text-assistive-strong cursor-pointer ${location.pathname === '/home' || location.pathname === '/login' || location.pathname === '/search' ? 'desktop:hidden' : 'block'}`}
                   onClick={handleSearch}
                 />
                 <MagnifyingGlass
                   size={32}
                   weight="thin"
-                  className={`block desktop:hidden text-assistive-strong cursor-pointer ${location.pathname === '/1' || location.pathname === '/login' || location.pathname === '/search' ? 'desktop:hidden' : 'block'}`}
+                  className={`block desktop:hidden text-assistive-strong cursor-pointer ${location.pathname === '/home' || location.pathname === '/login' || location.pathname === '/search' ? 'desktop:hidden' : 'block'}`}
                   onClick={handleSearch}
                 />
               </>
@@ -147,11 +150,10 @@ const GNB = () => {
                 />
               </>
             )}
-            {/* 이후 button component로 대체 */}
             {/* 로그인 시 내용 변경 이후 추가 */}
-            <button className="hidden desktop:block bg-white text-static-default px-7 py-4 border border-assistive-default rounded-5 text-label-base font-bold w-[160px]">
+            <Button variant="assistive" size="md" className="hidden desktop:block">
               로그인/회원가입
-            </button>
+            </Button>
             <List
               size={32}
               weight="thin"
@@ -162,7 +164,7 @@ const GNB = () => {
         </nav>
       </header>
 
-      {/* Menu - gnb에서만 사용할 것 같아서 여기에 만들어 두기 */}
+      {/* Menu */}
       {isMenuOpen && (
         <div
           ref={menuRef}
@@ -201,24 +203,32 @@ const GNB = () => {
           </ul>
         </div>
       )}
+
       {/* 검색 */}
       {isSearchOpen && (
         <div className="fixed z-40 top-[93px] w-full h-screen bg-effect-elevated bg-opacity-50">
           <div
             ref={searchRef}
             className="flex items-center justify-center w-full h-60 px-9 tablet:h-52 mobile:h-44 desktop:px-0 bg-white">
-            <div className="flex w-[1200px] h-[80px] mobile:h-[52px] px-9 py-7 mobile:px-7 mobile:py-4 border-2 border-primary-default rounded-10">
-              {/* 이후 Search component 대체 */}
-              <input type="text" className="w-full" />
-              <MagnifyingGlass
-                size={32}
-                weight="bold"
-                className="block mobile:hidden text-assistive-strong cursor-pointer"
-              />
-              <MagnifyingGlass
-                size={24}
-                weight="bold"
-                className="hidden mobile:block text-assistive-strong cursor-pointer"
+            <div className="w-[1200px] h-[80px] mobile:h-[52px]">
+              <InputWithExtras
+                type="text"
+                placeholder="아파트명, 지역명으로 검색하세요"
+                className="w-full px-9 py-7 mobile:px-7 mobile:py-4 border-2 border-primary-default rounded-10 focus:border-2 focus:border-primary-default focus:shadow-default"
+                trailingExtra={
+                  <>
+                    <MagnifyingGlass
+                      size={32}
+                      weight="bold"
+                      className="block mobile:hidden text-assistive-strong cursor-pointer"
+                    />
+                    <MagnifyingGlass
+                      size={24}
+                      weight="bold"
+                      className="hidden mobile:block text-assistive-strong cursor-pointer"
+                    />
+                  </>
+                }
               />
             </div>
           </div>
