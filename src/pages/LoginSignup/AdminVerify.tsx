@@ -1,7 +1,19 @@
+import termsGray from '../../assets/stepper-terms-gray.svg';
 import termsBlue from '../../assets/stepper-terms-blue.svg';
+import termsMobileBlue from '../../assets/stepper-one-blue.svg';
+import termsMobileGray from '../../assets/stepper-one-gray.svg';
 import signupGray from '../../assets/stepper-signup-gray.svg';
+import signupBlue from '../../assets/stepper-signup-blue.svg';
+import signupMobileBlue from '../../assets/stepper-two-blue.svg';
+import signupMobileGray from '../../assets/stepper-two-gray.svg';
 import verifyGray from '../../assets/stepper-verify-gray.svg';
+import verifyBlue from '../../assets/stepper-verify-blue.svg';
+import verifyMobileBlue from '../../assets/stepper-three-blue.svg';
+import verifyMobileGray from '../../assets/stepper-three-gray.svg';
 import completedGray from '../../assets/stepper-completed-gray.svg';
+import completedBlue from '../../assets/stepper-completed-blue.svg';
+import completedMobileBlue from '../../assets/stepper-four-blue.svg';
+import completedMobileGray from '../../assets/stepper-four-gray.svg';
 import Stepper from '../../components/LoginSignup/Stepper';
 import Input from '@/components/LoginSignup/Input';
 import { useRef } from 'react';
@@ -24,20 +36,48 @@ export default function AdminVerify() {
 
   return (
     <main className="flex w-full justify-center">
-      <section className="flex-col max-w-[1536px] py-[80px] justify-center">
-        <article className="mb-16 flex justify-center">
+      <section className="flex flex-col max-w-[1536px] py-[80px] justify-center gap-y-16">
+        <article className="flex justify-center">
           <h1 className="font-pretendard font-bold text-heading-lg">담당자 인증</h1>
         </article>
-        <article className="mb-16 flex justify-center items-center">
-          <Stepper img={termsBlue} text="약관동의" />
-          <div className="h-[1px] w-8 bg-neutral-400"></div>
-          <Stepper img={signupGray} text="회원가입" />
-          <div className="h-[1px] w-8 bg-neutral-400"></div>
-          <Stepper img={verifyGray} text="담당자 인증" />
-          <div className="h-[1px] w-8 bg-neutral-400"></div>
-          <Stepper img={completedGray} text="가입완료" />
+        <article className="flex justify-center items-center">
+          <Stepper
+            stepPath="/signup-terms"
+            blueIcon={termsBlue}
+            grayIcon={termsGray}
+            mobileBlueIcon={termsMobileBlue}
+            mobileGrayIcon={termsMobileGray}
+            text="약관동의"
+          />
+          <div className="h-[1px] m-[10px] mobile:m-2 w-8 mobile:w-4 bg-neutral-400"></div>
+          <Stepper
+            stepPath="/signup"
+            blueIcon={signupBlue}
+            grayIcon={signupGray}
+            mobileBlueIcon={signupMobileBlue}
+            mobileGrayIcon={signupMobileGray}
+            text="회원가입"
+          />
+          <div className="h-[1px] m-[10px] mobile:m-2 w-8 mobile:w-4 bg-neutral-400"></div>
+          <Stepper
+            stepPath="/admin-verify"
+            blueIcon={verifyBlue}
+            grayIcon={verifyGray}
+            mobileBlueIcon={verifyMobileBlue}
+            mobileGrayIcon={verifyMobileGray}
+            text="담당자 인증"
+          />
+          <div className="h-[1px] m-[10px] mobile:m-2 w-8 mobile:w-4 bg-neutral-400"></div>
+          <Stepper
+            stepPath="/signup-completed"
+            blueIcon={completedBlue}
+            grayIcon={completedGray}
+            mobileBlueIcon={completedMobileBlue}
+            mobileGrayIcon={completedMobileGray}
+            text="가입완료"
+          />
         </article>
-        <article className="flex mb-16 flex-col w-[720px] gap-y-9">
+        <article className="flex flex-col w-[720px] gap-y-9">
           {inputFields.map((field, index) => (
             <Input key={index} title={field.title} placeholder={field.placeholder} />
           ))}
@@ -59,9 +99,11 @@ export default function AdminVerify() {
           </div>
         </article>
         <article className="flex w-[720px] mx-auto justify-center gap-6">
-          <button className="w-[190px] h-[61px] px-4 py-3 border rounded-5 font-pretendard font-bold">
-            이전
-          </button>
+          <Link to="/signup-terms">
+            <button className="w-[190px] h-[61px] px-4 py-3 border rounded-5 font-pretendard font-bold">
+              이전
+            </button>
+          </Link>
           <Link to="/signup-completed">
             <button className="w-[190px] h-[61px] px-4 py-3 border rounded-5 font-pretendard font-bold text-white bg-primary-50">
               다음

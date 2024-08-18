@@ -17,10 +17,9 @@ module.exports = {
   prefix: '',
   theme: {
     screens: {
-      mobile: '360px',
-      tablet: '768px',
-      desktop1: '1280px',
-      desktop2: '1617px',
+      mobile: { max: '767px' }, // Mobile: 360px ~ 767px
+      tablet: { min: '768px', max: '1279px' }, // Tablet: 768px ~ 1279px
+      desktop: { min: '1280px' }, // Desktop: 1280px ~ 1920px
     },
     extend: {
       colors: {
@@ -197,6 +196,11 @@ module.exports = {
         '8': '32px',
         '9': '40px',
         '10': '48px',
+      },
+      boxShadow: {
+        default: 'inset 0 0 0 1px #b2b6be',
+        focus: 'inset 0 0 0 2px #204AE5',
+        error: 'inset 0 0 0 2px #F1134B',
       },
       keyframes: {
         'accordion-down': {

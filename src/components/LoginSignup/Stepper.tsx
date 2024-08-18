@@ -1,12 +1,53 @@
-interface StepperProps {
-  img: string;
+import { useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
+interface StepperComponentProps {
+  stepPath: string;
+  blueIcon: string;
+  grayIcon: string;
+  mobileBlueIcon: string;
+  mobileGrayIcon: string;
   text: string;
 }
-export default function Stepper({ img, text }: StepperProps) {
+
+export default function StepperComponent({
+  stepPath,
+  blueIcon,
+  grayIcon,
+  mobileBlueIcon,
+  mobileGrayIcon,
+  text,
+}: StepperComponentProps) {
+  const location = useLocation();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isCurrentPath = location.pathname === stepPath;
+  const img = isMobile
+    ? isCurrentPath
+      ? mobileBlueIcon
+      : mobileGrayIcon
+    : isCurrentPath
+      ? blueIcon
+      : grayIcon;
+  const textColor = isCurrentPath ? 'text-neutral-80' : 'text-neutral-20';
+
   return (
-    <div className="flex-col h-[71px] w-[100px]">
-      <img className="mx-auto place-content-center" src={img} alt="terms"></img>
-      <p className="mt-4 text-center font-pretendard font-bold text-title-xs">{text}</p>
+    <div className="flex-col w-[100px] mobile:w-[56px]">
+      <img className="mx-auto place-content-center" src={img} alt={text}></img>
+      <p
+        className={`mt-4 mobile:mt-2 text-center ${textColor} font-pretendard font-bold text-title-xs mobile:text-label-sm-m`}>
+        {text}
+      </p>
     </div>
   );
 }
