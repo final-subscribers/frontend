@@ -39,7 +39,7 @@ export default function StepperComponent({
     : isCurrentPath
       ? blueIcon
       : grayIcon;
-  const textColor = isCurrentPath ? 'text-neutral-80' : 'text-neutral-20';
+  const textColor = isCurrentPath ? 'text-[#32373E]' : 'text-[#CBD0D7]';
 
   return (
     <div className="flex-col w-[100px] mobile:w-[56px]">

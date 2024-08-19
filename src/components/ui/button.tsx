@@ -7,7 +7,8 @@ import { cn } from '@/lib/utils';
 const buttonVariants = cva('inline-flex items-center justify-center whitespace-nowrap font-bold', {
   variants: {
     variant: {
-      primary: 'bg-primary-default !text-static-white active:bg-primary-alternative',
+      primary:
+        'bg-primary-default border border-primary-default !text-static-white active:bg-primary-alternative',
       outline: 'bg-static-white border border-primary-default !text-primary-default active:bg-primary-base',
       assistive:
         'bg-static-white border border-assistive-default !text-static-default active:!text-assistive-default',

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import buildingImg from '../../assets/buildings.svg';
+import { Button } from '@/components/ui/button';
 
 export default function Login() {
   return (
@@ -41,11 +42,7 @@ export default function Login() {
                 placeholder="비밀번호를 입력해주세요"
               />
             </label>
-            <button
-              type="submit"
-              className="w-full px-8 py-5 mobile:px-7 mobile:py-4 bg-primary-50 text-white border rounded-5 font-pretendard font-bold text-label-lg mobile:text-label-lg-m">
-              로그인
-            </button>
+            <Button type="submit">로그인</Button>
             <div className="flex mt-[60px] gap-4">
               <Link to="/signup-terms" className="w-1/2">
                 <button

@@ -1,5 +1,6 @@
 import bigcheckImg from '../../assets/bigcheck.svg';
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 export default function SignupCompleted() {
   return (
@@ -15,15 +16,13 @@ export default function SignupCompleted() {
           회원가입 완료는 <strong>최대 5일</strong> 정도 소요될 수 있습니다.
         </p>
         <article className="flex w-[720px] mt-[80px] mx-auto justify-center gap-6">
-          <Link to="/">
-            <button className="w-[190px] h-[61px] px-4 py-3 border rounded-5 font-pretendard font-bold">
+          <Link to="/" className="w-[190px]">
+            <Button className="w-full" variant="assistive">
               홈으로 이동
-            </button>
+            </Button>
           </Link>
-          <Link to="/login">
-            <button className="w-[190px] h-[61px] px-4 py-3 border rounded-5 font-pretendard font-bold text-white bg-primary-50">
-              로그인
-            </button>
+          <Link to="/login" className="w-[190px]">
+            <Button className="w-full">로그인</Button>
           </Link>
         </article>
       </section>

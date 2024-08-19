@@ -18,6 +18,7 @@ import Stepper from '../../components/LoginSignup/Stepper';
 import Input from '@/components/LoginSignup/Input';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 const inputFields = [
   { title: '소속 회사', placeholder: '소속 회사를 입력해주세요' },
@@ -38,7 +39,7 @@ export default function AdminVerify() {
     <main className="flex w-full justify-center">
       <section className="flex flex-col max-w-[1536px] py-[80px] justify-center gap-y-16">
         <article className="flex justify-center">
-          <h1 className="font-pretendard font-bold text-heading-lg">담당자 인증</h1>
+          <h1 className="font-pretendard font-bold text-heading-lg mobile:text-heading-sm">담당자 인증</h1>
         </article>
         <article className="flex justify-center items-center">
           <Stepper
@@ -99,15 +100,13 @@ export default function AdminVerify() {
           </div>
         </article>
         <article className="flex w-[720px] mx-auto justify-center gap-6">
-          <Link to="/signup-terms">
-            <button className="w-[190px] h-[61px] px-4 py-3 border rounded-5 font-pretendard font-bold">
+          <Link to="/signup-terms" className="w-[190px]">
+            <Button className="w-full" variant="assistive">
               이전
-            </button>
+            </Button>
           </Link>
-          <Link to="/signup-completed">
-            <button className="w-[190px] h-[61px] px-4 py-3 border rounded-5 font-pretendard font-bold text-white bg-primary-50">
-              다음
-            </button>
+          <Link to="/signup-completed" className="w-[190px]">
+            <Button className="w-full">다음</Button>
           </Link>
         </article>
       </section>

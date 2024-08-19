@@ -16,6 +16,7 @@ import completedMobileBlue from '../../assets/stepper-four-blue.svg';
 import completedMobileGray from '../../assets/stepper-four-gray.svg';
 import { Link } from 'react-router-dom';
 import Stepper from '../../components/LoginSignup/Stepper';
+import { Button } from '@/components/ui/button';
 
 export default function SignupTerms() {
   return (
@@ -100,12 +101,12 @@ export default function SignupTerms() {
         </article>
         <article className="flex w-[720px] mx-auto justify-center gap-6">
           <Link to="/login" className="w-[190px]">
-            <button className="w-full px-8 py-5 border rounded-5 font-pretendard font-bold">이전</button>
+            <Button className="w-full" variant="assistive">
+              이전
+            </Button>
           </Link>
           <Link to="/admin-verify" className="w-[190px]">
-            <button className="w-full px-8 py-5 border rounded-5 font-pretendard font-bold text-white bg-primary-50">
-              다음
-            </button>
+            <Button className="w-full">다음</Button>
           </Link>
         </article>
       </section>

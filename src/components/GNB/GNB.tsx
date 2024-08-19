@@ -151,9 +151,11 @@ const GNB = () => {
               </>
             )}
             {/* 로그인 시 내용 변경 이후 추가 */}
-            <Button variant="assistive" size="md" className="hidden desktop:block">
-              로그인/회원가입
-            </Button>
+            <Link to="/login">
+              <Button variant="assistive" size="md" className="hidden desktop:block">
+                로그인/회원가입
+              </Button>
+            </Link>
             <List
               size={32}
               weight="thin"
