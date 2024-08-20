@@ -57,7 +57,7 @@ module.exports = {
           strong: '#119ACB',
         },
         effect: {
-          elevated: 'rgba(71, 71, 82, 0.8)',
+          elevated: 'rgba(71, 71, 82, 0.5)',
           gradient: 'rgba(71, 71, 82, 0.2)',
           shadow: 'rgba(70, 69, 107, 0.1)',
         },

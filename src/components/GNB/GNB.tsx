@@ -208,7 +208,7 @@ const GNB = () => {
 
       {/* 검색 */}
       {isSearchOpen && (
-        <div className="fixed z-40 top-[93px] w-full h-screen bg-effect-elevated bg-opacity-50">
+        <div className="fixed z-40 top-[93px] w-full h-screen bg-effect-elevated">
           <div
             ref={searchRef}
             className="flex items-center justify-center w-full h-60 px-9 tablet:h-52 mobile:h-44 desktop:px-0 bg-white">
