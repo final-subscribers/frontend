@@ -1,40 +1,20 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import buildingImg from '../../assets/buildings.svg';
 import { Button } from '@/components/ui/button';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { EyeClosed, Eye } from '@phosphor-icons/react';
-
-const loginSchema = z.object({
-  email: z.string().min(1, { message: '아이디를 입력해주세요' }).email({ message: '아이디를 입력해주세요' }),
-  password: z
-    .string()
-    .min(1, { message: '비밀번호를 입력해주세요' })
-    .regex(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,}$/, '비밀번호를 입력해주세요'),
-});
 
 type FormFields = {
   email: string;
   password: string;
 };
 export default function Login() {
-  const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
-
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible);
-  };
-
   const {
     register,
     handleSubmit,
     setError,
     clearErrors,
     formState: { errors, isSubmitting },
-  } = useForm<FormFields>({
-    resolver: zodResolver(loginSchema),
-  });
+  } = useForm<FormFields>();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     if (!data.email && !data.password) {
@@ -90,24 +70,15 @@ export default function Login() {
                 onFocus={() => clearErrors('root')}
               />
             </label>
-            <label className="relative font-pretendard font-bold text-title-base mobile:text-title-base-m">
+            <label className="font-pretendard font-bold text-title-base mobile:text-title-base-m">
               <span className="inline-block text-static-default py-5">비밀번호</span>
               <input
-                className="mb-24 w-full h-[53px] mobile:h-[47px] px-4 py-3 pr-10 border rounded-5 font-pretendard font-normal text-label-lg"
-                {...register('password', { required: '비밀번호를 입력해주세요' })}
-                type={isPasswordVisible ? 'text' : 'password'}
+                className="mb-24 w-full h-[53px] mobile:h-[47px] px-4 py-3 border rounded-5 font-pretendard font-normal text-label-lg"
+                {...register('password', { required: '비밀번호를 입력해주세요', minLength: 10 })}
+                type="password"
                 placeholder="비밀번호를 입력해주세요"
                 onFocus={() => clearErrors('root')}
               />
-              <div
-                className="absolute top-[75px] mobile:top-[67px] right-2 flex items-center pr-3 cursor-pointer"
-                onClick={togglePasswordVisibility}>
-                {isPasswordVisible ? (
-                  <Eye size={24} className="text-assistive-default" />
-                ) : (
-                  <EyeClosed size={24} className="text-assistive-default" />
-                )}
-              </div>
             </label>
             <div className="relative h-[29px] bottom-14">
               {errors.root ? (
@@ -124,6 +95,23 @@ export default function Login() {
                 </div>
               ) : null}
             </div>
+            {/* <div className="relative h-[29px] bottom-16">
+              {errors.email && (
+                <div className=" text-accent-error font-pretendard font-normal text-label-lg">
+                  {errors.email.message}
+                </div>
+              )}
+              {errors.password && (
+                <div className=" text-accent-error font-pretendard font-normal text-label-lg">
+                  {errors.password.message}
+                </div>
+              )}
+              {errors.root && (
+                <pre className="h-[29px] text-accent-error font-pretendard font-normal text-label-lg">
+                  {errors.root.message}
+                </pre>
+              )}
+            </div> */}
             <Button disabled={isSubmitting} type="submit">
               로그인
             </Button>

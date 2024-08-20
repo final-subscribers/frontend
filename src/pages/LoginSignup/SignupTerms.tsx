@@ -65,9 +65,8 @@ export default function SignupTerms() {
         <article className="flex flex-col w-[720px] mobile:w-full mobile:p-5 gap-y-9">
           <label className="flex flex-col font-pretendard font-bold text-title-base mobile:text-title-base-m">
             <span className="inline-block py-5">이용약관</span>
-            <input
+            <textarea
               className="mb-4 w-full h-[140px] px-4 py-3 border rounded-5 font-pretendard font-normal text-label-lg"
-              type="text"
               placeholder="이용약관"
             />
             <div className="flex items-center">
@@ -75,7 +74,7 @@ export default function SignupTerms() {
               <span className="ml-4 font-pretendard font-normal text-label-lg mobile:text-label-lg-m">
                 동의합니다
               </span>
-              <span className="ml-2 font-pretendard font-normal text-label-lg mobile:text-label-lg-m text-primary-50">
+              <span className="ml-2 font-pretendard font-normal text-label-lg mobile:text-label-lg-m text-primary-default">
                 [필수]
               </span>
             </div>
@@ -83,9 +82,8 @@ export default function SignupTerms() {
 
           <label className="flex flex-col font-pretendard font-bold text-title-base mobile:text-title-base-m">
             <span className="inline-block py-5">개인정보 처리방침</span>
-            <input
+            <textarea
               className="mb-4 w-full h-[140px] px-4 py-3 border rounded-5 font-pretendard font-normal text-label-lg"
-              type="text"
               placeholder="개인정보 처리방침"
             />
             <div className="flex items-center">
@@ -93,7 +91,7 @@ export default function SignupTerms() {
               <span className="ml-4 font-pretendard font-normal text-label-lg mobile:text-label-lg-m">
                 동의합니다
               </span>
-              <span className="ml-2 font-pretendard font-normal text-label-lg mobile:text-label-lg-m text-primary-50">
+              <span className="ml-2 font-pretendard font-normal text-label-lg mobile:text-label-lg-m text-primary-default">
                 [필수]
               </span>
             </div>
