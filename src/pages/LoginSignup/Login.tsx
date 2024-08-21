@@ -3,22 +3,11 @@ import { Link } from 'react-router-dom';
 import buildingImg from '../../assets/buildings.svg';
 import { Button } from '@/components/ui/button';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { loginSchema, FormFields } from '@/types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { EyeClosed, Eye } from '@phosphor-icons/react';
+// import { login } from '@/api/login';
 
-const loginSchema = z.object({
-  email: z.string().min(1, { message: '아이디를 입력해주세요' }).email({ message: '아이디를 입력해주세요' }),
-  password: z
-    .string()
-    .min(1, { message: '비밀번호를 입력해주세요' })
-    .regex(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,}$/, '비밀번호를 입력해주세요'),
-});
-
-type FormFields = {
-  email: string;
-  password: string;
-};
 export default function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
 
@@ -37,13 +26,6 @@ export default function Login() {
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    if (!data.email && !data.password) {
-      setError('root', {
-        message: '이메일과 비밀번호를 입력해주세요.',
-      });
-      return;
-    }
-
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       throw new Error();
@@ -53,6 +35,23 @@ export default function Login() {
         message: `아이디 또는 비밀번호가 잘못되었습니다.\n아이디와 비밀번호를 정확히 입력해주세요.`,
       });
     }
+
+    // try {
+    //   const response = await login(data.email, data.password);
+
+    //   if (response.errors) {
+    //     for (const [key, value] of Object.entries(response.errors)) {
+    //       setError(key as keyof FormFields, { type: 'manual', message: value });
+    //     }
+    //   } else if (response.success) {
+    //     console.log('Login successful:', response.access_token);
+    //   }
+    // } catch (error) {
+    //   setError('root', {
+    //     type: 'manual',
+    //     message: `아이디 또는 비밀번호가 잘못되었습니다.\n아이디와 비밀번호를 정확히 입력해주세요.`,
+    //   });
+    // }
   };
 
   return (
