@@ -128,18 +128,14 @@ export default function Login() {
             </Button>
             <div className="flex mt-[60px] gap-4">
               <Link to="/signup-terms" className="w-1/2">
-                <button
-                  type="button"
-                  className=" w-full px-8 py-5 mobile:px-7 mobile:py-4 border rounded-5 font-pretendard text-static-default font-bold text-label-lg mobile:text-label-lg-m">
+                <Button variant="assistive" className="w-full mobile:px-7 mobile:py-4">
                   고객으로 가입하기
-                </button>
+                </Button>
               </Link>
               <Link to="/signup-terms" className="w-1/2">
-                <button
-                  type="button"
-                  className=" w-full px-8 py-5 mobile:px-7 mobile:py-4 border rounded-5 font-pretendard text-static-default font-bold text-label-lg mobile:text-label-lg-m">
+                <Button variant="assistive" className="w-full mobile:px-7 mobile:py-4">
                   담당자로 가입하기
-                </button>
+                </Button>
               </Link>
             </div>
           </form>
