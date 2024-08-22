@@ -8,18 +8,30 @@ import { Label } from './components/ui/label';
 import Dropdown from './components/common/Dropdown';
 import { paymentSupport, optionSupport, transportation, time, customerRating } from './lib/dropdownItems';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { scroller, Element } from 'react-scroll';
 
 const nameSchema = z.string().min(2, '이름은 2글자 이상이어야 합니다.');
 const emailSchema = z.string().email('유효하지 않은 이메일 형식입니다.');
 const passwordSchema = z.string().min(6, '비밀번호는 최소 6자 이상이어야 합니다.');
+
 function App() {
   const handleSelect = (value: string) => {
     console.log('Selected value:', value);
   };
+  // 원하는 Element로 이동하는 tab
+  function scrollToElement(name: string) {
+    scroller.scrollTo(name, {
+      duration: 1500,
+      delay: 0,
+      spy: true,
+      offset: -145,
+      smooth: 'easeInOutQuart',
+    });
+  }
 
   return (
     <>
-      <div className="h-[1500px]">
+      <div className="h-[3000px]">
         <InputField
           type="text"
           label="이름"
@@ -108,21 +120,53 @@ function App() {
             00평
           </Label>
         </div>
+
+        {/* dropdown 에시 */}
         <Dropdown items={paymentSupport} defaultLabel="중도금 무이자" onSelect={handleSelect} />
         <Dropdown items={optionSupport} defaultLabel="무상제공" onSelect={handleSelect} />
         <Dropdown items={transportation} defaultLabel="도보" onSelect={handleSelect} />
         <Dropdown items={time} defaultLabel="00분" onSelect={handleSelect} />
         <Dropdown items={customerRating} defaultLabel="고객등급" onSelect={handleSelect} />
-        <Tabs defaultValue="account" className="w-[800px]">
-          <TabsList className="flex flex-1">
-            <TabsTrigger value="caseOpen">상담대기</TabsTrigger>
-            <TabsTrigger value="caseClosed">상담완료</TabsTrigger>
-            <TabsTrigger value="caseClosed2">상담완료</TabsTrigger>
-            <TabsTrigger value="caseClosed3">상담완료</TabsTrigger>
-          </TabsList>
-          <TabsContent value="caseOpen">상담대기 내역 표시</TabsContent>
-          <TabsContent value="caseClosed">상담완료 내역 표시</TabsContent>
-        </Tabs>
+
+        {/* 화면이 바뀌는 tab */}
+        <div className="max-w-[1000px]">
+          <Tabs defaultValue="account" className="w-full">
+            <TabsList className="flex">
+              <TabsTrigger value="caseOpen">상담대기</TabsTrigger>
+              <TabsTrigger value="caseClosed">상담완료</TabsTrigger>
+              <TabsTrigger value="caseClosed2">상담완료</TabsTrigger>
+            </TabsList>
+            <TabsContent value="caseOpen">상담대기 내역 표시</TabsContent>
+            <TabsContent value="caseClosed">상담완료 내역 표시</TabsContent>
+          </Tabs>
+
+          {/* 스크롤 기능 tab */}
+          <div className="sticky top-[92px] bg-static-white mt-4 z-50">
+            <Tabs defaultValue="account" className="w-full bg-static-white">
+              <TabsList className="flex">
+                <TabsTrigger value="caseOpen" onClick={() => scrollToElement('category2')}>
+                  상담대기
+                </TabsTrigger>
+                <TabsTrigger value="caseClosed" onClick={() => scrollToElement('category3')}>
+                  상담완료
+                </TabsTrigger>
+                <TabsTrigger value="caseClosed2">상담완료</TabsTrigger>
+                <TabsTrigger value="caseClosed3">상담완료</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+
+          {/* 스크롤 컴포넌트 지정 */}
+          <Element name="category0" className="flex h-[200px] bg-highlight-base">
+            category0
+          </Element>
+          <Element name="category2" className="flex h-[200px] bg-secondary-base">
+            category1
+          </Element>
+          <Element name="category3" className="flex h-[200px] bg-accent-normal">
+            category2
+          </Element>
+        </div>
       </div>
     </>
   );
