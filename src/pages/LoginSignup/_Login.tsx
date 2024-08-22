@@ -1,31 +1,29 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import buildingImg from '../../assets/buildings.svg';
 import { Button } from '@/components/ui/button';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { loginSchema, FormFields } from '@/types/types';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { EyeClosed, Eye } from '@phosphor-icons/react';
-// import { login } from '@/api/login';
 
+type FormFields = {
+  email: string;
+  password: string;
+};
 export default function Login() {
-  const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
-
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible);
-  };
-
   const {
     register,
     handleSubmit,
     setError,
     clearErrors,
     formState: { errors, isSubmitting },
-  } = useForm<FormFields>({
-    resolver: zodResolver(loginSchema),
-  });
+  } = useForm<FormFields>();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    if (!data.email && !data.password) {
+      setError('root', {
+        message: '이메일과 비밀번호를 입력해주세요.',
+      });
+      return;
+    }
+
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       throw new Error();
@@ -35,23 +33,6 @@ export default function Login() {
         message: `아이디 또는 비밀번호가 잘못되었습니다.\n아이디와 비밀번호를 정확히 입력해주세요.`,
       });
     }
-
-    // try {
-    //   const response = await login(data.email, data.password);
-
-    //   if (response.errors) {
-    //     for (const [key, value] of Object.entries(response.errors)) {
-    //       setError(key as keyof FormFields, { type: 'manual', message: value });
-    //     }
-    //   } else if (response.success) {
-    //     console.log('Login successful:', response.access_token);
-    //   }
-    // } catch (error) {
-    //   setError('root', {
-    //     type: 'manual',
-    //     message: `아이디 또는 비밀번호가 잘못되었습니다.\n아이디와 비밀번호를 정확히 입력해주세요.`,
-    //   });
-    // }
   };
 
   return (
@@ -89,24 +70,15 @@ export default function Login() {
                 onFocus={() => clearErrors('root')}
               />
             </label>
-            <label className="relative font-pretendard font-bold text-title-base mobile:text-title-base-m">
+            <label className="font-pretendard font-bold text-title-base mobile:text-title-base-m">
               <span className="inline-block text-static-default py-5">비밀번호</span>
               <input
-                className="mb-24 w-full h-[53px] mobile:h-[47px] px-4 py-3 pr-10 border rounded-5 font-pretendard font-normal text-label-lg"
-                {...register('password', { required: '비밀번호를 입력해주세요' })}
-                type={isPasswordVisible ? 'text' : 'password'}
+                className="mb-24 w-full h-[53px] mobile:h-[47px] px-4 py-3 border rounded-5 font-pretendard font-normal text-label-lg"
+                {...register('password', { required: '비밀번호를 입력해주세요', minLength: 10 })}
+                type="password"
                 placeholder="비밀번호를 입력해주세요"
                 onFocus={() => clearErrors('root')}
               />
-              <div
-                className="absolute top-[75px] mobile:top-[67px] right-2 flex items-center pr-3 cursor-pointer"
-                onClick={togglePasswordVisibility}>
-                {isPasswordVisible ? (
-                  <Eye size={24} className="text-assistive-default" />
-                ) : (
-                  <EyeClosed size={24} className="text-assistive-default" />
-                )}
-              </div>
             </label>
             <div className="relative h-[29px] bottom-14">
               {errors.root ? (
@@ -123,19 +95,40 @@ export default function Login() {
                 </div>
               ) : null}
             </div>
+            {/* <div className="relative h-[29px] bottom-16">
+              {errors.email && (
+                <div className=" text-accent-error font-pretendard font-normal text-label-lg">
+                  {errors.email.message}
+                </div>
+              )}
+              {errors.password && (
+                <div className=" text-accent-error font-pretendard font-normal text-label-lg">
+                  {errors.password.message}
+                </div>
+              )}
+              {errors.root && (
+                <pre className="h-[29px] text-accent-error font-pretendard font-normal text-label-lg">
+                  {errors.root.message}
+                </pre>
+              )}
+            </div> */}
             <Button disabled={isSubmitting} type="submit">
               로그인
             </Button>
             <div className="flex mt-[60px] gap-4">
               <Link to="/signup-terms" className="w-1/2">
-                <Button variant="assistive" className="w-full mobile:px-7 mobile:py-4">
+                <button
+                  type="button"
+                  className=" w-full px-8 py-5 mobile:px-7 mobile:py-4 border rounded-5 font-pretendard text-static-default font-bold text-label-lg mobile:text-label-lg-m">
                   고객으로 가입하기
-                </Button>
+                </button>
               </Link>
               <Link to="/signup-terms" className="w-1/2">
-                <Button variant="assistive" className="w-full mobile:px-7 mobile:py-4">
+                <button
+                  type="button"
+                  className=" w-full px-8 py-5 mobile:px-7 mobile:py-4 border rounded-5 font-pretendard text-static-default font-bold text-label-lg mobile:text-label-lg-m">
                   담당자로 가입하기
-                </Button>
+                </button>
               </Link>
             </div>
           </form>
