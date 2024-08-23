@@ -9,10 +9,24 @@ import Dropdown from './components/common/Dropdown';
 import { paymentSupport, optionSupport, transportation, time, customerRating } from './lib/dropdownItems';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { scroller, Element } from 'react-scroll';
+import { columns } from './components/ui/columns';
+import { DataTable } from './components/common/DataTable';
+import { consultingList } from './lib/tableItems';
 
 const nameSchema = z.string().min(2, '이름은 2글자 이상이어야 합니다.');
 const emailSchema = z.string().email('유효하지 않은 이메일 형식입니다.');
 const passwordSchema = z.string().min(6, '비밀번호는 최소 6자 이상이어야 합니다.');
+
+// table에 사용하는 데이터
+const data = consultingList.map((consulting) => ({
+  id: consulting.id,
+  customerName: consulting.customerName,
+  phoneNumber: consulting.phoneNumber,
+  contactDate: consulting.contactDate,
+  appointmentDate: consulting.appointmentDate,
+  operatorId: consulting.operatorId,
+  contents: consulting.contents,
+}));
 
 function App() {
   const handleSelect = (value: string) => {
@@ -31,7 +45,7 @@ function App() {
 
   return (
     <>
-      <div className="h-[3000px]">
+      <div className="h-[5000px]">
         <InputField
           type="text"
           label="이름"
@@ -122,11 +136,31 @@ function App() {
         </div>
 
         {/* dropdown 에시 */}
-        <Dropdown items={paymentSupport} defaultLabel="중도금 무이자" onSelect={handleSelect} />
-        <Dropdown items={optionSupport} defaultLabel="무상제공" onSelect={handleSelect} />
-        <Dropdown items={transportation} defaultLabel="도보" onSelect={handleSelect} />
-        <Dropdown items={time} defaultLabel="00분" onSelect={handleSelect} />
-        <Dropdown items={customerRating} defaultLabel="고객등급" onSelect={handleSelect} />
+        <Dropdown
+          items={paymentSupport}
+          defaultLabel="중도금 무이자"
+          onSelect={handleSelect}
+          buttonWidth="w-[176px]"
+        />
+        <Dropdown
+          items={optionSupport}
+          defaultLabel="무상제공"
+          onSelect={handleSelect}
+          buttonWidth="w-[138px]"
+        />
+        <Dropdown
+          items={transportation}
+          defaultLabel="도보"
+          onSelect={handleSelect}
+          buttonWidth="w-[105px]"
+        />
+        <Dropdown items={time} defaultLabel="00분" onSelect={handleSelect} buttonWidth="w-[112px]" />
+        <Dropdown
+          items={customerRating}
+          defaultLabel="고객등급"
+          onSelect={handleSelect}
+          buttonWidth="w-[138px]"
+        />
 
         {/* 화면이 바뀌는 tab */}
         <div className="max-w-[1000px]">
@@ -166,6 +200,11 @@ function App() {
           <Element name="category3" className="flex h-[200px] bg-accent-normal">
             category2
           </Element>
+        </div>
+
+        {/* table */}
+        <div className="container mx-auto py-10">
+          <DataTable columns={columns} data={data} />
         </div>
       </div>
     </>

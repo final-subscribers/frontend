@@ -94,3 +94,25 @@ export const operator = [
     label: 'D',
   },
 ];
+export const operatorId = [
+  {
+    value: 'a1-1',
+    label: 'a1-1',
+  },
+  {
+    value: 'a1-2',
+    label: 'a1-2',
+  },
+  {
+    value: 'a1-3',
+    label: 'a1-3',
+  },
+  {
+    value: 'a1-4',
+    label: 'a1-4',
+  },
+  {
+    value: 'a1-5',
+    label: 'a1-5',
+  },
+];
