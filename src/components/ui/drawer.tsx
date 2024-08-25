@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Drawer as DrawerPrimitive } from 'vaul';
 
 import { cn } from '@/lib/utils';
-import { CaretLeft } from '@phosphor-icons/react';
 
 const Drawer = ({
   shouldScaleBackground = true,
@@ -22,7 +21,7 @@ const DrawerOverlay = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
-  <DrawerPrimitive.Overlay ref={ref} className={cn('fixed inset-0 z-50', className)} {...props} />
+  <DrawerPrimitive.Overlay ref={ref} className={cn('fixed inset-0 z-50 bg-black/80', className)} {...props} />
 ));
 DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 
@@ -35,16 +34,11 @@ const DrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        'fixed w-full left-0 top-[54px] z-50 flex flex-col max-h-[calc(100vh-54px) bg-static-white',
+        'fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-static-white',
         className,
       )}
-      aria-describedby="drawer-description"
       {...props}>
-      <div className="absolute top-4 left-5 z-50">
-        <DrawerClose>
-          <CaretLeft className="size-8 text-static-default" />
-        </DrawerClose>
-      </div>
+      <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" />
       {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>

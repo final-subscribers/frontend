@@ -18,7 +18,7 @@ const buttonVariants = cva('inline-flex items-center justify-center whitespace-n
       lg: 'px-7 py-4 rounded-5 text-label-lg mobile:text-label-lg-m',
       md: 'px-7 py-4 rounded-5 text-label-base mobile:text-label-base-m',
       sm: 'px-7 py-4 rounded-4 text-label-sm mobile:text-label-sm-m',
-      xs: 'px-4 py-2 rounded-3 text-label-xs mobile:text-label-xs-m',
+      xs: 'px-4 py-3 rounded-3 text-label-xs mobile:text-label-xs-m',
     },
   },
   defaultVariants: {

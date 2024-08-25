@@ -47,6 +47,7 @@ const ItemCard = ({
         <div className={`${cardSizeClass[size]} flex flex-col bg-white rounded-5 font-pretendard`}>
           <div className="relative mb-5">
             <img src={imageUrl} alt={title} className="w-full h-[180px] rounded-5 object-cover" />
+            <div className="absolute inset-0 gradient-overlay rounded-5" />
             <div className="absolute top-0 left-0">
               {rank && (
                 <div
@@ -81,7 +82,9 @@ const ItemCard = ({
               {title}
             </h2>
             <div className="flex flex-col gap-3 mb-4">
-              <p className="text-detail-lg text-assistive-detail">{address}</p>
+              <p className="text-detail-lg text-assistive-detail overflow-hidden text-ellipsis whitespace-nowrap">
+                {address}
+              </p>
               <div className="flex items-center gap-2 text-detail-lg text-assistive-detail">
                 <p>{propertyType}</p>
                 <div className="w-[1px] h-[10px] bg-assistive-detail" />
@@ -122,7 +125,9 @@ const ItemCard = ({
                   <h2 className="w-full text-title-base-m text-static-default font-bold overflow-hidden text-ellipsis whitespace-nowrap">
                     {title}
                   </h2>
-                  <p className="text-detail-sm-m text-assistive-detail">{address}</p>
+                  <p className="text-detail-sm-m text-assistive-detail overflow-hidden text-ellipsis whitespace-nowrap">
+                    {address}
+                  </p>
                 </div>
                 <div className="flex flex-col">
                   <span className="h-[13px] line-through text-assistive-default text-detail-sm-m">
@@ -190,7 +195,9 @@ const ItemCard = ({
             <h2 className="w-full text-title-xl text-static-default font-bold overflow-hidden text-ellipsis whitespace-nowrap">
               {title}
             </h2>
-            <p className="text-detail-lg text-assistive-detail">{address}</p>
+            <p className="text-detail-lg text-assistive-detail overflow-hidden text-ellipsis whitespace-nowrap">
+              {address}
+            </p>
           </div>
         </div>
       )}
