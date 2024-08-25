@@ -2,7 +2,9 @@ import { X } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import useResponsive from '@/hooks/useResponsive';
-import { Drawer, DrawerContent } from '../ui/drawer';
+import { Drawer, DrawerContent, DrawerHeader } from '../ui/drawer';
+import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
+import { DialogHeader } from '../ui/dialog';
 
 interface SelectedMenuProps {
   isOpen: boolean;
@@ -345,7 +347,13 @@ const SelectedMenu = ({ isOpen, onClose }: SelectedMenuProps) => {
     <>
       {isMobile && isOpen ? (
         <Drawer open={true} onOpenChange={onClose}>
-          <DrawerContent className={`h-[420px] pt-4 px-5 bg-white`}>{renderContent()}</DrawerContent>
+          <DialogHeader>
+            <DialogTitle></DialogTitle>
+          </DialogHeader>
+          <DrawerContent className={`h-[420px] pt-4 px-5 bg-white`}>
+            <DialogDescription />
+            {renderContent()}
+          </DrawerContent>
         </Drawer>
       ) : (
         <div

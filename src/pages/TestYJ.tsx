@@ -1,6 +1,6 @@
 import ItemCard from '@/components/common/ItemCard';
-import SelectedMenu from '@/components/common/SelectedMenu';
 import Toast from '@/components/common/Toast';
+import SelectedMenu from '@/components/LandList/SelectedMenu';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';

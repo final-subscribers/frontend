@@ -16,7 +16,7 @@ const GNB = () => {
   const searchRef = useRef<HTMLDivElement>(null); // Search 모달 외부 감지
 
   const location = useLocation();
-  const { isDesktop } = useResponsive();
+  const { isDesktop, isTablet, isMobile } = useResponsive();
 
   const handleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -71,7 +71,7 @@ const GNB = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 h-[93px] pl-9 pr-8 bg-white border-b border-assistive-divider font-pretendard">
+      <header className="sticky top-0 z-50 desktop:h-[93px] tablet:h-[65px] mobile:h-[54px] pl-9 pr-8 bg-white border-b border-assistive-divider font-pretendard">
         <nav className="flex justify-between items-center w-full h-full">
           <div className="flex gap-8">
             <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative">
