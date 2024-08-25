@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  /* 스크롤바 전체 */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  /* 스크롤바의 트랙 (배경) */
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+  }
+
+  /* 스크롤바의 손잡이 (thumb) */
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-10 bg-assistive-alternative hover:bg-assistive-divider;
+  }
+}
 @font-face {
   font-family: 'Pretendard';
   font-weight: 400;
@@ -12,12 +29,6 @@
   font-family: 'Pretendard';
   font-weight: 700;
   src: url('./font/Pretendard-Bold.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'Pretendard';
-  font-weight: 400;
-  src: url('./font/Pretendard-Regular.otf') format('opentype');
 }
 
 @layer components {

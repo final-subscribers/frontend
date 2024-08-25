@@ -1,9 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../components/Layout';
 import Login from '@/pages/LoginSignup/Login';
-import SignupTerms from '@/pages/LoginSignup/SignupTerms';
-import AdminVerify from '@/pages/LoginSignup/AdminVerify';
 import SignupCompleted from '@/pages/LoginSignup/SignupCompleted';
+
+import TestHY from '@/pages/TestHY';
+import TestYJ from '@/pages/TestYJ';
+import TestMS from '@/pages/TestMS';
 
 export const router = createBrowserRouter([
   {
@@ -19,16 +21,20 @@ export const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: '/signup-terms',
-        element: <SignupTerms />,
-      },
-      {
-        path: '/admin-verify',
-        element: <AdminVerify />,
-      },
-      {
         path: '/signup-completed',
         element: <SignupCompleted />,
+      },
+      {
+        path: '/test-ms',
+        element: <TestMS />,
+      },
+      {
+        path: '/test-hy',
+        element: <TestHY />,
+      },
+      {
+        path: '/test-yj',
+        element: <TestYJ />,
       },
     ],
   },
