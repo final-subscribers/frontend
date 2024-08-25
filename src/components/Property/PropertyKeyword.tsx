@@ -8,10 +8,18 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
 import { Button } from '../ui/button';
-import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTrigger } from '../ui/drawer';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '../ui/drawer';
 import useResponsive from '@/hooks/useResponsive';
 import { useState } from 'react';
 
@@ -49,10 +57,10 @@ const PropertyKeyword = ({ type, data }: PropertyKeywordProps) => {
           </article>
           <DrawerContent className="h-full">
             <DrawerHeader className="relative flex justify-center border-b-[1px] border-assistive-divider">
-              {headerText}
+              <DrawerTitle>{headerText}</DrawerTitle>
             </DrawerHeader>
             <div className="px-7 py-8 ">
-              <DrawerDescription>
+              <div className="flex flex-col gap-6 max-h-[90vh] overflow-y-scroll">
                 {data?.map((item, index) => (
                   <KeywordChip
                     key={index}
@@ -61,8 +69,9 @@ const PropertyKeyword = ({ type, data }: PropertyKeywordProps) => {
                     variant="default"
                   />
                 ))}
-              </DrawerDescription>
+              </div>
             </div>
+            <DrawerDescription />
           </DrawerContent>
         </Drawer>
       ) : (
@@ -86,8 +95,10 @@ const PropertyKeyword = ({ type, data }: PropertyKeywordProps) => {
             </div>
           </article>
           <DialogContent>
-            <DialogHeader>{headerText}</DialogHeader>
-            <DialogDescription>
+            <DialogHeader>
+              <DialogTitle>{headerText}</DialogTitle>
+            </DialogHeader>
+            <div className="flex flex-col gap-6 max-h-[50vh] overflow-y-scroll" aria-describedby={undefined}>
               {data?.map((item, index) => (
                 <KeywordChip
                   key={index}
@@ -96,7 +107,8 @@ const PropertyKeyword = ({ type, data }: PropertyKeywordProps) => {
                   variant="default"
                 />
               ))}
-            </DialogDescription>
+            </div>
+            <DialogDescription />
             <DialogFooter>
               <DialogClose asChild>
                 <Button variant="assistive" className="w-full">

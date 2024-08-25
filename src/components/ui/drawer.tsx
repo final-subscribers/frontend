@@ -38,6 +38,7 @@ const DrawerContent = React.forwardRef<
         'fixed w-full left-0 top-[54px] z-50 flex flex-col max-h-[calc(100vh-54px) bg-static-white',
         className,
       )}
+      aria-describedby="drawer-description"
       {...props}>
       <div className="absolute top-4 left-5 z-50">
         <DrawerClose>
@@ -51,7 +52,7 @@ const DrawerContent = React.forwardRef<
 DrawerContent.displayName = 'DrawerContent';
 
 const DrawerHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('!text-title-base-m text-static-default font-bold p-5', className)} {...props} />
+  <div className={cn('', className)} {...props} />
 );
 DrawerHeader.displayName = 'DrawerHeader';
 
@@ -66,7 +67,7 @@ const DrawerTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Title
     ref={ref}
-    className={cn('text-lg font-semibold leading-none tracking-tight', className)}
+    className={cn('!text-title-base-m text-static-default font-bold p-5', className)}
     {...props}
   />
 ));
