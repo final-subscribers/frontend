@@ -6,7 +6,7 @@ const PublicIcon = ({ weight = 'default', className = '' }) => {
       return <IconFountain stroke={2} className={className} />;
     case 'fill':
       return <IconFountainFilled stroke={2} className={className} />;
-    default:
+    case 'light':
       return <IconFountain stroke={1} className={className} />;
   }
 };

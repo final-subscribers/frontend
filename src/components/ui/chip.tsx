@@ -3,6 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
 import {
+  Bank,
   CalendarBlank,
   FirstAid,
   GraduationCap,
@@ -10,7 +11,6 @@ import {
   Money,
   Park,
   PencilSimple,
-  PencilSimpleLine,
   SealPercent,
   ShieldCheck,
   ShoppingBag,
@@ -21,7 +21,7 @@ import PublicIcon from '@/assets/PublicIcon';
 
 const withIconStyles = (icon: React.ReactNode): React.ReactNode => {
   return React.isValidElement(icon)
-    ? React.cloneElement(icon as React.ReactElement, { className: 'w-full h-full', weight: 'bold' })
+    ? React.cloneElement(icon as React.ReactElement, { className: 'size-full', weight: 'bold' })
     : icon;
 };
 
@@ -40,9 +40,9 @@ const iconMap: Record<string, React.ReactNode> = {
   PARK: withIconStyles(<Park />), // 숲공원
   SHOPPING: withIconStyles(<ShoppingBag />), // 쇼핑복합시설
   HOSPITAL: withIconStyles(<FirstAid />), // 병원
-  LIBRARY: withIconStyles(<PencilSimpleLine />), // 도서관
+  LIBRARY: withIconStyles(<PencilSimple />), // 도서관
   PUBLIC_FACILITIES: withIconStyles(<PublicIcon />), // 공공시설
-  GOVERNMENT: withIconStyles(<PencilSimple />), // 관공서
+  GOVERNMENT: withIconStyles(<Bank />), // 관공서
 };
 
 // 키워드에 따른 스타일 변경

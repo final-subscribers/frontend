@@ -21,9 +21,9 @@ const KeywordChip = ({ keyword, variant, text }: KeywordChipProps) => {
       </div>
     </div>
   ) : (
-    <div className="py-4 pl-5 pr-8 flex items-center gap-5 rounded-7 border border-assistive-divider tablet:py-3 tablet:pl-3">
+    <div className="py-4 pl-5 pr-8 flex items-center gap-5 rounded-7 border border-assistive-divider tablet:py-3 tablet:pl-3 tablet:rounded-5">
       <ChipIcon keyword={keyword} variant={variant} className="flex-shrink-0" />
-      <div className="flex flex-col gap-2 flex-grow min-w-0">
+      <div className="flex flex-col gap-2 flex-grow min-w-0 tablet:gap-0">
         <ChipLabel keyword={keyword} variant={variant}>
           {label}
         </ChipLabel>

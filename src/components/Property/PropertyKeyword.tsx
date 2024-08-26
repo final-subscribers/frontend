@@ -1,6 +1,6 @@
 import { formatBenefitText, formatInfraText } from '@/lib/utils';
 import { CaretRight } from '@phosphor-icons/react';
-import KeywordChip from '../common/KeywordChip';
+import KeywordChip from './KeywordChip';
 import {
   Dialog,
   DialogClose,
@@ -51,23 +51,18 @@ const PropertyKeyword = ({ type, data }: PropertyKeywordProps) => {
             </div>
             <div className="grid grid-cols-3 mobile:grid-cols-1 gap-3">
               {data?.map((item, index) => (
-                <KeywordChip key={index} keyword={item.name} text={formatText(item.input)} />
+                <KeywordChip key={index} keyword={item.name} text={formatText(item)} />
               ))}
             </div>
           </article>
-          <DrawerContent className="h-full">
+          <DrawerContent className="h-full fixed w-full left-0 top-0 z-50 flex flex-col bg-static-white">
             <DrawerHeader className="relative flex justify-center border-b-[1px] border-assistive-divider">
               <DrawerTitle>{headerText}</DrawerTitle>
             </DrawerHeader>
             <div className="px-7 py-8 ">
               <div className="flex flex-col gap-6 max-h-[90vh] overflow-y-scroll">
                 {data?.map((item, index) => (
-                  <KeywordChip
-                    key={index}
-                    keyword={item.name}
-                    text={formatText(item.input)}
-                    variant="default"
-                  />
+                  <KeywordChip key={index} keyword={item.name} text={formatText(item)} variant="default" />
                 ))}
               </div>
             </div>
@@ -90,7 +85,7 @@ const PropertyKeyword = ({ type, data }: PropertyKeywordProps) => {
             </div>
             <div className="grid grid-cols-3 mobile:grid-cols-1 gap-3">
               {data?.map((item, index) => (
-                <KeywordChip key={index} keyword={item.name} text={formatText(item.input)} />
+                <KeywordChip key={index} keyword={item.name} text={formatText(item)} />
               ))}
             </div>
           </article>
@@ -100,12 +95,7 @@ const PropertyKeyword = ({ type, data }: PropertyKeywordProps) => {
             </DialogHeader>
             <div className="flex flex-col gap-6 max-h-[50vh] overflow-y-scroll" aria-describedby={undefined}>
               {data?.map((item, index) => (
-                <KeywordChip
-                  key={index}
-                  keyword={item.name}
-                  text={formatText(item.input)}
-                  variant="default"
-                />
+                <KeywordChip key={index} keyword={item.name} text={formatText(item)} variant="default" />
               ))}
             </div>
             <DialogDescription />
