@@ -28,28 +28,60 @@ export function getPropertyLabel(key: string): string {
 }
 
 // 인프라 input 변환
-type InfraInput = { input1: string; input2: string; input3: string }[];
+type InfraInput = { input1: string; input2: string; input3: string };
 
-export function formatInfraText(input: InfraInput): string {
-  return input
-    .map((item) => {
-      const timeInMinutes = `${parseInt(item.input3.replace('m', ''), 10)}분`;
+export interface InfraItemProps {
+  name: string;
+  input: InfraInput[];
+}
+export function formatInfraText(item: InfraItemProps): string {
+  return item.input
+    .map((inputItem) => {
+      const timeInMinutes = `${parseInt(inputItem.input3.replace('m', ''), 10)}분`;
 
-      return `${item.input1} ${item.input2} ${timeInMinutes}`;
+      return `${inputItem.input1} ${inputItem.input2} ${timeInMinutes}`;
     })
     .join(', ');
 }
 
 // 혜택 input 변환
-type BenefitInput = string | number | Record<string, string>[];
+type BenefitInputItem = { input1: string; input2: string };
+export interface BenefitItemProps {
+  name: string;
+  input: number | BenefitInputItem[];
+}
+export function formatBenefitText(item: BenefitItemProps): string {
+  switch (item.name) {
+    case 'DISCOUNT_SALE':
+      if (Array.isArray(item.input)) {
+        const i = item.input[0];
+        return `분양가 대비 ${i.input1}~${i.input2}% 할인`;
+      }
+      return `${item.input}`;
+    case 'BALANCE_DEFERRAL':
+      if (Array.isArray(item.input)) {
+        const i = item.input[0];
+        return `잔금 ${i.input1}% ${i.input2}개월동안 유예`;
+      }
+      return `${item.input}`;
+    case 'CASH_PAYMENT':
+      return `현금 ${item.input}만원 지급`;
+    case 'GUARANTEED_PAYMENT':
+      return `계약금 ${item.input}% 안심보장`;
+    case 'SUPPORT_PAYMENT':
+      if (Array.isArray(item.input)) {
+        const i = item.input[0];
+        return `중도금 ${i.input2}% ${i.input1} 지원`;
+      }
+      return `${item.input}`;
 
-export function formatBenefitText(input: BenefitInput): string {
-  if (typeof input === 'number' || typeof input === 'string') {
-    return String(input);
-  }
-  if (Array.isArray(input)) {
-    return input.map((item) => Object.values(item).join(' ')).join(', ');
-  }
+    case 'OPTION_PAYMENT':
+      if (Array.isArray(item.input)) {
+        return item.input.map((i) => `${i.input1} ${i.input2}`).join(', ');
+      }
+      return `${item.input}`;
 
-  return '';
+    default:
+      return `${item.name.replace('_', ' ')}: ${item.input}`;
+  }
 }

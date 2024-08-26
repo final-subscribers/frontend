@@ -38,17 +38,17 @@ type PropertyDataMap = {
 // 데이터 객체
 const propertyDataMap: PropertyDataMap = {
   // 혜택
-  DISCOUNT_SALE: '할인 분양',
-  BALANCE_DEFERRAL: '잔금 유예',
-  CASH_PAYMENT: '현금 지급',
-  GUARANTEED_PAYMENT: '계약금 안심 보장',
-  SUPPORT_PAYMENT: '중도금 지원',
-  OPTION_PAYMENT: '옵션 지급',
+  DISCOUNT_SALE: '할인분양',
+  BALANCE_DEFERRAL: '잔금유예',
+  CASH_PAYMENT: '현금지급',
+  GUARANTEED_PAYMENT: '계약금 안심보장',
+  SUPPORT_PAYMENT: '중도금지원',
+  OPTION_PAYMENT: '옵션제공',
   // 인프라
   SUBWAY: '지하철역',
   HOSPITAL: '병원',
   PARK: '숲공원',
-  SHOPPING: '쇼핑',
+  SHOPPING: '쇼핑 복합시설',
   SCHOOL: '학교',
   LIBRARY: '도서관',
   PUBLIC_FACILITIES: '공공시설',
@@ -57,13 +57,13 @@ const propertyDataMap: PropertyDataMap = {
   APARTMENT: '아파트',
   OFFICETEL: '오피스텔',
   VILLA: '빌라',
-  URBAN_HOUSING: '도시형 생활 주택',
-  LIVING_ACCOMMODATION: '생활 숙박 시설',
-  DOWNTOWN: '상가/업무',
+  URBAN_HOUSING: '도시형 생활주택',
+  LIVING_ACCOMMODATION: '생활 숙박시설',
+  DOWNTOWN: '상가·업무',
   // 분양 유형
   PRIVATE_SALE: '민간분양',
   PUBLIC_SALE: '공공분양',
-  LEASE_SALE: '임대 분양',
+  LEASE_SALE: '임대분양',
 };
 
 export default propertyDataMap;
