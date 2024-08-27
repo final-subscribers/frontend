@@ -1,6 +1,6 @@
 import { Heart } from '@phosphor-icons/react';
 import { Label } from '../ui/label';
-import { formatAmount } from '@/lib/utils';
+import { formatAmount, getPropertyLabel } from '@/lib/utils';
 
 export interface ItemCardProps {
   size: 'l' | 's' | 'default'; // 사이즈
@@ -23,8 +23,8 @@ const ItemCard = ({
   title,
   imageUrl,
   address,
-  propertyType,
-  salesType,
+  propertyType = '',
+  salesType = '',
   totalNumber,
   keywords,
   price = 0,
@@ -70,8 +70,8 @@ const ItemCard = ({
 
             <div className="absolute bottom-3 left-3 flex gap-2">
               {keywords?.map((kw, index) => (
-                <Label key={index} size="m" variant="accent" keyword={kw}>
-                  {kw}
+                <Label key={index} size="m" variant="accent" keyword={getPropertyLabel(kw)}>
+                  {getPropertyLabel(kw)}
                 </Label>
               ))}
             </div>
@@ -86,9 +86,9 @@ const ItemCard = ({
                 {address}
               </p>
               <div className="flex items-center gap-2 text-detail-lg text-assistive-detail">
-                <p>{propertyType}</p>
+                <p>{getPropertyLabel(propertyType)}</p>
                 <div className="w-[1px] h-[10px] bg-assistive-detail" />
-                <p>{salesType}</p>
+                <p>{getPropertyLabel(salesType)}</p>
                 <div className="w-[1px] h-[10px] bg-assistive-detail" />
                 <p>총 {totalNumber}세대</p>
               </div>
@@ -115,8 +115,13 @@ const ItemCard = ({
             <div className="w-[180px]">
               <div className="flex gap-2 mb-3">
                 {keywords?.map((kw, index) => (
-                  <Label key={index} size="s" variant="accent" keyword={kw} className="text-[11px]">
-                    {kw}
+                  <Label
+                    key={index}
+                    size="s"
+                    variant="accent"
+                    keyword={getPropertyLabel(kw)}
+                    className="text-[11px]">
+                    {getPropertyLabel(kw)}
                   </Label>
                 ))}
               </div>
@@ -171,9 +176,9 @@ const ItemCard = ({
           </div>
           <div className="px-4 pt-3 pb-4">
             <div className="flex items-center gap-2 text-detail-base-m text-assistive-detail">
-              <p>{propertyType}</p>
+              <p>{getPropertyLabel(propertyType)}</p>
               <div className="w-[1px] h-[10px] bg-assistive-detail" />
-              <p>{salesType}</p>
+              <p>{getPropertyLabel(salesType)}</p>
               <div className="w-[1px] h-[10px] bg-assistive-detail" />
               <p>총 {totalNumber}세대</p>
             </div>
