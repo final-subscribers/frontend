@@ -57,7 +57,7 @@ const getVariantByKeyword = (keyword: string): VariantType => {
   const primaryKeywords = [
     '지하철역',
     '병원',
-    '숲공원',
+    '숲 · 공원',
     '쇼핑복합시설',
     '학교',
     '도서관',

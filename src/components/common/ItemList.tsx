@@ -1,6 +1,6 @@
 import { Heart } from '@phosphor-icons/react';
 import { Label } from '../ui/label';
-import { formatAmount } from '@/lib/utils';
+import { formatAmount, getPropertyLabel } from '@/lib/utils';
 
 export interface ItemListProps {
   size: 'l' | 'm'; // 사이즈
@@ -22,8 +22,8 @@ const ItemList = ({
   title,
   imageUrl,
   address,
-  propertyType,
-  salesType,
+  propertyType = '',
+  salesType = '',
   totalNumber,
   keywords,
   price = 0,
@@ -71,9 +71,9 @@ const ItemList = ({
             </p>
             <div
               className={`flex items-center gap-2 ${size === 'm' ? 'text-detail-base' : 'text-detail-lg'} text-assistive-detail`}>
-              <p>{propertyType}</p>
+              <p>{getPropertyLabel(propertyType)}</p>
               <div className="w-[1px] h-[10px] bg-assistive-detail" />
-              <p>{salesType}</p>
+              <p>{getPropertyLabel(salesType)}</p>
               <div className="w-[1px] h-[10px] bg-assistive-detail" />
               <p>총 {totalNumber}세대</p>
             </div>
@@ -81,8 +81,8 @@ const ItemList = ({
           <div className={`flex flex-col gap-4 items-center ${size === 'm' ? 'w-[222px]' : 'w-[364px]'}`}>
             <div className="flex gap-2">
               {keywords?.map((kw, index) => (
-                <Label key={index} size={labelSize} variant="accent" keyword={kw}>
-                  {kw}
+                <Label key={index} size={labelSize} variant="accent" keyword={getPropertyLabel(kw)}>
+                  {getPropertyLabel(kw)}
                 </Label>
               ))}
             </div>

@@ -2,9 +2,9 @@ import { X } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import useResponsive from '@/hooks/useResponsive';
-import { Drawer, DrawerContent, DrawerHeader } from '../ui/drawer';
-import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
-import { DialogHeader } from '../ui/dialog';
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from '../ui/drawer';
+import { Popover, PopoverContent } from '../ui/popover';
+import { PopoverTrigger } from '@radix-ui/react-popover';
 
 interface SelectedMenuProps {
   isOpen: boolean;
@@ -347,21 +347,21 @@ const SelectedMenu = ({ isOpen, onClose }: SelectedMenuProps) => {
     <>
       {isMobile && isOpen ? (
         <Drawer open={true} onOpenChange={onClose}>
-          <DialogHeader>
-            <DialogTitle></DialogTitle>
-          </DialogHeader>
+          <DrawerHeader>
+            <DrawerTitle></DrawerTitle>
+          </DrawerHeader>
           <DrawerContent className={`h-[420px] pt-4 px-5 bg-white`}>
-            <DialogDescription />
+            <DrawerDescription />
             {renderContent()}
           </DrawerContent>
         </Drawer>
       ) : (
-        <div
-          className={`absolute right-0 mt-12 w-[420px] h-[500px] py-5 bg-white rounded-9 shadow-[0_4px_20px_0] shadow-effect-shadow z-10 transition-opacity duration-300 ${
-            isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-          }`}>
-          {renderContent()}
-        </div>
+        <Popover open={isOpen} onOpenChange={() => false}>
+          <PopoverTrigger></PopoverTrigger>
+          <PopoverContent className="w-[420px] h-[500px] py-5 bg-white rounded-[40px] shadow-[0_4px_20px_0] shadow-effect-shadow">
+            {renderContent()}
+          </PopoverContent>
+        </Popover>
       )}
     </>
   );
