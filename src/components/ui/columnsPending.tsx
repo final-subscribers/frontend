@@ -3,19 +3,18 @@ import { operatorId } from '../../lib/dropdownItems';
 import Dropdown from '../common/Dropdown';
 import { Button } from '@/components/ui/button';
 
-export interface Consulting {
-  id: string;
-  customerName: string;
+export interface ConsultingPending {
+  name: string;
   phoneNumber: string;
-  contactDate: string;
-  appointmentDate: string;
-  operatorId: string;
+  createdAt: string;
+  preferredAt: string;
+  consultant: string;
   contents: string;
 }
 
-export const columns: ColumnDef<Consulting>[] = [
+export const columnsOnWait: ColumnDef<ConsultingPending>[] = [
   {
-    accessorKey: 'customerName',
+    accessorKey: 'name',
     header: '고객명',
   },
   {
@@ -23,15 +22,15 @@ export const columns: ColumnDef<Consulting>[] = [
     header: '전화번호',
   },
   {
-    accessorKey: 'contactDate',
+    accessorKey: 'createdAt',
     header: '상담신청일자',
   },
   {
-    accessorKey: 'appointmentDate',
+    accessorKey: 'preferredAt',
     header: '희망상담일자',
   },
   {
-    accessorKey: 'operatorId',
+    accessorKey: 'consultant',
     header: '상담사',
     cell: ({ row }) => {
       // @ts-ignore: Unreachable code error

@@ -2,11 +2,52 @@ import Dropdown from '@/components/common/Dropdown';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { customerRating, optionSupport, paymentSupport, time, transportation } from '@/lib/dropdownItems';
 import { scroller, Element } from 'react-scroll';
+import { ConsultingPending } from '@/components/Table/ConsultingPending';
+import { ConsultingCompleted } from '@/components/Table/ConsultingCompleted';
+import { columnsOnWait } from '@/components/ui/columnsPending';
+import { columnsCompleted } from '@/components/ui/columnsCompleted';
+import { consultingPending, consultingCompleted, myProperty } from '@/lib/tableItems';
+import { MyProperty } from '@/components/Table/MyProperty';
+import { columnsMyProperty } from '@/components/ui/columnsMyProperyt';
+// import { useDragger } from '../hooks/useDragger';
+
+// table에 사용하는 데이터
+const consultingPendingData = consultingPending.map((consulting) => ({
+  name: consulting.name,
+  phoneNumber: consulting.phoneNumber,
+  createdAt: consulting.createdAt,
+  preferredAt: consulting.preferredAt,
+  consultant: consulting.consultant,
+  contents: consulting.contents,
+}));
+
+const consultingCompletedData = consultingCompleted.map((consulting) => ({
+  name: consulting.name,
+  tier: consulting.tier,
+  phoneNumber: consulting.phoneNumber,
+  createdAt: consulting.createdAt,
+  completedAt: consulting.completedAt,
+  consultant: consulting.consultant,
+  contents: consulting.contents,
+}));
+
+const myPropertyData = myProperty.map((property) => ({
+  id: property.id,
+  name: property.name,
+  total_number: property.total_number,
+  pending: property.pending,
+  status: property.status,
+  created_at: property.created_at,
+  end_date: property.end_date,
+}));
 
 const TestHY = () => {
   const handleSelect = (value: string) => {
     console.log('Selected value:', value);
   };
+  // 이동 가능 컴포넌트 훅
+  // useDragger('blue-box');
+
   // 원하는 Element로 이동하는 tab
   function scrollToElement(name: string) {
     scroller.scrollTo(name, {
@@ -17,19 +58,46 @@ const TestHY = () => {
       smooth: 'easeInOutQuart',
     });
   }
+
+  const handleViewClick = (contents: string) => {
+    const width = 517;
+    const height = 830;
+
+    // popup 윈도우
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+
+    const popupWindow = window.open('', '_blank', `width=${width},height=${height},left=${left},top=${top}`);
+
+    if (popupWindow) {
+      popupWindow.document.write(`<html><head><title>문의내역</title></head><body>${contents}</body></html>`);
+      popupWindow.document.close();
+    }
+  };
+
   return (
-    <>
+    <div className="relative h-[3000px]">
       {/* dropdown 에시 */}
-      {/* @ts-ignore: Unreachable code error */}
-      <Dropdown items={paymentSupport} defaultLabel="중도금 무이자" onSelect={handleSelect} />
-      {/* @ts-ignore: Unreachable code error */}
-      <Dropdown items={optionSupport} defaultLabel="무상제공" onSelect={handleSelect} />
-      {/* @ts-ignore: Unreachable code error */}
-      <Dropdown items={transportation} defaultLabel="도보" onSelect={handleSelect} />
-      {/* @ts-ignore: Unreachable code error */}
-      <Dropdown items={time} defaultLabel="00분" onSelect={handleSelect} />
-      {/* @ts-ignore: Unreachable code error */}
-      <Dropdown items={customerRating} defaultLabel="고객등급" onSelect={handleSelect} />
+      <Dropdown
+        items={paymentSupport}
+        defaultLabel="중도금 무이자"
+        buttonWidth="w-[176px]"
+        onSelect={handleSelect}
+      />
+      <Dropdown
+        items={optionSupport}
+        defaultLabel="무상제공"
+        buttonWidth="w-[138px]"
+        onSelect={handleSelect}
+      />
+      <Dropdown items={transportation} defaultLabel="도보" buttonWidth="w-[105px]" onSelect={handleSelect} />
+      <Dropdown items={time} defaultLabel="00분" buttonWidth="w-[112px]" onSelect={handleSelect} />
+      <Dropdown
+        items={customerRating}
+        defaultLabel="고객등급"
+        buttonWidth="w-[138px]"
+        onSelect={handleSelect}
+      />
 
       {/* 화면이 바뀌는 tab */}
       <div className="max-w-[1000px]">
@@ -70,7 +138,19 @@ const TestHY = () => {
           category2
         </Element>
       </div>
-    </>
+
+      {/* 상담대기 테이블 */}
+      <div className="container mx-auto py-10 ">
+        <ConsultingPending columns={columnsOnWait} data={consultingPendingData} />
+        <ConsultingCompleted columns={columnsCompleted(handleViewClick)} data={consultingCompletedData} />
+        <MyProperty columns={columnsMyProperty} data={myPropertyData} />
+      </div>
+
+      {/* 이동 가능 컴포넌트 */}
+      {/* <div
+        id="blue-box"
+        className="absolute w-[517px] h-[830px] rounded-[40px] bg-primary-alternative shadow-xl cursor-pointer"></div> */}
+    </div>
   );
 };
 

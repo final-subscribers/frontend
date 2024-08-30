@@ -1,5 +1,5 @@
 import React from 'react';
-import Dropdown from './Dropdown';
+import Dropdown from '../common/Dropdown';
 import { MagnifyingGlass } from '@phosphor-icons/react';
 
 import {
@@ -14,14 +14,14 @@ import {
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '../ui/input';
-import { operator } from '../../lib/dropdownItems';
+import { operatorId } from '../../lib/dropdownItems';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function ConsultingPending<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
@@ -51,7 +51,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="w-[435px] pl-14 mr-7"
         />
-        <Dropdown items={operator} defaultLabel="상담사" onSelect={handleSelect} buttonWidth="w-[122px]" />
+        <Dropdown items={operatorId} defaultLabel="상담사" onSelect={handleSelect} buttonWidth="w-[122px]" />
       </div>
       <div className="flex">
         <h1 className="py-[10px] pl-6 pr-3 text-title-sm font-bold text-static-default">총 상담대기</h1>
