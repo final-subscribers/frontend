@@ -2,6 +2,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { operatorId } from '../../lib/dropdownItems';
 import Dropdown from '../common/Dropdown';
 import { Button } from '@/components/ui/button';
+import { CustomerInquiryProps } from '../CustomerConsulting/CustomerInquiry';
 
 export interface ConsultingPending {
   name: string;
@@ -12,7 +13,9 @@ export interface ConsultingPending {
   contents: string;
 }
 
-export const columnsOnWait: ColumnDef<ConsultingPending>[] = [
+export const columnsPending = (
+  handleViewClick: (props: CustomerInquiryProps) => void,
+): ColumnDef<ConsultingPending>[] => [
   {
     accessorKey: 'name',
     header: '고객명',
@@ -33,13 +36,16 @@ export const columnsOnWait: ColumnDef<ConsultingPending>[] = [
     accessorKey: 'consultant',
     header: '상담사',
     cell: ({ row }) => {
-      // @ts-ignore: Unreachable code error
-      const operatorData = row.original;
       const handleSelect = (value: string) => {
-        console.log('Selected value:', value);
+        row.original.consultant = value;
       };
       return (
-        <Dropdown items={operatorId} defaultLabel="a1-1" onSelect={handleSelect} buttonWidth="w-[99px]" />
+        <Dropdown
+          items={operatorId}
+          defaultLabel={row.original.consultant || 'a1-1'}
+          onSelect={handleSelect}
+          buttonWidth="w-[99px]"
+        />
       );
     },
   },
@@ -47,10 +53,17 @@ export const columnsOnWait: ColumnDef<ConsultingPending>[] = [
     accessorKey: 'contents',
     header: '문의내역',
     cell: ({ row }) => {
+<<<<<<< HEAD
       // @ts-ignore: Unreachable code error
       const contentsData = row.original;
+=======
+      const { name, phoneNumber, createdAt, preferredAt } = row.original;
+>>>>>>> aa2dc3b (feat: 메인리베이스)
       return (
-        <Button variant="outline" size="sm">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => handleViewClick({ name, phoneNumber, createdAt, preferredAt })}>
           보기
         </Button>
       );

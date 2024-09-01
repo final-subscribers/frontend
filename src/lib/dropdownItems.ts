@@ -72,29 +72,33 @@ export const customerRating = [
     label: 'D',
   },
 ];
-export const operator = [
+export const operatorId = [
   {
-    value: 'S',
-    label: 'S',
+    value: 'a1-1',
+    label: 'a1-1',
   },
   {
-    value: 'A',
-    label: 'A',
+    value: 'a1-2',
+    label: 'a1-2',
   },
   {
-    value: 'B',
-    label: 'B',
+    value: 'a1-3',
+    label: 'a1-3',
   },
   {
-    value: 'C',
-    label: 'C',
+    value: 'a1-4',
+    label: 'a1-4',
   },
   {
-    value: 'D',
-    label: 'D',
+    value: 'a1-5',
+    label: 'a1-5',
   },
 ];
-export const operatorId = [
+export const operatorIdAll = [
+  {
+    value: '상담사',
+    label: '상담사',
+  },
   {
     value: 'a1-1',
     label: 'a1-1',

@@ -1,6 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { CustomerInquiryProps } from '../CustomerConsulting/CustomerInquiry';
 
 export interface ConsultingCompleted {
   name: string;
@@ -13,7 +14,7 @@ export interface ConsultingCompleted {
 }
 
 export const columnsCompleted = (
-  handleViewClick: (contents: string) => void,
+  handleViewClick: (props: CustomerInquiryProps) => void,
 ): ColumnDef<ConsultingCompleted>[] => [
   {
     accessorKey: 'name',
@@ -22,8 +23,7 @@ export const columnsCompleted = (
   {
     accessorKey: 'tier',
     header: '고객등급',
-    cell: ({ row }) => {
-      const contentsData = row.original;
+    cell: () => {
       return (
         <Label size="m" variant="highlight">
           S등급
@@ -55,9 +55,12 @@ export const columnsCompleted = (
     accessorKey: 'contents',
     header: '문의내역',
     cell: ({ row }) => {
-      const contentsData = row.original;
+      const { name, phoneNumber, createdAt, completedAt } = row.original;
       return (
-        <Button variant="outline" size="sm" onClick={() => handleViewClick(row.original.contents)}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => handleViewClick({ name, phoneNumber, createdAt, completedAt })}>
           보기
         </Button>
       );

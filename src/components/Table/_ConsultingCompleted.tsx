@@ -1,5 +1,6 @@
 import React from 'react';
-import { TrashSimple } from '@phosphor-icons/react';
+import Dropdown from '../common/Dropdown';
+import { MagnifyingGlass } from '@phosphor-icons/react';
 
 import {
   ColumnDef,
@@ -12,51 +13,20 @@ import {
 } from '@tanstack/react-table';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Input } from '../ui/input';
+import { operatorId, customerRating } from '../../lib/dropdownItems';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
-interface Identifiable {
-  id: number;
-}
 
-export function MyProperty<TData extends Identifiable, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+export function ConsultingCompleted<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [tableData, setTableData] = React.useState<TData[]>(data);
-
-  const handleDelete = (id: number) => {
-    const updatedData = tableData.filter((row) => row.id !== id);
-    setTableData(updatedData);
-  };
-
-  const columnsWithDelete = React.useMemo(() => {
-    return columns.map((column) => {
-      if (column.id === 'customColumn2') {
-        return {
-          ...column,
-          cell: ({ row }: any) => (
-            <div className="flex relative w-[150px] items-center">
-              <TrashSimple
-                size={24}
-                weight="light"
-                className="absolute left-0 cursor-pointer"
-                onClick={() => handleDelete(row.original.id)}
-              />
-            </div>
-          ),
-        };
-      }
-      return column;
-    });
-  }, [columns, handleDelete]);
 
   const table = useReactTable({
-    data: tableData,
-    columns: columnsWithDelete,
+    data,
+    columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
@@ -66,14 +36,41 @@ export function MyProperty<TData extends Identifiable, TValue>({
     },
   });
 
+  const handleSelect = (value: string) => {
+    console.log('Selected value:', value);
+  };
+
   return (
     <>
-      <div className="flex">
-        <h1 className="py-[10px] pl-6 pr-3 text-title-sm font-bold text-static-default">매물 목록</h1>
-        <span className="py-[10px] text-title-sm font-bold text-primary-default">
-          {table.getCoreRowModel().rows.length}
-        </span>
+      <div className="flex mb-8 mt-8 relative">
+        <MagnifyingGlass size={24} className={'text-assistive-divider absolute left-7 top-5'} />
+        <Input
+          type="text"
+          placeholder="이름, 전화번호를 입력해주세요"
+          value={table.getState().globalFilter ?? ''}
+          onChange={(event) => table.setGlobalFilter(event.target.value)}
+          className="w-[435px] pl-14 mr-7"
+        />
+        <div className="space-x-3">
+          <Dropdown
+            items={customerRating}
+            defaultLabel="고객등급"
+            buttonWidth="w-[138px]"
+            onSelect={handleSelect}
+          />
+          <Dropdown
+            items={operatorId}
+            defaultLabel="상담사"
+            onSelect={handleSelect}
+            buttonWidth="w-[122px]"
+          />
+        </div>
       </div>
+      <div className="flex">
+        <h1 className="py-[10px] pl-6 pr-3 text-title-sm font-bold text-static-default">총 상담완료</h1>
+        <span className="py-[10px] text-title-sm font-bold text-primary-default">14</span>
+      </div>
+
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

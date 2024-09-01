@@ -4,11 +4,13 @@ import { customerRating, optionSupport, paymentSupport, time, transportation } f
 import { scroller, Element } from 'react-scroll';
 import { ConsultingPending } from '@/components/Table/ConsultingPending';
 import { ConsultingCompleted } from '@/components/Table/ConsultingCompleted';
-import { columnsOnWait } from '@/components/ui/columnsPending';
+import { columnsPending } from '@/components/ui/columnsPending';
 import { columnsCompleted } from '@/components/ui/columnsCompleted';
 import { consultingPending, consultingCompleted, myProperty } from '@/lib/tableItems';
 import { MyProperty } from '@/components/Table/MyProperty';
 import { columnsMyProperty } from '@/components/ui/columnsMyProperyt';
+import CustomerInquiry from '@/components/CustomerConsulting/CustomerInquiry';
+import ReactDOM from 'react-dom/client';
 // import { useDragger } from '../hooks/useDragger';
 
 // table에 사용하는 데이터
@@ -18,7 +20,6 @@ const consultingPendingData = consultingPending.map((consulting) => ({
   createdAt: consulting.createdAt,
   preferredAt: consulting.preferredAt,
   consultant: consulting.consultant,
-  contents: consulting.contents,
 }));
 
 const consultingCompletedData = consultingCompleted.map((consulting) => ({
@@ -59,7 +60,7 @@ const TestHY = () => {
     });
   }
 
-  const handleViewClick = (contents: string) => {
+  const handleViewClick = (props: any) => {
     const width = 517;
     const height = 830;
 
@@ -70,8 +71,29 @@ const TestHY = () => {
     const popupWindow = window.open('', '_blank', `width=${width},height=${height},left=${left},top=${top}`);
 
     if (popupWindow) {
-      popupWindow.document.write(`<html><head><title>문의내역</title></head><body>${contents}</body></html>`);
+      popupWindow.document.write(`
+      <html>
+        <head>
+          <title>Inquiry</title>
+          <link href="/src/index.css" rel="stylesheet">
+        </head>
+        </head>
+        <body>
+          <div id="inquiry-root"></div>
+        </body>
+      </html>
+    `);
       popupWindow.document.close();
+
+      popupWindow.onload = () => {
+        const inquiryRoot = popupWindow.document.getElementById('inquiry-root');
+        if (inquiryRoot) {
+          const root = ReactDOM.createRoot(inquiryRoot);
+          root.render(<CustomerInquiry {...props} />);
+        } else {
+          console.error('에러가 발생했습니다');
+        }
+      };
     }
   };
 
@@ -139,9 +161,9 @@ const TestHY = () => {
         </Element>
       </div>
 
-      {/* 상담대기 테이블 */}
+      {/* 테이블 */}
       <div className="container mx-auto py-10 ">
-        <ConsultingPending columns={columnsOnWait} data={consultingPendingData} />
+        <ConsultingPending columns={columnsPending} data={consultingPendingData} />
         <ConsultingCompleted columns={columnsCompleted(handleViewClick)} data={consultingCompletedData} />
         <MyProperty columns={columnsMyProperty} data={myPropertyData} />
       </div>
@@ -149,7 +171,9 @@ const TestHY = () => {
       {/* 이동 가능 컴포넌트 */}
       {/* <div
         id="blue-box"
-        className="absolute w-[517px] h-[830px] rounded-[40px] bg-primary-alternative shadow-xl cursor-pointer"></div> */}
+        className="absolute w-[517px] h-[830px] rounded-[40px] bg-static-white shadow-xl cursor-pointer">
+        <CustomerInquiry />
+      </div> */}
     </div>
   );
 };

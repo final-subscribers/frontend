@@ -62,7 +62,7 @@ export const columnsMyProperty: ColumnDef<MyProperty>[] = [
     cell: () => {
       return (
         <div className="flex relative w-[150px] items-center">
-          <TrashSimple size={24} weight="light" className="absolute left-0 cursor-pointer " />
+          <TrashSimple size={24} weight="light" className="absolute left-0 cursor-pointer" />
         </div>
       );
     },

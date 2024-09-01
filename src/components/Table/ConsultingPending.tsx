@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Dropdown from '../common/Dropdown';
 import { MagnifyingGlass } from '@phosphor-icons/react';
-
+import { CaretRight, CaretLeft, CaretDoubleLeft, CaretDoubleRight } from '@phosphor-icons/react';
 import {
   ColumnDef,
   flexRender,
@@ -11,10 +11,9 @@ import {
   ColumnFiltersState,
   getFilteredRowModel,
 } from '@tanstack/react-table';
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '../ui/input';
-import { operatorId } from '../../lib/dropdownItems';
+import { operatorIdAll } from '../../lib/dropdownItems';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -23,6 +22,13 @@ interface DataTableProps<TData, TValue> {
 
 export function ConsultingPending<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [selectedConsultant, setSelectedConsultant] = useState<string>('a1-1');
+
+  const [pagination, setPagination] = useState({
+    pageIndex: 0, //초기 인덱스
+    pageSize: 5, //페이지 길이
+  });
+  const [currentPage, setCurrentPage] = useState(1);
 
   const table = useReactTable({
     data,
@@ -31,18 +37,40 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
     getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onPaginationChange: setPagination,
     state: {
       columnFilters,
+      pagination,
     },
   });
 
+  const totalPages = table.getPageCount();
+  const pagesToShow = 5;
+
+  const startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
+  const endPage = Math.min(totalPages, startPage + pagesToShow - 1);
+
   const handleSelect = (value: string) => {
-    console.log('Selected value:', value);
+    if (value === '상담사') {
+      setColumnFilters((filters) => filters.filter((filter) => filter.id !== 'consultant'));
+    } else {
+      setColumnFilters([{ id: 'consultant', value }]);
+    }
+    setSelectedConsultant(value);
+  };
+
+  useEffect(() => {
+    setCurrentPage(table.getState().pagination.pageIndex + 1);
+  }, [table.getState().pagination.pageIndex]);
+
+  const handlePageClick = (page: number) => {
+    setCurrentPage(page);
+    table.setPageIndex(page - 1); // Adjust based on your pagination logic
   };
 
   return (
     <>
-      <div className="flex mb-8 relative">
+      <section className="flex mb-8 mt-10 relative">
         <MagnifyingGlass size={24} className={'text-assistive-divider absolute left-7 top-5'} />
         <Input
           type="text"
@@ -51,11 +79,18 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
           onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="w-[435px] pl-14 mr-7"
         />
-        <Dropdown items={operatorId} defaultLabel="상담사" onSelect={handleSelect} buttonWidth="w-[122px]" />
-      </div>
+        <Dropdown
+          items={operatorIdAll}
+          defaultLabel={'상담사' || selectedConsultant}
+          onSelect={handleSelect}
+          buttonWidth="w-[122px]"
+        />
+      </section>
       <div className="flex">
         <h1 className="py-[10px] pl-6 pr-3 text-title-sm font-bold text-static-default">총 상담대기</h1>
-        <span className="py-[10px] text-title-sm font-bold text-primary-default">14</span>
+        <span className="py-[10px] text-title-sm font-bold text-primary-default">
+          {table.getCoreRowModel().rows.length}
+        </span>
       </div>
 
       <Table>
@@ -94,6 +129,59 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
           )}
         </TableBody>
       </Table>
+      <section className="flex items-center justify-center space-x-3 py-4 mt-11">
+        <button
+          className="border-none p-1"
+          onClick={() => {
+            table.setPageIndex(0);
+            setCurrentPage(1);
+          }}
+          disabled={!table.getCanPreviousPage()}>
+          <CaretDoubleLeft size={32} weight="light" className="text-assistive-divider" />
+        </button>
+        <button
+          className="border-none p-1"
+          onClick={() => {
+            table.previousPage();
+            setCurrentPage((prev) => Math.max(prev - 1, 1));
+          }}
+          disabled={!table.getCanPreviousPage()}>
+          <CaretLeft size={32} weight="light" className="text-assistive-divider" />
+        </button>
+        {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
+          const page = startPage + i;
+          return (
+            <span
+              key={page}
+              onClick={() => handlePageClick(page)}
+              className={`flex h-10 w-10 px-4 justify-center rounded-10 items-center text-label-lg cursor-pointer ${
+                page === currentPage
+                  ? 'bg-primary-base font-bold text-primary-default'
+                  : 'font-normal text-static-default'
+              }`}>
+              {page}
+            </span>
+          );
+        })}
+        <button
+          className="border-none p-1"
+          onClick={() => {
+            table.nextPage();
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+          }}
+          disabled={!table.getCanNextPage()}>
+          <CaretRight size={32} weight="light" className="text-assistive-divider" />
+        </button>
+        <button
+          className="border-none p-1"
+          onClick={() => {
+            table.setPageIndex(totalPages - 1);
+            setCurrentPage(totalPages);
+          }}
+          disabled={!table.getCanNextPage()}>
+          <CaretDoubleRight size={32} weight="light" className="text-assistive-divider" />
+        </button>
+      </section>
     </>
   );
 }
