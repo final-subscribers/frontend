@@ -17,7 +17,7 @@ const labelVariants = cva('inline-flex items-center justify-center whitespace-no
       highlight: 'bg-highlight-base text-highlight-strong',
       primary: 'bg-primary-base text-primary-default',
       secondary: 'bg-secondary-base text-secondary-default',
-      space: 'pl-6 pr-5 py-3 bg-assistive-base text-effect-elevated font-normal rounded-full font-normal', // size L만 사용
+      space: 'pl-6 pr-5 py-3 bg-assistive-base text-effect-elevated font-normal rounded-full !text-label-lg', // size L만 사용
     },
   },
   defaultVariants: {
