@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../components/Layout';
 import Login from '@/pages/LoginSignup/Login';
 import SignupCompleted from '@/pages/LoginSignup/SignupCompleted';
+import PropertyAdd from '@/pages/PropertyAdd';
 
 import TestHY from '@/pages/TestHY';
 import TestYJ from '@/pages/TestYJ';
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: '/test-yj',
         element: <TestYJ />,
+      },
+      {
+        path: '/property-add',
+        element: <PropertyAdd />,
       },
     ],
   },

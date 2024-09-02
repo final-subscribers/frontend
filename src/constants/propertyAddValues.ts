@@ -1,0 +1,18 @@
+export const propertyAddValues = {
+  propertyName: '',
+  propertyConstructor: '',
+  propertyCompanyName: '',
+  propertyTotalNumber: '',
+  propertyRecruitmentDate: '',
+  areas: [],
+  propertyAreaAddr: '',
+  propertyModelhouseAddr: '',
+  addrDo: '',
+  addrGu: '',
+  addrDong: '',
+  buildingName: '',
+  phoneNumber: '',
+  homepage: '',
+  contactChannel: '',
+  // propertySupplyInformation: '',
+};

@@ -7,3 +7,32 @@ export const loginSchema = z.object({
 });
 
 export type FormFields = z.infer<typeof loginSchema>;
+
+export type Area = {
+  squareMeter: number;
+  price: number;
+  discountPercent: number;
+  discountPrice: number;
+};
+
+export type FileData = {
+  fileName: string;
+  fileUrl: string;
+  fileType: string;
+};
+
+export type FormValues = {
+  propertyHouseholdArea: string;
+  areas: Area[];
+  files: FileData[];
+  discountSale: boolean;
+  discountSystem: boolean;
+  propertyAreaAddr: string;
+  addrDo: string;
+  addrGu: string;
+  addrDong: string;
+  buildingName: string;
+  propertyModelhouseAddr: string;
+  propertyType: string;
+  salesType: string;
+};
