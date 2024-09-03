@@ -4,15 +4,15 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
 
-const mobileStyle =
-  'mobile:size-[90px] mobile:min-w-[90px] mobile:p-3 mobile:text-label-base-m mobile:rounded-4';
 const toggleVariants = cva(
-  `relative flex flex-col justify-between size-[160px] min-w-[160px] rounded-6 p-6 text-label-lg shadow-shadow ${mobileStyle}`,
+  'relative w-full flex justify-center px-9 py-5 rounded-5 shadow-default font-bold text-label-lg',
   {
     variants: {
       variant: {
-        default: 'bg-static-white !text-primary-strong',
-        fill: 'bg-primary-strong !text-static-white ',
+        default: 'bg-assistive-base !text-assistive-strong ',
+        assistive: 'bg-assistive-base  shadow-assistive !text-assistive-strong ',
+        primary: 'bg-primary-base shadow-focus !text-primary-default ',
+        accent: ' bg-accent-base shadow-error !text-accent-strong ',
       },
     },
     defaultVariants: {
@@ -21,13 +21,13 @@ const toggleVariants = cva(
   },
 );
 
-const Toggle = React.forwardRef<
+const KeywordToggleButton = React.forwardRef<
   React.ElementRef<typeof TogglePrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> & VariantProps<typeof toggleVariants>
 >(({ className, variant, ...props }, ref) => (
   <TogglePrimitive.Root ref={ref} className={cn(toggleVariants({ variant, className }))} {...props} />
 ));
 
-Toggle.displayName = TogglePrimitive.Root.displayName;
+KeywordToggleButton.displayName = TogglePrimitive.Root.displayName;
 
-export { Toggle, toggleVariants };
+export { KeywordToggleButton, toggleVariants };
