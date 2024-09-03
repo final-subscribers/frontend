@@ -5,6 +5,28 @@ import propertyDataMap from '../constants/propertyDataMap';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+// 날짜 YYYY. MM. DD. 변환
+export function formatDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+
+  return `${year}. ${month}. ${day}.`;
+}
+// 날짜 YYYY. MM 변환
+export function getCurrentMonth() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  return `${year}. ${month}`;
+}
+// 주차 구하기
+export function getWeekOfMonth(date: Date): number {
+  const currentDate = date.getDate();
+  const firstDay = new Date(date.setDate(1)).getDay();
+
+  return Math.ceil((currentDate + firstDay) / 7);
+}
 
 // 금액 단위 변환
 export function formatAmount(amount: number): string {

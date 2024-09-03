@@ -1,5 +1,5 @@
 import { formatBenefitText, formatInfraText } from '@/lib/utils';
-import { CaretLeft, CaretRight, X } from '@phosphor-icons/react';
+import { CaretLeft, CaretRight } from '@phosphor-icons/react';
 import KeywordChip from './KeywordChip';
 import {
   Dialog,
@@ -23,7 +23,6 @@ import {
 } from '../ui/drawer';
 import useResponsive from '@/hooks/useResponsive';
 import { useState } from 'react';
-
 interface PropertyKeywordProps {
   type: 'infra' | 'benefit';
   data: { name: string; input: any }[];
