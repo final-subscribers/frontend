@@ -85,3 +85,17 @@ export function formatBenefitText(item: BenefitItemProps): string {
       return `${item.name.replace('_', ' ')}: ${item.input}`;
   }
 }
+
+// 전화번호 하이픈 입력
+export function formatPhoneNumber(phoneNumber: string | undefined): string | undefined {
+  if (phoneNumber === undefined) {
+    return '';
+  }
+  if (phoneNumber.length === 11) {
+    return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+  } else if (phoneNumber.length === 8) {
+    return phoneNumber.replace(/(\d{4})(\d{4})/, '$1-$2');
+  } else {
+    return phoneNumber;
+  }
+}

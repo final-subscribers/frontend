@@ -100,9 +100,6 @@ const ItemCard = ({
               </span>
               <div>
                 <span className="text-accent-strong text-title-xl font-bold mr-2">{discountRate}%</span>
-                <span className="text-static-default text-title-xl font-bold">
-                  {formatAmount(discountPrice)}
-                </span>
               </div>
             </div>
           </div>

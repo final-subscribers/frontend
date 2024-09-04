@@ -9,4 +9,14 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    // pdf cors 우회
+    proxy: {
+      '/pdf': {
+        target: 'https://www.w3.org',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/pdf/, ''),
+      },
+    },
+  },
 });
