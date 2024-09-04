@@ -7,6 +7,7 @@ import PropertyAdd from '@/pages/PropertyAdd';
 import TestHY from '@/pages/TestHY';
 import TestYJ from '@/pages/TestYJ';
 import TestMS from '@/pages/TestMS';
+import PropertyDetail from '@/pages/PropertyDetail';
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
       {
         path: '/property-add',
         element: <PropertyAdd />,
+      },
+      {
+        path: '/property-detail',
+        element: <PropertyDetail />,
       },
     ],
   },
