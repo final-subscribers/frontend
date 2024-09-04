@@ -1,6 +1,7 @@
 /** @type {import("tailwindcss").Config} */
 
 module.exports = {
+  darkMode: ['class'],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -66,88 +67,56 @@ module.exports = {
         pretendard: ['Pretendard'],
       },
       fontSize: {
-        // Display styles
         'display-lg': '66px',
         'display-lg-m': '40px',
-
         'display-base': '50px',
         'display-base-m': '32px',
-
         'display-sm': '40px',
         'display-sm-m': '25px',
-
-        // Heading styles
         'heading-lg': '50px',
         'heading-lg-m': '40px',
-
         'heading-base': '40px',
         'heading-base-m': '32px',
-
         'heading-sm': '32px',
         'heading-sm-m': '20px',
-
-        // Title styles
         'title-2xl': '32px',
         'title-2xl-m': '23px',
-
         'title-xl': '25px',
         'title-xl-m': '21px',
-
         'title-lg': '21px',
         'title-lg-m': '19px',
-
         'title-base': '19px',
         'title-base-m': '17px',
-
         'title-sm': '17px',
         'title-sm-m': '15px',
-
         'title-xs': '15px',
         'title-xs-m': '13px',
-
-        // Body styles
         'body-lg': '19px',
         'body-lg-m': '17px',
-
         'body-base': '17px',
         'body-base-m': '15px',
-
         'body-sm': '15px',
         'body-sm-m': '13px',
-
-        // Detail styles
         'detail-xl': '19px',
         'detail-xl-m': '17px',
-
         'detail-lg': '17px',
         'detail-lg-m': '15px',
-
         'detail-base': '15px',
         'detail-base-m': '13px',
-
         'detail-sm': '13px',
         'detail-sm-m': '11px',
-
-        // Label styles
         'label-lg': '19px',
         'label-lg-m': '15px',
-
         'label-base': '17px',
         'label-base-m': '13px',
-
         'label-sm': '15px',
         'label-sm-m': '11px',
-
         'label-xs': '13px',
         'label-xs-m': '9px',
-
-        // Links styles
         'links-lg': '19px',
         'links-lg-m': '17px',
-
         'links-base': '17px',
         'links-base-m': '15px',
-
         'links-sm': '15px',
         'links-sm-m': '13px',
       },
@@ -188,12 +157,20 @@ module.exports = {
       },
       keyframes: {
         'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' },
+          from: {
+            height: '0',
+          },
+          to: {
+            height: 'var(--radix-accordion-content-height)',
+          },
         },
         'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' },
+          from: {
+            height: 'var(--radix-accordion-content-height)',
+          },
+          to: {
+            height: '0',
+          },
         },
       },
       animation: {
