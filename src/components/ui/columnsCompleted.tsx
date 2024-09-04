@@ -1,7 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { CustomerInquiryProps } from '../CustomerConsulting/CustomerInquiry';
+import { CustomerInquiryProps } from '../CustomerService/CustomerInquiry';
 
 export interface ConsultingCompleted {
   name: string;

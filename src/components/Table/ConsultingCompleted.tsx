@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Dropdown from '../common/Dropdown';
+import DropdownWithReset from '../common/DropdownWithReset';
 import { MagnifyingGlass } from '@phosphor-icons/react';
-import { CaretRight, CaretLeft, CaretDoubleLeft, CaretDoubleRight } from '@phosphor-icons/react';
+import {
+  CaretRight,
+  CaretLeft,
+  CaretDoubleLeft,
+  CaretDoubleRight,
+  ArrowClockwise,
+} from '@phosphor-icons/react';
 import {
   ColumnDef,
   flexRender,
@@ -80,18 +86,22 @@ export function ConsultingCompleted<TData, TValue>({ columns, data }: DataTableP
           className="w-[435px] pl-14 mr-7"
         />
         <div className="space-x-3">
-          <Dropdown
+          <DropdownWithReset
             items={customerRating}
             defaultLabel="고객등급"
             buttonWidth="w-[138px]"
             onSelect={handleSelect}
           />
-          <Dropdown
+          <DropdownWithReset
             items={operatorIdAll}
             defaultLabel={'상담사' || selectedConsultant}
             onSelect={handleSelect}
             buttonWidth="w-[122px]"
           />
+        </div>
+        <div className="flex py-4 px-6 gap-3 absolute right-0 cursor-pointer">
+          <span className="text-label-lg text-assistive-strong">조건 초기화</span>
+          <ArrowClockwise size={24} weight="light" className="text-assistive-strong" />
         </div>
       </div>
       <div className="flex">

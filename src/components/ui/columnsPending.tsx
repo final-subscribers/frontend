@@ -2,7 +2,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { operatorId } from '../../lib/dropdownItems';
 import Dropdown from '../common/Dropdown';
 import { Button } from '@/components/ui/button';
-import { CustomerInquiryProps } from '../CustomerConsulting/CustomerInquiry';
+import { CustomerInquiryProps } from '../CustomerService/CustomerInquiry';
 
 export interface ConsultingPending {
   name: string;
@@ -53,12 +53,7 @@ export const columnsPending = (
     accessorKey: 'contents',
     header: '문의내역',
     cell: ({ row }) => {
-<<<<<<< HEAD
-      // @ts-ignore: Unreachable code error
-      const contentsData = row.original;
-=======
       const { name, phoneNumber, createdAt, preferredAt } = row.original;
->>>>>>> aa2dc3b (feat: 메인리베이스)
       return (
         <Button
           variant="outline"

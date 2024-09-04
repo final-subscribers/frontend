@@ -96,10 +96,6 @@ export const operatorId = [
 ];
 export const operatorIdAll = [
   {
-    value: '상담사',
-    label: '상담사',
-  },
-  {
     value: 'a1-1',
     label: 'a1-1',
   },

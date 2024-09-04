@@ -9,7 +9,7 @@ import { columnsCompleted } from '@/components/ui/columnsCompleted';
 import { consultingPending, consultingCompleted, myProperty } from '@/lib/tableItems';
 import { MyProperty } from '@/components/Table/MyProperty';
 import { columnsMyProperty } from '@/components/ui/columnsMyProperyt';
-import CustomerInquiry from '@/components/CustomerConsulting/CustomerInquiry';
+import CustomerInquiry from '@/components/CustomerService/CustomerInquiry';
 import ReactDOM from 'react-dom/client';
 // import { useDragger } from '../hooks/useDragger';
 
@@ -163,17 +163,17 @@ const TestHY = () => {
 
       {/* 테이블 */}
       <div className="container mx-auto py-10 ">
-        <ConsultingPending columns={columnsPending} data={consultingPendingData} />
+        <ConsultingPending columns={columnsPending(handleViewClick)} data={consultingPendingData} />
         <ConsultingCompleted columns={columnsCompleted(handleViewClick)} data={consultingCompletedData} />
         <MyProperty columns={columnsMyProperty} data={myPropertyData} />
       </div>
 
       {/* 이동 가능 컴포넌트 */}
-      {/* <div
+      <div
         id="blue-box"
         className="absolute w-[517px] h-[830px] rounded-[40px] bg-static-white shadow-xl cursor-pointer">
-        <CustomerInquiry />
-      </div> */}
+        {/* <CustomerInquiry /> */}
+      </div>
     </div>
   );
 };

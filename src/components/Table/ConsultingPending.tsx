@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Dropdown from '../common/Dropdown';
-import { MagnifyingGlass } from '@phosphor-icons/react';
+import DropdownWithReset from '../common/DropdownWithReset';
+import { MagnifyingGlass, ArrowClockwise } from '@phosphor-icons/react';
 import { CaretRight, CaretLeft, CaretDoubleLeft, CaretDoubleRight } from '@phosphor-icons/react';
 import {
   ColumnDef,
@@ -51,7 +51,7 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
   const endPage = Math.min(totalPages, startPage + pagesToShow - 1);
 
   const handleSelect = (value: string) => {
-    if (value === '상담사') {
+    if (value === '초기화') {
       setColumnFilters((filters) => filters.filter((filter) => filter.id !== 'consultant'));
     } else {
       setColumnFilters([{ id: 'consultant', value }]);
@@ -70,7 +70,7 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
 
   return (
     <>
-      <section className="flex mb-8 mt-10 relative">
+      <section className="flex mb-8 mt-10 relative items-center">
         <MagnifyingGlass size={24} className={'text-assistive-divider absolute left-7 top-5'} />
         <Input
           type="text"
@@ -79,12 +79,16 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
           onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="w-[435px] pl-14 mr-7"
         />
-        <Dropdown
+        <DropdownWithReset
           items={operatorIdAll}
           defaultLabel={'상담사' || selectedConsultant}
           onSelect={handleSelect}
           buttonWidth="w-[122px]"
         />
+        <div className="flex py-4 px-6 gap-3 absolute right-0 cursor-pointer">
+          <span className="text-label-lg text-assistive-strong">조건 초기화</span>
+          <ArrowClockwise size={24} weight="light" className="text-assistive-strong" />
+        </div>
       </section>
       <div className="flex">
         <h1 className="py-[10px] pl-6 pr-3 text-title-sm font-bold text-static-default">총 상담대기</h1>
