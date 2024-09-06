@@ -1,5 +1,5 @@
 import useResponsive from '@/hooks/useResponsive';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 interface NaverMapProps {
   address: string;
@@ -20,7 +20,7 @@ const NaverMap = ({ address, buildingName }: NaverMapProps) => {
         center: new naver.maps.LatLng(37.3595704, 127.105399),
         zoom: 15,
       });
-      const geocoder = naver.maps.Service.geocode(
+      naver.maps.Service.geocode(
         {
           query: address,
         },

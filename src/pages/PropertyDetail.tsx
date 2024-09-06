@@ -15,7 +15,7 @@ import { useFunnel } from '@/hooks/useFunnel';
 import useResponsive from '@/hooks/useResponsive';
 import { formatAmount, getPropertyLabel } from '@/lib/utils';
 import { Area, SalesInformation } from '@/types/types';
-import { ArrowLineDown, Heart, X } from '@phosphor-icons/react';
+import { ArrowLineDown, Heart } from '@phosphor-icons/react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import clsx from 'clsx';

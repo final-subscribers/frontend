@@ -1,6 +1,5 @@
-import React, { ChangeEvent } from 'react';
+import { ChangeEvent } from 'react';
 import { CaretLeft, X, Info } from '@phosphor-icons/react';
-import { useFunnel } from '@/hooks/useFunnel';
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from '../ui/drawer';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';

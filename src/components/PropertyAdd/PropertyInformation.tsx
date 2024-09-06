@@ -89,14 +89,14 @@ export const PropertyInformation = ({ onNext }: { onNext: () => void }) => {
     control,
     name: 'areas',
   });
-  const {
-    fields: fileFields,
-    append: appendFile,
-    remove: removeFile,
-  } = useFieldArray({
-    control,
-    name: 'files',
-  });
+  // const {
+  //   fields: fileFields,
+  //   append: appendFile,
+  //   remove: removeFile,
+  // } = useFieldArray({
+  //   control,
+  //   name: 'files',
+  // });
 
   // 세대면적 추가
   const addArea = () => {
@@ -113,19 +113,19 @@ export const PropertyInformation = ({ onNext }: { onNext: () => void }) => {
   };
 
   // 파일 관련
-  const addFile = (fileName: string) => {
-    if (fileName) {
-      appendFile({
-        fileName: fileName,
-        fileUrl: '',
-        fileType: '',
-      });
-    }
-  };
+  // const addFile = (fileName: string) => {
+  //   if (fileName) {
+  //     appendFile({
+  //       fileName: fileName,
+  //       fileUrl: '',
+  //       fileType: '',
+  //     });
+  //   }
+  // };
 
   // 할인가 <-> 퍼센트 계산
   const discountSystemConversion = () => {
-    areaFields.forEach((item, index) => {
+    areaFields.forEach((_, index) => {
       const price = getValues(`areas.${index}.price`);
       let discountPercent = getValues(`areas.${index}.discountPercent`);
       let discountPrice = getValues(`areas.${index}.discountPrice`);

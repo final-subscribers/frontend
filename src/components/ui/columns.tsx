@@ -34,6 +34,7 @@ export const columns: ColumnDef<Consulting>[] = [
     accessorKey: 'operatorId',
     header: '상담사',
     cell: ({ row }) => {
+      // @ts-ignore: Unreachable code error
       const operatorData = row.original;
       const handleSelect = (value: string) => {
         console.log('Selected value:', value);
@@ -47,6 +48,7 @@ export const columns: ColumnDef<Consulting>[] = [
     accessorKey: 'contents',
     header: '문의내역',
     cell: ({ row }) => {
+      // @ts-ignore: Unreachable code error
       const contentsData = row.original;
       return (
         <Button variant="outline" size="sm">

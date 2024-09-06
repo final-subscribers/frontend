@@ -3,6 +3,7 @@ import { http, HttpResponse } from 'msw';
 const handlers = [
   http.get('/api/properties/:id', (req) => {
     const { id } = req.params;
+    id;
 
     return HttpResponse.json({
       buildingName: '잠실 푸르지오 ',
