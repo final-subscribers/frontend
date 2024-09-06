@@ -1,4 +1,3 @@
-import React from 'react';
 import { Label } from '../ui/label';
 import { formatAmount } from '@/lib/utils';
 import useResponsive from '@/hooks/useResponsive';
