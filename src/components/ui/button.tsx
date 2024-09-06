@@ -12,6 +12,7 @@ const buttonVariants = cva('inline-flex items-center justify-center whitespace-n
       outline: 'bg-static-white border border-primary-default !text-primary-default active:bg-primary-base',
       assistive:
         'bg-static-white border border-assistive-default !text-static-default active:!text-assistive-default',
+      disabled: 'bg-assistive-alternative !text-assistive-strong',
     },
     size: {
       xl: 'px-8 py-5 rounded-5 text-label-lg mobile:text-label-lg-m',

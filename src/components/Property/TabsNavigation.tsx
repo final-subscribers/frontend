@@ -4,7 +4,7 @@ import useResponsive from '@/hooks/useResponsive';
 import { useDraggable } from 'react-use-draggable-scroll';
 import clsx from 'clsx';
 
-const TabsNavigation = () => {
+const TabsNavigation = ({ marketingFiles }: { marketingFiles: number }) => {
   const { isDesktop, isTablet, isMobile } = useResponsive();
   const ref = useRef<HTMLDivElement>(null);
   const { events } = useDraggable(ref as React.MutableRefObject<HTMLElement>);
@@ -23,8 +23,9 @@ const TabsNavigation = () => {
         to="areasTab"
         spy={true}
         smooth={true}
-        offset={isDesktop ? -226 : isTablet ? -115 : -98}
-        activeClass="active-tab">
+        offset={isDesktop ? -166 : isTablet ? -52 : -60}
+        activeClass="active-tab"
+        className="grow flex justify-center">
         <div
           className={clsx(
             'text-center select-none',
@@ -39,8 +40,9 @@ const TabsNavigation = () => {
         to="benefitTab"
         spy={true}
         smooth={true}
-        offset={isDesktop ? -226 : -115}
-        activeClass="active-tab">
+        offset={isDesktop ? -166 : isTablet ? -50 : -60}
+        activeClass="active-tab"
+        className="grow flex justify-center">
         <div
           className={clsx(
             'text-center select-none',
@@ -51,7 +53,13 @@ const TabsNavigation = () => {
           혜택 줍줍
         </div>
       </Link>
-      <Link to="infraTab" spy={true} smooth={true} offset={isDesktop ? -226 : -115} activeClass="active-tab">
+      <Link
+        to="infraTab"
+        spy={true}
+        smooth={true}
+        offset={isDesktop ? -166 : isTablet ? -50 : -60}
+        activeClass="active-tab"
+        className="grow flex justify-center">
         <div
           className={clsx(
             'text-center select-none',
@@ -66,8 +74,9 @@ const TabsNavigation = () => {
         to="propertyTab"
         spy={true}
         smooth={true}
-        offset={isDesktop ? -228 : -115}
-        activeClass="active-tab">
+        offset={isDesktop ? -160 : isTablet ? -50 : -58}
+        activeClass="active-tab"
+        className="grow flex justify-center">
         <div
           className={clsx(
             'text-center select-none',
@@ -78,28 +87,32 @@ const TabsNavigation = () => {
           매물정보
         </div>
       </Link>
-      <Link
-        to="detailsTab"
-        spy={true}
-        smooth={true}
-        offset={isDesktop ? -228 : -115}
-        activeClass="active-tab">
-        <div
-          className={clsx(
-            'text-center select-none',
-            isDesktop && 'w-[200px] px-8 py-[15px]',
-            isTablet && 'w-[120px] px-[6px] py-[11px]',
-            isMobile && 'w-[98px] px-[7px] py-[11px]',
-          )}>
-          상세정보
-        </div>
-      </Link>
+      {marketingFiles !== 0 && (
+        <Link
+          to="detailsTab"
+          spy={true}
+          smooth={true}
+          offset={isDesktop ? -160 : isTablet ? -50 : -56}
+          activeClass="active-tab"
+          className="grow flex justify-center">
+          <div
+            className={clsx(
+              'text-center select-none',
+              isDesktop && 'w-[200px] px-8 py-[15px]',
+              isTablet && 'w-[120px] px-[6px] py-[11px]',
+              isMobile && 'w-[98px] px-[7px] py-[11px]',
+            )}>
+            상세정보
+          </div>
+        </Link>
+      )}
       <Link
         to="locationTab"
         spy={true}
         smooth={true}
-        offset={isDesktop ? -226 : -64}
-        activeClass="active-tab">
+        offset={isDesktop ? -158 : isTablet ? -48 : -54}
+        activeClass="active-tab"
+        className="grow flex justify-center">
         <div
           className={clsx(
             'text-center select-none',

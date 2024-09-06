@@ -1,9 +1,11 @@
 import { http, HttpResponse } from 'msw';
 
 const handlers = [
-  http.get('api/properties', () => {
+  http.get('/api/properties/:id', (req) => {
+    const { id } = req.params;
+
     return HttpResponse.json({
-      buildingName: '잠실 푸르지오',
+      buildingName: '잠실 푸르지오 ',
       imageUrl: 'https://via.placeholder.com/150',
       salesType: 'LEASE_SALE',
       areas: [
@@ -52,12 +54,12 @@ const handlers = [
         },
         {
           name: 'supply_information.pdf',
-          url: 'pdf/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+          url: '/pdf/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
           type: 'supply_information',
         },
         {
           name: 'marketing.pdf',
-          url: 'pdf/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+          url: '/pdfFile/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf',
           type: 'marketing',
         },
       ],

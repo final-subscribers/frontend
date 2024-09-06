@@ -64,7 +64,8 @@
   }
 }
 
-.active-tab div {
+/* propetyDetail */
+.active-tab {
   @apply border-b-2 border-primary-default text-primary-default;
 }
 .white-gradient-overlay {
