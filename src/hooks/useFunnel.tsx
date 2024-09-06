@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useCallback, useMemo, useState } from 'react';
+import { ReactElement, ReactNode, useCallback, useState } from 'react';
 
 export interface StepProps {
   name: string;

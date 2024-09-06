@@ -16,7 +16,7 @@ const GNB = () => {
   const searchRef = useRef<HTMLDivElement>(null); // Search 모달 외부 감지
 
   const location = useLocation();
-  const { isDesktop, isTablet, isMobile } = useResponsive();
+  const { isDesktop } = useResponsive();
 
   const handleMenu = () => {
     setIsMenuOpen(!isMenuOpen);

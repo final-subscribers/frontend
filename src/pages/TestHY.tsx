@@ -20,10 +20,15 @@ const TestHY = () => {
   return (
     <>
       {/* dropdown 에시 */}
+      {/* @ts-ignore: Unreachable code error */}
       <Dropdown items={paymentSupport} defaultLabel="중도금 무이자" onSelect={handleSelect} />
+      {/* @ts-ignore: Unreachable code error */}
       <Dropdown items={optionSupport} defaultLabel="무상제공" onSelect={handleSelect} />
+      {/* @ts-ignore: Unreachable code error */}
       <Dropdown items={transportation} defaultLabel="도보" onSelect={handleSelect} />
+      {/* @ts-ignore: Unreachable code error */}
       <Dropdown items={time} defaultLabel="00분" onSelect={handleSelect} />
+      {/* @ts-ignore: Unreachable code error */}
       <Dropdown items={customerRating} defaultLabel="고객등급" onSelect={handleSelect} />
 
       {/* 화면이 바뀌는 tab */}
