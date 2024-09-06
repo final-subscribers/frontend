@@ -9,7 +9,7 @@ const KeywordChip = ({ keyword, variant, text }: KeywordChipProps) => {
   const isDefaultVariant = variant === 'default';
   const label = getPropertyLabel(keyword);
   return isDefaultVariant ? (
-    <div className="py-4 pl-5 pr-8 flex flex-col gap-4">
+    <div className="py-4 pl-5 pr-8 flex flex-col gap-4 mobile:gap-2">
       <div className="flex gap-4 items-center mobile:gap-5">
         <ChipIcon keyword={keyword} variant={variant} className="flex-shrink-0" />
         <ChipLabel keyword={keyword} variant={variant}>
@@ -27,7 +27,7 @@ const KeywordChip = ({ keyword, variant, text }: KeywordChipProps) => {
         <ChipLabel keyword={keyword} variant={variant}>
           {label}
         </ChipLabel>
-        <div className="text-label-base text-assistive-detail tablet:text-label-xs min-w-0 truncate">
+        <div className="text-label-base text-assistive-detail tablet:text-label-xs mobile:text-detail-base-m min-w-0 truncate">
           {text}
         </div>
       </div>

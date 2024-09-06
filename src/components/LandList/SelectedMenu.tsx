@@ -350,7 +350,7 @@ const SelectedMenu = ({ isOpen, onClose }: SelectedMenuProps) => {
           <DrawerHeader>
             <DrawerTitle></DrawerTitle>
           </DrawerHeader>
-          <DrawerContent className={`h-[420px] pt-4 px-5 bg-white`}>
+          <DrawerContent className={`h-[420px] pt-6 px-5 bg-white`}>
             <DrawerDescription />
             {renderContent()}
           </DrawerContent>

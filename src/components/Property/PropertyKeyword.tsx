@@ -1,5 +1,5 @@
 import { formatBenefitText, formatInfraText } from '@/lib/utils';
-import { CaretRight } from '@phosphor-icons/react';
+import { CaretLeft, CaretRight, X } from '@phosphor-icons/react';
 import KeywordChip from './KeywordChip';
 import {
   Dialog,
@@ -14,6 +14,7 @@ import {
 import { Button } from '../ui/button';
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerHeader,
@@ -55,8 +56,11 @@ const PropertyKeyword = ({ type, data }: PropertyKeywordProps) => {
               ))}
             </div>
           </article>
-          <DrawerContent className="h-full fixed w-full left-0 top-0 z-50 flex flex-col bg-static-white">
+          <DrawerContent className="h-full fixed w-full left-0 top-0 z-50 mt-0 flex flex-col bg-static-white rounded-t-0">
             <DrawerHeader className="relative flex justify-center border-b-[1px] border-assistive-divider">
+              <DrawerClose className="absolute left-5 top-4">
+                <CaretLeft size={32} weight="thin" />
+              </DrawerClose>
               <DrawerTitle>{headerText}</DrawerTitle>
             </DrawerHeader>
             <div className="px-7 py-8 ">
@@ -90,6 +94,11 @@ const PropertyKeyword = ({ type, data }: PropertyKeywordProps) => {
             </div>
           </article>
           <DialogContent>
+            <div className="flex justify-end">
+              <DialogClose className="disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+                <X className="size-8 text-assistive-strong" />
+              </DialogClose>
+            </div>
             <DialogHeader>
               <DialogTitle>{headerText}</DialogTitle>
             </DialogHeader>

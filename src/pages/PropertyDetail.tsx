@@ -1,41 +1,54 @@
 import Breadcrumb from '@/components/common/Breadcrumb';
+import Toast from '@/components/common/Toast';
+import AreaList from '@/components/Property/AreaList';
+import { CounselDialog, CounselDrawer } from '@/components/Property/CounselFormContent';
+import MarketingViewer from '@/components/Property/MarketingViewer';
+import PhoneDialog from '@/components/Property/PhoneDialog';
 import PropertyKeyword from '@/components/Property/PropertyKeyword';
 import TabsNavigation from '@/components/Property/TabsNavigation';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import { Label } from '@/components/ui/label';
 import { getPropertyInfo } from '@/constants/getPropertyInfo';
+import { useFunnel } from '@/hooks/useFunnel';
 import useResponsive from '@/hooks/useResponsive';
 import { formatAmount, getPropertyLabel } from '@/lib/utils';
 import { Area, SalesInformation } from '@/types/types';
-import { ArrowLineDown, CaretDown, CaretUp, Heart } from '@phosphor-icons/react';
+import { ArrowLineDown, Heart, X } from '@phosphor-icons/react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
 import { useParams } from 'react-router-dom';
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
+const steps = ['희망 상담 일자', '추가 사항'];
+const initialFormState = {
+  name: '',
+  phoneNumber: '',
+  preferredAt: '',
+  counselingMessage: '',
+};
 
 const PropertyDetail = () => {
   const { isDesktop, isTablet, isMobile } = useResponsive();
-  const [lowestPriceArea, setLowestPriceArea] = useState<Area | null>(null);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const { id } = useParams<{ id: string }>();
+  const [lowestPriceArea, setLowestPriceArea] = useState<Area | null>(null); // 최저가
+  const [isPhoneDialog, setIsPhoneDialog] = useState(false); // 전화문의
+  const [isCounselRegister, setIsCounselRegister] = useState(false); // 상담신청
+  const [isInfoContent, setIsInfoContent] = useState(false);
+  const [counselForm, setCounselForm] = useState(initialFormState); // 상담신청 값
+  const [isCounselFormValidation, setisCounselFormValidation] = useState(false); // formValidation
+  const [isToast, setIsToast] = useState(false);
+  const { Funnel, Step, setStep } = useFunnel(steps[0]);
 
   const fetchSalesInformation = async (): Promise<SalesInformation> => {
-    const res = await axios.get<SalesInformation>(`/api/properties`);
+    const res = await axios.get<SalesInformation>(`/api/properties/${id}`);
     return res.data;
   };
-
-  const { data, refetch } = useQuery<SalesInformation>({
-    queryKey: ['salesInformation'],
+  const { data } = useQuery<SalesInformation>({
+    queryKey: ['salesInformation', id],
     queryFn: fetchSalesInformation,
-    staleTime: 0, // 데이터가 오래된 것으로 간주되는 시간을 0으로 설정 (즉, 매번 새로고침)
-    refetchOnWindowFocus: true, // 포커스가 다시 되었을 때 데이터를 새로고침
-    refetchOnMount: true, // 컴포넌트가 처음 마운트될 때마다 데이터를 가져옴
   });
 
   // 최저가
@@ -47,15 +60,46 @@ const PropertyDetail = () => {
     }
   }, [data]);
 
-  useEffect(() => {
-    refetch(); // 페이지가 로드되면 refetch를 통해 강제로 데이터를 가져옴
-  }, []);
-
   const propertyInfo = getPropertyInfo(data);
   const supplyInformationFile = data?.files?.find((file) => file.type === 'supply_information');
+  const marketingFiles = data?.files?.filter((file) => file.type === 'marketing');
 
-  const toggleExpansion = () => {
-    setIsExpanded(!isExpanded);
+  // 핸드폰 유효성검사
+  const isPhoneValidation = (phoneNumber: string) => {
+    const phoneRegex = /^010-\d{4}-\d{4}$/;
+    return phoneRegex.test(phoneNumber);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setCounselForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    const { name, phoneNumber, preferredAt } = counselForm;
+    setisCounselFormValidation(name !== '' && isPhoneValidation(phoneNumber) && preferredAt !== '');
+  }, [counselForm]);
+
+  const handleCounselRegister = () => {
+    // 상담신청 api
+    console.log('상담 등록:', counselForm);
+    handleClose(false);
+    showToast();
+  };
+
+  const handleClose = (isCounselRegister: boolean) => {
+    if (!isCounselRegister) {
+      setCounselForm(initialFormState);
+      setStep(steps[0]);
+    }
+    setIsCounselRegister(isCounselRegister);
+  };
+
+  const showToast = () => {
+    setIsToast(!isToast);
   };
 
   return (
@@ -143,23 +187,33 @@ const PropertyDetail = () => {
             </div>
             <div>
               <div className="flex gap-3">
-                <Button variant="assistive" size={isDesktop ? 'xl' : 'sm'} className="w-full">
+                <Button
+                  variant="assistive"
+                  size={isDesktop ? 'xl' : 'sm'}
+                  className="w-full"
+                  onClick={() => setIsPhoneDialog(!isPhoneDialog)}>
                   전화문의
                 </Button>
-                <Button variant="assistive" size={isDesktop ? 'xl' : 'sm'} className="w-full">
+                <Button
+                  variant="assistive"
+                  size={isDesktop ? 'xl' : 'sm'}
+                  className="w-full"
+                  onClick={() => data?.contactChannel && window.open(data?.contactChannel)}>
                   카카오톡 채널문의
                 </Button>
               </div>
-              <Button className="w-full mt-3" size={isDesktop ? 'xl' : 'sm'}>
+              <Button
+                className="w-full mt-3"
+                size={isDesktop ? 'xl' : 'sm'}
+                onClick={() => setIsCounselRegister(!isCounselRegister)}>
                 상담신청
               </Button>
             </div>
           </div>
         </div>
-
-        <div className="flex flex-col gap-16 mobile:gap-9">
-          <TabsNavigation />
-          <div id="areasTab">
+        <div className="flex flex-col">
+          <TabsNavigation marketingFiles={marketingFiles?.length || 0} />
+          <div id="areasTab" className="pt-16 mobile:pt-9">
             <div className="flex items-center justify-between mb-6">
               <p className="text-title-2xl tablet:text-title-lg mobile:text-title-lg-m font-bold">
                 평형별 매물가격
@@ -179,75 +233,25 @@ const PropertyDetail = () => {
                   data.areas.findIndex((i) => i.discountPrice === lowestPriceArea?.discountPrice) - 1;
                 const isLastIndex = index === data.areas.length - 1;
                 return (
-                  <>
-                    {area.discountPrice === lowestPriceArea?.discountPrice ? (
-                      <div
-                        key={index}
-                        className={`flex ${isDesktop ? 'px-8 py-9' : 'px-5 py-6'} w-full border border-assistive-divider rounded-6`}>
-                        <div className="w-full">
-                          <p className="text-title-xl tablet:text-title-base mobile:text-title-base-m font-bold mb-3">
-                            {area.squareMeter}평
-                          </p>
-                          <p className="text-detail-xl tablet:text-detail-base mobile:text-detail-base-m text-assistive-default">
-                            {Math.round(area.squareMeter * 3.3)}㎡
-                          </p>
-                        </div>
-                        <div className="flex flex-col items-end w-full">
-                          <Label size={isDesktop ? 'm' : 's'} variant="accent">
-                            최저가
-                          </Label>
-                          <p className="mt-5 line-through text-detail-xl tablet:text-detail-base mobile:text-detail-base-m text-assistive-default">
-                            {formatAmount(area.price)}
-                          </p>
-                          <div className="flex">
-                            <span className="text-accent-strong text-title-xl tablet:text-title-base mobile:text-title-base-m font-bold mr-3">
-                              {area.discountPercent}%
-                            </span>
-                            <span className="text-static-default text-title-xl tablet:text-title-base mobile:text-title-base-m  font-bold">
-                              {formatAmount(area.discountPrice)}~
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div key={index} className="px-5 desktop:px-8">
-                        <div
-                          className={`flex items-center py-5 desktop:py-8 w-full ${isPrevIndex || isLastIndex ? '' : 'border-b border-assistive-divider'}`}>
-                          <div className="w-full">
-                            <span className="mobile:block mr-5 text-title-xl tablet:text-title-base mobile:text-title-base-m font-bold">
-                              {area.squareMeter}평
-                            </span>
-                            <span className="mobile:block text-detail-xl tablet:text-detail-base mobile:text-detail-base-m text-assistive-default">
-                              {Math.round(area.squareMeter * 3.3)}㎡
-                            </span>
-                          </div>
-                          <div
-                            className={`${isDesktop ? 'flex items-center justify-end' : 'flex flex-col items-end'} w-full`}>
-                            <span className="line-through text-detail-xl tablet:text-detail-base mobile:text-detail-base-m text-assistive-default mr-5">
-                              {formatAmount(area.price)}
-                            </span>
-                            <div className="flex">
-                              <span className="text-accent-strong text-title-xl tablet:text-title-base mobile:text-title-base-m font-bold mr-3">
-                                {area.discountPercent}%
-                              </span>
-                              <span className="text-static-default text-title-xl tablet:text-title-base mobile:text-title-base-m font-bold">
-                                {formatAmount(area.discountPrice)}~
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </>
+                  <AreaList
+                    key={index}
+                    area={area}
+                    lowestPriceArea={lowestPriceArea}
+                    isPrevIndex={isPrevIndex}
+                    isLastIndex={isLastIndex}
+                    index={index}
+                  />
                 );
               })}
             </div>
           </div>
-          <div id="benefitTab">
+          <div id="benefitTab" className="pt-16 mobile:pt-9">
             {data?.benefit && <PropertyKeyword type="benefit" data={data?.benefit} />}
           </div>
-          <div id="infraTab">{data?.infra && <PropertyKeyword type="infra" data={data?.infra} />}</div>
-          <div id="propertyTab">
+          <div id="infraTab" className="pt-16 mobile:pt-9">
+            {data?.infra && <PropertyKeyword type="infra" data={data?.infra} />}
+          </div>
+          <div id="propertyTab" className="pt-16 mobile:pt-9">
             <p className="text-title-2xl tablet:text-title-lg mobile:text-title-lg-m font-bold mb-5 mobile:mb-8">
               매물정보
             </p>
@@ -262,7 +266,7 @@ const PropertyDetail = () => {
                 )}>
                 {property.map((item, itemIndex) => (
                   <div key={`${item.label}-${itemIndex}`} className="flex">
-                    <p className="w-[99px] text-body-lg tablet:text-detail-lg mobile:text-detail-lg-m font-bold">
+                    <p className="min-w-[99px] text-body-lg tablet:text-detail-lg mobile:text-detail-lg-m font-bold">
                       {item.label}
                     </p>
                     <p className="text-body-lg tablet:text-detail-lg mobile:text-detail-lg-m">{item.value}</p>
@@ -271,44 +275,12 @@ const PropertyDetail = () => {
               </div>
             ))}
           </div>
-          <div id="detailsTab" className="">
-            <p className="text-title-2xl tablet:text-title-lg mobile:text-title-lg-m font-bold mb-3 mobile:mb-8">
-              상세정보
-            </p>
-            {data?.files
-              ?.filter((file) => file.type === 'marketing')
-              .map((file, index) => (
-                <div key={index}>
-                  <div className="relative">
-                    <Document file={file.url} onLoadError={console.error}>
-                      <Page
-                        pageNumber={1}
-                        width={isDesktop ? 1200 : isTablet ? 720 : 328}
-                        renderTextLayer={false}
-                        renderAnnotationLayer={false}
-                        className={`${isExpanded ? 'max-h-full' : isDesktop ? 'max-h-[300px]' : isTablet ? 'max-h-[194px]' : 'max-h-[88px]'} overflow-hidden`}
-                      />
-                    </Document>
-                    {!isExpanded && (
-                      <div className="absolute top-0 left-0 w-full h-full white-gradient-overlay"></div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            <Button
-              variant="assistive"
-              size={isDesktop ? 'xl' : 'sm'}
-              onClick={toggleExpansion}
-              className="w-full">
-              {isExpanded ? '상세정보 닫기' : '상세정보 더보기'}
-              {isExpanded ? (
-                <CaretUp size={isMobile ? 16 : 24} weight="bold" className="ml-4 text-assistive-strong" />
-              ) : (
-                <CaretDown size={isMobile ? 16 : 24} weight="bold" className="ml-4 text-assistive-strong" />
-              )}
-            </Button>
-          </div>
-          <div id="locationTab" className="mb-20">
+          {marketingFiles?.length !== 0 && (
+            <div id="detailsTab" className="pt-16 mobile:pt-9">
+              <MarketingViewer marketingFiles={marketingFiles || []} />
+            </div>
+          )}
+          <div id="locationTab" className="pt-16 pb-12 mobile:pt-9 mobile:pb-9">
             <p className="text-title-2xl tablet:text-title-lg mobile:text-title-lg-m font-bold mb-2">위치</p>
             <p className="text-detail-lg tablet:text-detail-base mobile:text-detail-base-m text-assistive-detail mb-8">
               {data?.areaAddr}
@@ -318,6 +290,52 @@ const PropertyDetail = () => {
           </div>
         </div>
       </div>
+      {/* 전화문의 */}
+      {isMobile ? (
+        <Drawer open={isPhoneDialog} onOpenChange={setIsPhoneDialog}>
+          <DrawerContent className="w-full h-[352px] px-5 pt-9 rounded-t-6">
+            <PhoneDialog data={data} setIsPhoneDialog={setIsPhoneDialog} />
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        <Dialog open={isPhoneDialog} onOpenChange={setIsPhoneDialog}>
+          <DialogContent className="w-[400px] h-[426px] pt-8 pb-5 px-0">
+            <DialogTitle className="hidden" />
+            <PhoneDialog data={data} setIsPhoneDialog={setIsPhoneDialog} />
+          </DialogContent>
+        </Dialog>
+      )}
+      {/* 상담신청 */}
+      {isMobile ? (
+        <CounselDrawer
+          isOpen={isCounselRegister}
+          handleClose={handleClose}
+          Funnel={Funnel}
+          Step={Step}
+          setStep={setStep}
+          steps={steps}
+          counselForm={counselForm}
+          handleInputChange={handleInputChange}
+          isCounselFormValidation={isCounselFormValidation}
+          handleCounselRegister={handleCounselRegister}
+          setIsInfoContent={setIsInfoContent}
+          isInfoContent={isInfoContent}
+          isPhoneValidation={isPhoneValidation}
+        />
+      ) : (
+        <CounselDialog
+          isOpen={isCounselRegister}
+          handleClose={handleClose}
+          counselForm={counselForm}
+          handleInputChange={handleInputChange}
+          isCounselFormValidation={isCounselFormValidation}
+          handleCounselRegister={handleCounselRegister}
+          setIsInfoContent={setIsInfoContent}
+          isInfoContent={isInfoContent}
+          isPhoneValidation={isPhoneValidation}
+        />
+      )}
+      {isToast && <Toast setIsToast={setIsToast} />}
     </div>
   );
 };
