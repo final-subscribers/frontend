@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { TrashSimple } from '@phosphor-icons/react';
+import { CaretRight, CaretLeft, CaretDoubleLeft, CaretDoubleRight } from '@phosphor-icons/react';
 
 import {
   ColumnDef,
@@ -27,6 +28,11 @@ export function MyProperty<TData extends Identifiable, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [tableData, setTableData] = React.useState<TData[]>(data);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0, //초기 인덱스
+    pageSize: 5, //페이지 길이
+  });
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleDelete = (id: number) => {
     const updatedData = tableData.filter((row) => row.id !== id);
@@ -61,10 +67,27 @@ export function MyProperty<TData extends Identifiable, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onPaginationChange: setPagination,
     state: {
       columnFilters,
+      pagination,
     },
   });
+
+  const totalPages = table.getPageCount();
+  const pagesToShow = 5;
+
+  const startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
+  const endPage = Math.min(totalPages, startPage + pagesToShow - 1);
+
+  useEffect(() => {
+    setCurrentPage(table.getState().pagination.pageIndex + 1);
+  }, [table.getState().pagination.pageIndex]);
+
+  const handlePageClick = (page: number) => {
+    setCurrentPage(page);
+    table.setPageIndex(page - 1);
+  };
 
   return (
     <>
@@ -110,6 +133,59 @@ export function MyProperty<TData extends Identifiable, TValue>({
           )}
         </TableBody>
       </Table>
+      <section className="flex items-center justify-center space-x-3 py-4 mt-11">
+        <button
+          className="border-none p-1"
+          onClick={() => {
+            table.setPageIndex(0);
+            setCurrentPage(1);
+          }}
+          disabled={!table.getCanPreviousPage()}>
+          <CaretDoubleLeft size={32} weight="light" className="text-assistive-divider" />
+        </button>
+        <button
+          className="border-none p-1"
+          onClick={() => {
+            table.previousPage();
+            setCurrentPage((prev) => Math.max(prev - 1, 1));
+          }}
+          disabled={!table.getCanPreviousPage()}>
+          <CaretLeft size={32} weight="light" className="text-assistive-divider" />
+        </button>
+        {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
+          const page = startPage + i;
+          return (
+            <span
+              key={page}
+              onClick={() => handlePageClick(page)}
+              className={`flex h-10 w-10 px-4 justify-center rounded-10 items-center text-label-lg cursor-pointer ${
+                page === currentPage
+                  ? 'bg-primary-base font-bold text-primary-default'
+                  : 'font-normal text-static-default'
+              }`}>
+              {page}
+            </span>
+          );
+        })}
+        <button
+          className="border-none p-1"
+          onClick={() => {
+            table.nextPage();
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+          }}
+          disabled={!table.getCanNextPage()}>
+          <CaretRight size={32} weight="light" className="text-assistive-divider" />
+        </button>
+        <button
+          className="border-none p-1"
+          onClick={() => {
+            table.setPageIndex(totalPages - 1);
+            setCurrentPage(totalPages);
+          }}
+          disabled={!table.getCanNextPage()}>
+          <CaretDoubleRight size={32} weight="light" className="text-assistive-divider" />
+        </button>
+      </section>
     </>
   );
 }

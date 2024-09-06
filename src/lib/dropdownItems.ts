@@ -116,3 +116,13 @@ export const operatorIdAll = [
     label: 'a1-5',
   },
 ];
+export const consultingStatus = [
+  {
+    value: '상담대기',
+    label: '상담대기',
+  },
+  {
+    value: '상담완료',
+    label: '상담완료',
+  },
+];

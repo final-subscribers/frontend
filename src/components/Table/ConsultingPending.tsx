@@ -65,7 +65,7 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
 
   const handlePageClick = (page: number) => {
     setCurrentPage(page);
-    table.setPageIndex(page - 1); // Adjust based on your pagination logic
+    table.setPageIndex(page - 1);
   };
 
   return (
@@ -189,3 +189,16 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
     </>
   );
 }
+
+// response
+// "content": {
+//   "consultPendingSummaries": [
+//       {
+//           "preferredAt": "2025-01-01",
+//           "createdAt": "2024-08-20",
+//           "consultant": "a-10",
+//           "name": "2:37",
+//           "phoneNumber": "01012341899",
+//           "addConsultation": "true" //true 라면 추가 상담 뱃지 (lms가 아니라면 추가뱃지)
+//       },
+//     ]}

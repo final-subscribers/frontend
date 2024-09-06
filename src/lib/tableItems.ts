@@ -5,6 +5,7 @@ interface ConsultingPending {
   preferredAt: string;
   consultant: string;
   contents: string;
+  addConsultation: string;
 }
 interface ConsultingCompleted {
   name: string;
@@ -33,6 +34,7 @@ export const consultingPending: ConsultingPending[] = [
     preferredAt: '2024-09-02',
     consultant: '',
     contents: '',
+    addConsultation: '',
   },
   {
     name: '이율곡',
@@ -41,6 +43,7 @@ export const consultingPending: ConsultingPending[] = [
     preferredAt: '2024-10-02',
     consultant: '',
     contents: '',
+    addConsultation: '',
   },
   {
     name: '세종대왕',
@@ -49,6 +52,7 @@ export const consultingPending: ConsultingPending[] = [
     preferredAt: '2024-11-02',
     consultant: '',
     contents: '',
+    addConsultation: '',
   },
   {
     name: '이순신',
@@ -57,6 +61,7 @@ export const consultingPending: ConsultingPending[] = [
     preferredAt: '2024-09-02',
     consultant: '',
     contents: '',
+    addConsultation: '',
   },
   {
     name: '이순신',
@@ -65,6 +70,7 @@ export const consultingPending: ConsultingPending[] = [
     preferredAt: '2024-09-02',
     consultant: '',
     contents: '',
+    addConsultation: '',
   },
   {
     name: '이순신',
@@ -73,6 +79,7 @@ export const consultingPending: ConsultingPending[] = [
     preferredAt: '2024-09-02',
     consultant: '',
     contents: '',
+    addConsultation: '',
   },
 ];
 

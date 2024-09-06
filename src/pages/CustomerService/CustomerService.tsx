@@ -1,10 +1,12 @@
+// import { useConsultPendingSummaries } from '@/api/consulting';
+import { ComponentType } from 'react';
 import { ConsultingPending } from '@/components/Table/ConsultingPending';
+import { CustomerData } from '@/types/types';
 import { ConsultingCompleted } from '@/components/Table/ConsultingCompleted';
 import { columnsPending } from '@/components/ui/columnsPending';
 import { columnsCompleted } from '@/components/ui/columnsCompleted';
-import { consultingPending, consultingCompleted, myProperty } from '@/lib/tableItems';
-// import { MyProperty } from '@/components/Table/MyProperty';
-// import { columnsMyProperty } from '@/components/ui/columnsMyProperyt';
+import { consultingCompleted } from '@/lib/tableItems';
+import { consultingPending } from '@/lib/tableItems';
 import CustomerInquiry from '@/components/CustomerService/CustomerInquiry';
 import ReactDOM from 'react-dom/client';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -12,17 +14,22 @@ import { CustomerInquiryProps } from '@/components/CustomerService/CustomerInqui
 import { ListDashes, Plus } from '@phosphor-icons/react';
 import AccordionMenu from '@/components/CustomerService/AccordionMenu';
 import SampleImg from '../../../public/Imagesample.png';
-// import { Button } from '@/components/ui/button';
 import { Button } from '@/components/ui/button';
+import NewCustomer from '@/components/CustomerService/NewCustomer';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
+
+const queryClient = new QueryClient();
 
 // table에 사용하는 데이터
+
 const consultingPendingData = consultingPending.map((consulting) => ({
   name: consulting.name,
   phoneNumber: consulting.phoneNumber,
   createdAt: consulting.createdAt,
   preferredAt: consulting.preferredAt,
   consultant: consulting.consultant,
-  contents: consulting.contents,
+  addConsultation: consulting.addConsultation,
 }));
 
 const consultingCompletedData = consultingCompleted.map((consulting) => ({
@@ -34,53 +41,6 @@ const consultingCompletedData = consultingCompleted.map((consulting) => ({
   consultant: consulting.consultant,
   contents: consulting.contents,
 }));
-
-// const myPropertyData = myProperty.map((property) => ({
-//   id: property.id,
-//   name: property.name,
-//   total_number: property.total_number,
-//   pending: property.pending,
-//   status: property.status,
-//   created_at: property.created_at,
-//   end_date: property.end_date,
-// }));
-
-const handleViewClick = (props: CustomerInquiryProps) => {
-  const width = 420;
-  const height = 665;
-
-  // popup 윈도우
-  const left = window.screenX + (window.outerWidth - width) / 2;
-  const top = window.screenY + (window.outerHeight - height) / 2;
-
-  const popupWindow = window.open('', '_blank', `width=${width},height=${height},left=${left},top=${top}`);
-
-  if (popupWindow) {
-    popupWindow.document.write(`
-		<html>
-			<head>
-				<title>Inquiry</title>
-				<link href="/src/index.css" rel="stylesheet">
-			</head>
-			<body>
-				<div id="inquiry-root"></div>
-			</body>
-		</html>
-	`);
-    popupWindow.document.close();
-
-    popupWindow.onload = () => {
-      const inquiryRoot = popupWindow.document.getElementById('inquiry-root');
-      if (inquiryRoot) {
-        const root = ReactDOM.createRoot(inquiryRoot);
-        root.render(<CustomerInquiry {...props} />);
-      } else {
-        console.error('에러가 발생했습니다');
-      }
-    };
-    popupWindow.focus();
-  }
-};
 
 const sections = [
   {
@@ -94,6 +54,70 @@ const sections = [
 ];
 
 export default function CustomerService() {
+  // const { data: consultPendingData = [], isLoading, error } = useConsultPendingSummaries();
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error fetching data</div>;
+
+  const [customers, setCustomers] = useState<CustomerData[]>([]);
+
+  const addNewCustomer = (newCustomer: CustomerData) => {
+    setCustomers((prevCustomers) => [...prevCustomers, newCustomer]);
+  };
+
+  // popup 윈도우
+  const openPopupWindow = <P extends {}>(
+    Component: ComponentType<P>,
+    props: P,
+    title: string = 'Popup',
+    width: number = 420,
+    height: number = 665,
+  ) => {
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+
+    const popupWindow = window.open('', '_blank', `width=${width},height=${height},left=${left},top=${top}`);
+
+    if (popupWindow) {
+      popupWindow.document.write(`
+		<html>
+			<head>
+				<title>${title}</title>
+				<link href="/src/index.css" rel="stylesheet">
+			</head>
+			<body>
+				<div id="popup-root"></div>
+			</body>
+		</html>
+	`);
+      popupWindow.document.close();
+
+      popupWindow.onload = () => {
+        const popupRoot = popupWindow.document.getElementById('popup-root');
+        if (popupRoot) {
+          const root = ReactDOM.createRoot(popupRoot);
+          root.render(
+            <QueryClientProvider client={queryClient}>
+              <Component {...props} />;
+            </QueryClientProvider>,
+          );
+        } else {
+          console.error('에러가 발생했습니다');
+        }
+      };
+    }
+  };
+
+  const handleViewClick = (props: CustomerInquiryProps) => {
+    openPopupWindow(CustomerInquiry, props, 'Inquiry');
+  };
+  const handleNewCustomer = (addCustomer: (customerData: any) => void) => {
+    openPopupWindow(NewCustomer, { addCustomer }, 'New Customer');
+  };
+
+  // const handleNewCustomer = () => {
+  //   openPopupWindow(NewCustomer, {}, 'New Customer');
+  // };
+
   return (
     <main className="flex">
       <aside className="flex flex-col w-[264px] mt-7 ml-7">
@@ -123,7 +147,7 @@ export default function CustomerService() {
               <p>2024.02.06-2024.04.24</p>
             </div>
             <div className="self-end">
-              <Button variant="primary" size="lg" className="gap-4">
+              <Button variant="primary" size="lg" className="gap-4" onClick={handleNewCustomer}>
                 고객추가
                 <Plus size={24} weight="bold" />
               </Button>
@@ -142,8 +166,6 @@ export default function CustomerService() {
             <ConsultingCompleted columns={columnsCompleted(handleViewClick)} data={consultingCompletedData} />
           </TabsContent>
         </Tabs>
-
-        {/* <MyProperty columns={columnsMyProperty} data={myPropertyData} /> */}
       </section>
     </main>
   );

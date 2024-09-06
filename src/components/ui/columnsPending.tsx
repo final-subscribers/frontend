@@ -11,6 +11,7 @@ export interface ConsultingPending {
   preferredAt: string;
   consultant: string;
   contents: string;
+  addConsultation: string;
 }
 
 export const columnsPending = (

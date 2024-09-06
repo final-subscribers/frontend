@@ -96,3 +96,25 @@ export type SalesInformation = {
     searchEnabled: boolean;
   }[];
 };
+
+export interface CustomerData {
+  name: string;
+  phoneNumber: string;
+  status: string;
+  consultant: string;
+  consultingMessage: string;
+  preferredAt: string;
+  createdAt?: string;
+  addConsultation?: boolean;
+  tier: string;
+  medium: string;
+}
+
+export interface ConsultPendingSummary {
+  preferredAt: string;
+  createdAt: string;
+  consultant: string;
+  name: string;
+  phoneNumber: string;
+  addConsultation: string; // Or boolean, depending on your actual data
+}
