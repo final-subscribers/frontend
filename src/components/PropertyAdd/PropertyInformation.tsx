@@ -8,7 +8,6 @@ import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { FormValues } from '@/types/types';
 
 // 파일 첨부 내용 추가할 것, 코드분할
-
 export const PropertyInformation = ({ onNext }: { onNext: () => void }) => {
   const {
     control,

@@ -64,6 +64,14 @@
   }
 }
 
+/* propetyDetail */
+.active-tab {
+  @apply border-b-2 border-primary-default text-primary-default;
+}
+.white-gradient-overlay {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+}
+
 /* @layer base {
   :root {
     --background: 0 0% 100%;

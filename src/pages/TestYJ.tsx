@@ -6,7 +6,11 @@ import Toast from '@/components/common/Toast';
 import SelectedMenu from '@/components/LandList/SelectedMenu';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { SalesInformation } from '@/types/types';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const TestYJ = () => {
   const [isToast, setIsToast] = useState(false);
@@ -21,8 +25,21 @@ const TestYJ = () => {
     setIsSelectedMenu(false);
   };
 
+  const fetchSalesInformation = async (): Promise<SalesInformation> => {
+    const res = await axios.get<SalesInformation>(`/api/properties`);
+    return res.data;
+  };
+
+  const { data } = useQuery<SalesInformation>({
+    queryKey: ['salesInformation'],
+    queryFn: fetchSalesInformation,
+  });
+
+  console.log(data);
+
   return (
     <>
+      <Link to={`/property/${1}`}>상세페이지</Link>
       <div className="flex justify-end">
         <Button variant="assistive" size="sm" onClick={showToast}>
           Toast

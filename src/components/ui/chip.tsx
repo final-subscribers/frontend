@@ -97,8 +97,8 @@ const chipLabelVariants = cva('font-bold !text-label-lg', {
   variants: {
     variant: {
       default: 'text-static-default !text-title-xl mobile:!text-title-base-m ',
-      primary: 'text-primary-default tablet:!text-label-xs',
-      accent: 'text-accent-strong tablet:!text-label-xs',
+      primary: 'text-primary-default tablet:!text-label-xs mobile:!text-label-lg-m',
+      accent: 'text-accent-strong tablet:!text-label-xs mobile:!text-label-lg-m',
     },
   },
   defaultVariants: {

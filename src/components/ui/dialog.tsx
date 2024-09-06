@@ -41,11 +41,6 @@ const DialogContent = React.forwardRef<
       )}
       aria-describedby="dialog-description"
       {...props}>
-      <div className="flex justify-end">
-        <DialogPrimitive.Close className="disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-          <X className="size-8 text-assistive-strong" />
-        </DialogPrimitive.Close>
-      </div>
       {children}
     </DialogPrimitive.Content>
   </DialogPortal>
