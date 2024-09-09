@@ -10,12 +10,12 @@ interface RangeDatePickerProps {
   fromLabel: string;
   toLabel: string;
   onChange: (range: DateRange | undefined) => void;
+  initialRange?: DateRange;
 }
 
-const RangeDatePicker = ({ fromLabel, toLabel, onChange }: RangeDatePickerProps) => {
-  const [dateRange, setDateRange] = React.useState<DateRange | undefined>();
+const RangeDatePicker = ({ fromLabel, toLabel, onChange, initialRange }: RangeDatePickerProps) => {
+  const [dateRange, setDateRange] = React.useState<DateRange | undefined>(initialRange);
   const [isActive, setIsActive] = React.useState<boolean>(false);
-
   const handleToggle = () => {
     setIsActive((prevState) => !prevState);
   };
@@ -24,7 +24,7 @@ const RangeDatePicker = ({ fromLabel, toLabel, onChange }: RangeDatePickerProps)
     setDateRange(undefined);
     onChange(undefined);
   };
-  const handeDateChange = (range: DateRange | undefined) => {
+  const handleDateChange = (range: DateRange | undefined) => {
     setDateRange(range);
     onChange(range);
   };
@@ -54,7 +54,7 @@ const RangeDatePicker = ({ fromLabel, toLabel, onChange }: RangeDatePickerProps)
     <Popover onOpenChange={handleToggle}>
       <PopoverTrigger asChild>
         <Button
-          variant="assistive"
+          variant="default"
           size="sm"
           className={cn(
             'w-[354px] justify-between font-normal pl-7 pr-5 py-4 text-label-lg',
@@ -65,7 +65,7 @@ const RangeDatePicker = ({ fromLabel, toLabel, onChange }: RangeDatePickerProps)
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto px-6 py-6 z-50 bg-static-white" align="start">
-        <Calendar mode="range" selectedRange={dateRange} setRangeDate={handeDateChange} />
+        <Calendar mode="range" selectedRange={dateRange} setRangeDate={handleDateChange} />
         <footer className="flex px-6 py-4 justify-end">
           <Button variant="assistive" size="xs" onClick={handleReset} className="w-[115px]">
             초기화
