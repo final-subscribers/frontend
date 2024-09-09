@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import propertyDataMap from '../constants/propertyDataMap';
+import { propertyDataMap } from '../constants/propertyDataMap';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -31,14 +31,14 @@ export function getWeekOfMonth(date: Date): number {
 // 금액 단위 변환
 export function formatAmount(amount: number): string {
   if (amount < 10000) {
-    return `${amount}만`;
+    return `${amount.toLocaleString()}만`;
   }
 
   const billion = Math.floor(amount / 10000);
   const thousand = amount % 10000;
 
   if (thousand > 0) {
-    return `${billion}억 ${thousand}만`;
+    return `${billion}억 ${thousand.toLocaleString()}만`;
   } else {
     return `${billion}억`;
   }

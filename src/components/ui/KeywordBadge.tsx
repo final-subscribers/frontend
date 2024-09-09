@@ -4,13 +4,14 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const badgeVariants = cva(
-  'absolute flex items-center justify-center size-[28px] left-5 inset-y-0 my-auto font-bold !text-static-white rounded-4 text-label-sm',
+  'flex items-center justify-center size-[28px] font-bold !text-static-white rounded-4 text-label-sm',
   {
     variants: {
       variant: {
-        default: 'bg-assistive-strong',
+        default: 'bg-assistive-default',
         primary: 'bg-primary-default',
         accent: 'bg-accent-strong',
+        assistive: 'bg-assistive-strong',
       },
     },
     defaultVariants: {
@@ -19,12 +20,16 @@ const badgeVariants = cva(
   },
 );
 
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {
+  children: React.ReactNode | number;
+}
 
-function KeywordBadge({ className, variant, ...props }: BadgeProps) {
-  return <div className={cn(badgeVariants({ variant }), className)} {...props} />;
+function KeywordBadge({ className, variant, children, ...props }: BadgeProps) {
+  return (
+    <div className={cn(badgeVariants({ variant }), className)} {...props}>
+      {children}
+    </div>
+  );
 }
 
 export { KeywordBadge, badgeVariants };

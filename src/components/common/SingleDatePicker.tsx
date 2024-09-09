@@ -15,7 +15,7 @@ const SingleDatePicker = ({ defaultLabel, onChange }: SingleDatePickerProps) => 
   const handleToggle = () => {
     setIsActive((prevState) => !prevState);
   };
-  const handeDateChange = (date: Date | undefined) => {
+  const handleDateChange = (date: Date | undefined) => {
     setDate(date);
     onChange(date);
   };
@@ -39,7 +39,7 @@ const SingleDatePicker = ({ defaultLabel, onChange }: SingleDatePickerProps) => 
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto  px-6 py-6  z-50 bg-static-white" align="start">
-        <Calendar mode="single" selectedDate={date} setDate={handeDateChange} />
+        <Calendar mode="single" selectedDate={date} setDate={handleDateChange} />
         <footer className="flex px-6 py-4 justify-end">
           <Button variant="assistive" size="xs" onClick={handleReset} className="w-[115px]">
             초기화

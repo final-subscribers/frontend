@@ -10,7 +10,7 @@ const buttonVariants = cva(`inline-flex items-center justify-center whitespace-n
       primary:
         'bg-primary-default shadow-focus !text-static-white active:bg-primary-alternative disabled:bg-assistive-alternative disabled:shadow-none',
       outline: 'bg-static-white shadow-focus !text-primary-default active:bg-primary-base',
-      assistive: 'bg-static-white shadow-assistive !text-static-default active:!text-assistive-default',
+      assistive: 'bg-static-white shadow-default !text-static-default active:!text-assistive-default',
       disabled: 'bg-assistive-alternative !text-assistive-strong',
       ghost: 'hover:bg-accent hover:text-accent-foreground',
       link: 'text-primary underline-offset-4 hover:underline',

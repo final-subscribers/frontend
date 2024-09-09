@@ -2,7 +2,6 @@ import RangeDatePicker from '@/components/common/RangeDatePicker';
 import SingleDatePicker from '@/components/common/SingleDatePicker';
 import CustomFilterToggleList from '@/components/CustomFilterToggleList';
 import PropertyKeyword from '@/components/Property/PropertyKeyword';
-import { KeywordToggleButton } from '@/components/ui/KeywordToggleButton';
 import createToggleIcons from '@/constants/keywordIconMap';
 import { KeywordData } from '@/constants/msData';
 import { useState } from 'react';
@@ -25,13 +24,6 @@ const TestMS = () => {
       <SingleDatePicker defaultLabel="상담날짜 선택" onChange={setDate} />
       {/* 범위 날짜선택 */}
       <RangeDatePicker fromLabel="모집시작일" toLabel="모집마감일" onChange={setDateRange} />
-      <div className="mx-auto w-[720px] grid grid-cols-3 gap-3 ">
-        <KeywordToggleButton variant="assistive"></KeywordToggleButton>
-        <KeywordToggleButton variant="primary">할인분양</KeywordToggleButton>
-        <KeywordToggleButton variant="accent">할인분양</KeywordToggleButton>
-        <KeywordToggleButton variant="accent">할인분양</KeywordToggleButton>
-        <KeywordToggleButton variant="accent">할인분양</KeywordToggleButton>
-      </div>
 
       <div className="max-w-[1200px]">
         <p className="text-title-2xl">혜택</p>

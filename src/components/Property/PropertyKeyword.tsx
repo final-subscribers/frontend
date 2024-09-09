@@ -1,5 +1,5 @@
 import { formatBenefitText, formatInfraText } from '@/lib/utils';
-import { CaretLeft, CaretRight } from '@phosphor-icons/react';
+import { CaretLeft, CaretRight, X } from '@phosphor-icons/react';
 import KeywordChip from './KeywordChip';
 import {
   Dialog,
