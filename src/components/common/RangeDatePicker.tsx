@@ -54,11 +54,10 @@ const RangeDatePicker = ({ fromLabel, toLabel, onChange, initialRange }: RangeDa
     <Popover onOpenChange={handleToggle}>
       <PopoverTrigger asChild>
         <Button
-          // @ts-ignore: Unreachable code error
-          variant="default"
+          variant="assistive"
           size="sm"
           className={cn(
-            'w-[354px] justify-between font-normal pl-7 pr-5 py-4 text-label-lg',
+            'w-[354px] justify-between font-normal pl-7 pr-5 py-4 text-label-lg rounded-5',
             isActive && 'shadow-focus',
           )}>
           {getDateLabel()}

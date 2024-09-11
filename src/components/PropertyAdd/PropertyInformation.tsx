@@ -9,6 +9,8 @@ import { FormValues } from '@/types/types';
 import PropertyDateValidation from '../common/PropertyDateValidation';
 import { ToggleButton } from '../ui/ToggleButton';
 import { KeywordBadge } from '../ui/KeywordBadge';
+import { Tag } from '../ui/tag';
+import axios, { AxiosError } from 'axios';
 
 // 파일 첨부 내용 추가할 것, 코드분할
 export const PropertyInformation = ({ onNext }: { onNext: () => void }) => {
@@ -22,6 +24,78 @@ export const PropertyInformation = ({ onNext }: { onNext: () => void }) => {
   const [salesType, SetSalesType] = useState<string>('PRIVATE_SALE'); //분양 형태
   setValue('propertyType', 'APARTMENT');
   setValue('salesType', 'PRIVATE_SALE');
+
+  const [imageSrc, setImageSrc] = useState<string | null>(null); // 미리보기 이미지
+  const [imageName, setImageName] = useState<string | null>(null); // 이미지 파일명
+
+  // 이미지 파일 선택 처리
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setImageSrc(reader.result as string);
+        setImageName(file.name);
+        uploadToServer(file, 'property_image');
+      };
+    }
+  };
+
+  // 파일 전송, Form 저장
+  const uploadToServer = async (file: File, fileType: string) => {
+    const fileData = {
+      files: [
+        {
+          name: file.name,
+          type: 'PROPERTY_IMAGE',
+        },
+      ],
+    };
+
+    try {
+      // url 받기
+      const res = await axios.post('https://entj.site/api/common/presigned-url', fileData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const presignedUrl = res.data[0];
+      console.log(presignedUrl);
+
+      const uploadRes = await axios.put(presignedUrl, file, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': file.type,
+        },
+      });
+
+      if (uploadRes.status === 200) {
+        console.log('파일 업로드 성공');
+        appendFile({
+          name: file.name,
+          url: presignedUrl, // 파일 URL 저장
+          type: fileType,
+        });
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        console.error('서버 응답 상태:', axiosError.response.status);
+        console.error('서버 응답 데이터:', axiosError.response.data);
+      } else {
+        console.error('요청 오류:', axiosError.message);
+      }
+    }
+  };
+
+  // 이미지 및 태그 삭제 처리
+  const handleRemoveImage = () => {
+    setImageSrc(null); // 미리보기 이미지 제거
+    setImageName(null); // 파일명 제거
+    removeFile(0); // 파일 폼에서 제거
+  };
 
   // Daum 주소 API
   const postcodeUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
@@ -63,14 +137,11 @@ export const PropertyInformation = ({ onNext }: { onNext: () => void }) => {
     control,
     name: 'areas',
   });
-  // const {
-  //   fields: fileFields,
-  //   append: appendFile,
-  //   remove: removeFile,
-  // } = useFieldArray({
-  //   control,
-  //   name: 'files',
-  // });
+
+  const { append: appendFile, remove: removeFile } = useFieldArray({
+    control,
+    name: 'files',
+  });
 
   // 세대면적 추가
   const addArea = () => {
@@ -108,13 +179,34 @@ export const PropertyInformation = ({ onNext }: { onNext: () => void }) => {
           <label className="inline-block my-5 text-static-default text-title-base font-bold">
             대표이미지
           </label>
-          <div className="flex flex-col items-center justify-center w-[464px] h-[261px] py-10 bg-assistive-base text-assistive-strong border border-assistive-default rounded-6 text-detail-base">
-            <FilePlus size={80} weight="light" className="mb-3" />
-            <p className="text-label-lg font-bold">대표 이미지 등록하기</p>
-            <p>10MB 이하의 jpg, jpeg, png 파일만 등록할 수 있어요.</p>
-            <p>사진 크기는 0000*000 픽셀로 노출됩니다</p>
+          <div
+            className="relative flex flex-col items-center justify-center w-[464px] h-[261px] bg-assistive-base text-assistive-strong border border-assistive-default rounded-6 text-detail-base cursor-pointer"
+            onClick={() => document.getElementById('imageInput')?.click()}>
+            {imageSrc ? (
+              <img src={imageSrc} alt="미리보기 이미지" className="w-full h-full rounded-6 object-cover" />
+            ) : (
+              <>
+                <FilePlus size={80} weight="light" className="mb-3" />
+                <p className="text-label-lg font-bold">대표 이미지 등록하기</p>
+                <p>10MB 이하의 jpg, jpeg, png 파일만 등록할 수 있어요.</p>
+                <p>사진 크기는 464x261 픽셀로 노출됩니다</p>
+              </>
+            )}
           </div>
+          <input
+            type="file"
+            id="imageInput"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          {imageName && (
+            <div className="mt-4">
+              <Tag label={imageName} onClick={handleRemoveImage} />
+            </div>
+          )}
         </div>
+
         <PropertyInputValidation name="propertyName" label="매물명" placeholder="매물명을 입력해주세요" />
         <div className="flex w-full gap-9">
           <PropertyInputValidation
@@ -138,7 +230,6 @@ export const PropertyInformation = ({ onNext }: { onNext: () => void }) => {
           trailingExtra="세대"
           numberOnly={true}
         />
-        {/* 캘린더 이후 추가예정 */}
         <PropertyDateValidation name="dateRange" label="모집기간" />
       </div>
 

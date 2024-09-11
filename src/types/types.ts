@@ -16,10 +16,11 @@ export type Area = {
 };
 
 export type FileData = {
-  fileName: string;
-  fileUrl: string;
-  fileType: string;
+  name: string;
+  url: string;
+  type: string;
 };
+
 export type KeywordData = {
   searchEnabled: boolean;
   name: string;
