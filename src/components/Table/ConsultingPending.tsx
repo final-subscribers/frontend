@@ -59,6 +59,12 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
     setSelectedConsultant(value);
   };
 
+  const resetFilters = () => {
+    table.setGlobalFilter('');
+    setColumnFilters([]);
+    setSelectedConsultant('상담사');
+  };
+
   useEffect(() => {
     setCurrentPage(table.getState().pagination.pageIndex + 1);
   }, [table.getState().pagination.pageIndex]);
@@ -82,11 +88,14 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
         <DropdownWithReset
           items={operatorIdAll}
           defaultLabel={'상담사' || selectedConsultant}
+          value={selectedConsultant}
           onSelect={handleSelect}
           buttonWidth="w-[122px]"
         />
         <div className="flex py-4 px-6 gap-3 absolute right-0 cursor-pointer">
-          <span className="text-label-lg text-assistive-strong">조건 초기화</span>
+          <span className="text-label-lg text-assistive-strong" onClick={resetFilters}>
+            조건 초기화
+          </span>
           <ArrowClockwise size={24} weight="light" className="text-assistive-strong" />
         </div>
       </section>
@@ -126,9 +135,11 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
+              {columns.map((_, index) => (
+                <TableCell key={index} className="h-24 text-center">
+                  -
+                </TableCell>
+              ))}
             </TableRow>
           )}
         </TableBody>

@@ -8,21 +8,24 @@ import { operatorId, consultingStatus } from '../../lib/dropdownItems';
 import { ToggleSmall } from '../ui/toggleSmall';
 import { useMutation } from '@tanstack/react-query';
 import { CustomerData } from '@/types/types';
+import { DialogClose, DialogTitle } from '@/components/ui/dialogNewCustomer';
 
-export default function NewCustomer({ addCustomer }: { addCustomer: (customer: CustomerData) => void }) {
+export default function NewCustomer({
+  onAddCustomer,
+}: {
+  onAddCustomer: (newCustomer: CustomerData) => void;
+}) {
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [selectedOperatorId, setSelectedOperatorId] = useState<string>('a1-1');
+  const [selectedConsultant, setSelectedConsultant] = useState<string>('a1-1');
   const [selectedConsultingStatus, setSelectedConsultingStatus] = useState<string>('상담대기');
   const [selectedRating, setSelectedRating] = useState<string | null>(null);
   const [consultingMessage, setConsultingMessage] = useState('');
   const [preferredAt, setPreferredAt] = useState('');
 
-  // const setCustomerState = useSetRecoilState(customerState);
-
   const handleSelect = (value: string, type: 'operator' | 'status') => {
     if (type === 'operator') {
-      setSelectedOperatorId(value);
+      setSelectedConsultant(value);
     } else if (type === 'status') {
       setSelectedConsultingStatus(value);
     }
@@ -31,10 +34,6 @@ export default function NewCustomer({ addCustomer }: { addCustomer: (customer: C
   const handleToggle = (item: string) => {
     setSelectedRating((prevItem) => (prevItem === item ? null : item));
     console.log(item);
-  };
-
-  const handleClose = () => {
-    window.close();
   };
 
   const mutation = useMutation({
@@ -56,30 +55,32 @@ export default function NewCustomer({ addCustomer }: { addCustomer: (customer: C
       name,
       phoneNumber,
       status: selectedConsultingStatus === '상담대기' ? 'pending' : 'complete',
-      consultant: selectedOperatorId,
+      consultant: selectedConsultant,
       consultingMessage,
       preferredAt,
       tier: selectedRating || '',
-      medium: 'LMS',
+      medium: 'phone',
     };
-    addCustomer(customerData);
+    onAddCustomer(customerData);
     mutation.mutate(customerData);
-    // window.opener.postMessage({ action: 'closePopup' }, '*');
+    console.log(customerData);
   };
 
   return (
-    <main className="flex flex-col z-50 items-center py-9 w-[517px] h-[830px]">
-      <div className="flex w-full justify-end py-2 px-8 h-[32px]">
-        <X size={32} weight="light" className="text-assistive-strong cursor-pointer" onClick={handleClose} />
-      </div>
+    <main className="flex flex-col z-50 items-center py-9 max-w-[518px] h-[830px]">
+      <DialogClose asChild>
+        <div className="flex w-full justify-end py-2 px-8 h-[32px]">
+          <X size={32} weight="light" className="text-assistive-strong cursor-pointer" />
+        </div>
+      </DialogClose>
       <form
-        className="flex flex-col w-[424px]"
+        className="flex flex-col w-[424px] relative"
         onSubmit={(event) => {
           event.preventDefault();
           handleSubmit();
         }}>
-        <h1 className="py-6 text-title-2xl font-bold text-static-default">신규 고객 등록</h1>
-        <label className="py-5">성함</label>
+        <DialogTitle>신규 고객 등록</DialogTitle>
+        <label className="py-3">성함</label>
         <Input
           type="text"
           placeholder="성함을 입력해주세요"
@@ -87,7 +88,7 @@ export default function NewCustomer({ addCustomer }: { addCustomer: (customer: C
           value={name}
           onChange={(event) => setName(event.target.value)}
         />
-        <label className="py-5 mt-6">연락처</label>
+        <label className="py-3 mt-6">연락처</label>
         <Input
           type="text"
           placeholder="연락처를 입력해주세요"
@@ -97,7 +98,7 @@ export default function NewCustomer({ addCustomer }: { addCustomer: (customer: C
         />
         <div className="flex gap-6">
           <div className="flex flex-col">
-            <label className="py-5 mt-6">상담사</label>
+            <label className="py-3 mt-6">상담사</label>
             <Dropdown
               items={operatorId}
               defaultLabel="a1-1"
@@ -106,7 +107,7 @@ export default function NewCustomer({ addCustomer }: { addCustomer: (customer: C
             />
           </div>
           <div className="flex flex-col">
-            <label className="py-5 mt-6">신청 상태</label>
+            <label className="py-3 mt-6">신청 상태</label>
             <Dropdown
               items={consultingStatus}
               defaultLabel="상담대기"
@@ -117,7 +118,7 @@ export default function NewCustomer({ addCustomer }: { addCustomer: (customer: C
         </div>
         {selectedConsultingStatus === '상담대기' ? (
           <>
-            <label className="py-5 mt-6">희망 상담 일자</label>
+            <label className="py-3 mt-6">희망 상담 일자</label>
             <Input
               type="date"
               className="w-[187px] py-4 px-5 rounded-5"
@@ -127,7 +128,7 @@ export default function NewCustomer({ addCustomer }: { addCustomer: (customer: C
           </>
         ) : (
           <>
-            <label className="py-5 mt-6">고객등급</label>
+            <label className="py-3 mt-6">고객등급</label>
             <div className="flex gap-3">
               {['S', 'A', 'B', 'C', 'D'].map((item) => (
                 <ToggleSmall
@@ -140,17 +141,19 @@ export default function NewCustomer({ addCustomer }: { addCustomer: (customer: C
             </div>
           </>
         )}
-        <label className="py-5 mt-6">상담원 상담 메모</label>
+        <label className="py-3 mt-6">상담원 상담 메모</label>
         <textarea
           className="p-6 h-[214px] border rounded-6"
           placeholder="상담 내용을 입력해주세요"
           value={consultingMessage}
           onChange={(event) => setConsultingMessage(event.target.value)}></textarea>
-        <div className="py-6 px-8">
-          <Button variant="primary" size="xl" className="flex mx-auto">
-            등록하기
-          </Button>
-        </div>
+        <DialogClose asChild>
+          <div className="bg-static-white sticky bottom-0 w-full py-8 px-8">
+            <Button variant="primary" size="xl" className="flex mx-auto">
+              등록하기
+            </Button>
+          </div>
+        </DialogClose>
       </form>
     </main>
   );

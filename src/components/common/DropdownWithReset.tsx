@@ -9,11 +9,18 @@ interface DropdownProps {
   defaultLabel: string;
   onSelect: (value: string) => void;
   buttonWidth: string;
+  value: string;
 }
 
-export default function DropdownWithReset({ items, defaultLabel, onSelect, buttonWidth }: DropdownProps) {
+export default function DropdownWithReset({
+  items,
+  defaultLabel,
+  onSelect,
+  buttonWidth,
+  value,
+}: DropdownProps) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState('');
+  // const [value, setValue] = React.useState('');
 
   const selectedItem = items.find((item) => item.value === value);
 
@@ -44,7 +51,13 @@ export default function DropdownWithReset({ items, defaultLabel, onSelect, butto
                   key={item.value}
                   value={item.value}
                   onSelect={(currentValue) => {
-                    setValue(currentValue === value ? '' : currentValue);
+                    if (currentValue === value) {
+                      // If the current value is already selected, reset
+                      onSelect('');
+                    } else {
+                      // Set the selected value
+                      onSelect(currentValue);
+                    }
                     setOpen(false);
                     onSelect(currentValue);
                   }}>
@@ -54,7 +67,7 @@ export default function DropdownWithReset({ items, defaultLabel, onSelect, butto
               <CommandItem
                 className="flex items-center text-label-s gap-3 bg-assistive-base border-t-2"
                 onSelect={() => {
-                  setValue(''); // Reset the value
+                  onSelect(''); // Reset the value
                   setOpen(false);
                   onSelect(''); // Call onSelect with an empty string to indicate reset
                 }}>

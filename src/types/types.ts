@@ -98,12 +98,28 @@ export type SalesInformation = {
 };
 
 export interface CustomerData {
+  id?: number;
   name: string;
   phoneNumber: string;
   status: string;
-  consultant: string;
+  consultant?: string;
   consultingMessage: string;
-  preferredAt: string;
+  preferredAt?: string;
+  completedAt?: string;
+  createdAt?: string;
+  addConsultation?: boolean;
+  tier: string;
+  medium: string;
+  contents?: string;
+}
+export interface ConsultingData {
+  id?: number;
+  name: string;
+  phoneNumber: string;
+  status: string;
+  consultant?: string;
+  consultingMessage: string;
+  preferredAt?: string;
   createdAt?: string;
   addConsultation?: boolean;
   tier: string;

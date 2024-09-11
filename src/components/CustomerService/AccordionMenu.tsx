@@ -7,9 +7,10 @@ interface AccordionSection {
 
 interface AccordionMenuProps {
   sections: AccordionSection[];
+  onItemSelect: (item: string) => void;
 }
 
-export default function AccordionMenu({ sections }: AccordionMenuProps) {
+export default function AccordionMenu({ sections, onItemSelect }: AccordionMenuProps) {
   return (
     <Accordion type="multiple">
       {sections.map((section, index) => (
@@ -17,10 +18,12 @@ export default function AccordionMenu({ sections }: AccordionMenuProps) {
           <AccordionTrigger className="px-6 py-5 text-label-base font-bold text-static-default">
             {section.title}
           </AccordionTrigger>
-          {section.items.map((item, index) => (
+          {section.items.map((item, itemIndex) => (
             <AccordionContent
-              key={index}
-              className="cursor-pointer text-label-sm font-normal text-static-default px-6 py-4">
+              key={itemIndex}
+              className="cursor-pointer text-label-sm font-normal text-static-default px-6 py-4"
+              onClick={() => onItemSelect(item)} // Trigger onItemSelect when item is clicked
+            >
               {item}
             </AccordionContent>
           ))}

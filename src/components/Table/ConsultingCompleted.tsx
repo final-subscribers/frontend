@@ -29,6 +29,7 @@ interface DataTableProps<TData, TValue> {
 export function ConsultingCompleted<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [selectedConsultant, setSelectedConsultant] = useState<string>('a1-1');
+  const [selectedRating, setSelectedRating] = useState<string>('고객등급');
 
   const [pagination, setPagination] = useState({
     pageIndex: 0, //초기 인덱스
@@ -56,13 +57,25 @@ export function ConsultingCompleted<TData, TValue>({ columns, data }: DataTableP
   const startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
   const endPage = Math.min(totalPages, startPage + pagesToShow - 1);
 
-  const handleSelect = (value: string) => {
-    if (value === '상담사') {
-      setColumnFilters((filters) => filters.filter((filter) => filter.id !== 'consultant'));
+  const handleSelect = (filterType: 'consultant' | 'tier', value: string, defaultLabel: string) => {
+    if (value === defaultLabel) {
+      setColumnFilters((filters) => filters.filter((filter) => filter.id !== filterType));
     } else {
-      setColumnFilters([{ id: 'consultant', value }]);
+      setColumnFilters([{ id: filterType, value }, ...columnFilters.filter((f) => f.id !== filterType)]);
     }
-    setSelectedConsultant(value);
+
+    if (filterType === 'consultant') {
+      setSelectedConsultant(value);
+    } else if (filterType === 'tier') {
+      setSelectedRating(value);
+    }
+  };
+
+  const resetFilters = () => {
+    table.setGlobalFilter('');
+    setColumnFilters([]);
+    setSelectedConsultant('상담사');
+    setSelectedRating('고객등급');
   };
 
   useEffect(() => {
@@ -88,19 +101,23 @@ export function ConsultingCompleted<TData, TValue>({ columns, data }: DataTableP
         <div className="space-x-3">
           <DropdownWithReset
             items={customerRating}
-            defaultLabel="고객등급"
+            defaultLabel={'고객등급' || selectedRating}
+            value={selectedRating}
             buttonWidth="w-[138px]"
-            onSelect={handleSelect}
+            onSelect={(value) => handleSelect('tier', value, '고객등급')}
           />
           <DropdownWithReset
             items={operatorIdAll}
             defaultLabel={'상담사' || selectedConsultant}
-            onSelect={handleSelect}
+            value={selectedConsultant}
             buttonWidth="w-[122px]"
+            onSelect={(value) => handleSelect('consultant', value, '상담사')}
           />
         </div>
         <div className="flex py-4 px-6 gap-3 absolute right-0 cursor-pointer">
-          <span className="text-label-lg text-assistive-strong">조건 초기화</span>
+          <span className="cursor-pointer text-label-lg text-assistive-strong" onClick={resetFilters}>
+            조건 초기화
+          </span>
           <ArrowClockwise size={24} weight="light" className="text-assistive-strong" />
         </div>
       </div>
@@ -140,9 +157,11 @@ export function ConsultingCompleted<TData, TValue>({ columns, data }: DataTableP
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
+              {columns.map((_, index) => (
+                <TableCell key={index} className="h-24 text-center">
+                  -
+                </TableCell>
+              ))}
             </TableRow>
           )}
         </TableBody>
@@ -203,3 +222,17 @@ export function ConsultingCompleted<TData, TValue>({ columns, data }: DataTableP
     </>
   );
 }
+
+// "totalPages": 4,
+// "pageSize": 5,
+// "currentPage": 0,
+// "content": {
+//     "consultCompletedSummaries": [
+//         {
+//             "name": "0304",
+//             "consultant": "a-10",
+//             "createdAt": "2024-08-20T15:04:28.595917",
+//             "completedAt": "2024-08-20",
+//             "tier": "A",
+//             "phoneNumber": "01012341999"
+//         },
