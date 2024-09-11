@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './index.css';
-import axios from 'axios';
+// import axios from 'axios';
 
-axios.defaults.withCredentials = true; // 쿠기 허용
+// axios.defaults.withCredentials = true; // 쿠기 허용
 
 const queryClient = new QueryClient();
 async function deferRender() {

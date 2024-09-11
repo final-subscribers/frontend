@@ -65,7 +65,6 @@ export const PropertyInformation = ({ onNext }: { onNext: () => void }) => {
       console.log(presignedUrl);
 
       const uploadRes = await axios.put(presignedUrl, file, {
-        withCredentials: true,
         headers: {
           'Content-Type': file.type,
         },
@@ -206,6 +205,10 @@ export const PropertyInformation = ({ onNext }: { onNext: () => void }) => {
             </div>
           )}
         </div>
+        <img
+          src="https://delivery183.org/PROPERTY_IMAGE/8de749ab-7fd0-4e5d-95e7-a88711a4cc9c%3Aswiper.png"
+          alt="이미지"
+        />
 
         <PropertyInputValidation name="propertyName" label="매물명" placeholder="매물명을 입력해주세요" />
         <div className="flex w-full gap-9">
