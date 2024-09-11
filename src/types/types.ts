@@ -102,7 +102,7 @@ export interface CustomerData {
   name: string;
   phoneNumber: string;
   status: string;
-  consultant: string;
+  consultant?: string;
   consultingMessage: string;
   preferredAt?: string;
   completedAt?: string;

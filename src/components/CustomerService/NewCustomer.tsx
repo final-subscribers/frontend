@@ -86,15 +86,15 @@ export default function NewCustomer({
       name,
       phoneNumber,
       status: selectedConsultingStatus === '상담대기' ? 'pending' : 'complete',
-      consultant: selectedOperatorId,
+      consultant: selectedConsultant,
       consultingMessage,
       preferredAt,
       tier: selectedRating || '',
-      medium: 'LMS',
+      medium: 'phone',
     };
-    addCustomer(customerData);
+    onAddCustomer(customerData);
     mutation.mutate(customerData);
-    // window.opener.postMessage({ action: 'closePopup' }, '*');
+    console.log(customerData);
   };
 
   return (
