@@ -11,9 +11,18 @@ interface RangeDatePickerProps {
   toLabel: string;
   onChange: (range: DateRange | undefined) => void;
   initialRange?: DateRange;
+  fieldError?: any;
+  errorMessage?: { startDate?: string; endDate?: string };
 }
 
-const RangeDatePicker = ({ fromLabel, toLabel, onChange, initialRange }: RangeDatePickerProps) => {
+const RangeDatePicker = ({
+  fromLabel,
+  toLabel,
+  onChange,
+  initialRange,
+  fieldError,
+  errorMessage,
+}: RangeDatePickerProps) => {
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>(initialRange);
   const [isActive, setIsActive] = React.useState<boolean>(false);
   const handleToggle = () => {
@@ -59,6 +68,8 @@ const RangeDatePicker = ({ fromLabel, toLabel, onChange, initialRange }: RangeDa
           className={cn(
             'w-[354px] justify-between font-normal pl-7 pr-5 py-4 text-label-lg rounded-5',
             isActive && 'shadow-focus',
+            (fieldError || errorMessage?.startDate || errorMessage?.endDate) &&
+              'shadow-error focus:shadow-error',
           )}>
           {getDateLabel()}
           <CalendarDots size={24} weight="light" className="text-assistive-default" />

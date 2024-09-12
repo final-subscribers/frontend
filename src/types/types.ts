@@ -33,6 +33,7 @@ export type FormValues = {
   areas: Area[];
   files: FileData[];
   keywords: KeywordData[];
+  dateRange: {};
   discountSale: boolean;
   discountSystem: boolean;
   propertyAreaAddr: string;
@@ -43,6 +44,8 @@ export type FormValues = {
   propertyModelhouseAddr: string;
   propertyType: string;
   salesType: string;
+  propertySupplyInformation: string; // 보내지 않음
+  marketting: string; // 보내지 않음
 };
 
 export type SalesInformation = {
