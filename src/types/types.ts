@@ -20,7 +20,6 @@ export type FileData = {
   url: string;
   type: string;
 };
-
 export type KeywordData = {
   searchEnabled: boolean;
   name: string;

@@ -92,7 +92,9 @@ const PropertyAdd = () => {
             <Button type="button" onClick={() => setStep(steps[1])}>
               이전
             </Button>
-            <Button type="submit">등록하기</Button>
+            <Button type="submit" onClick={() => setStep(steps[3])}>
+              등록하기
+            </Button>
           </Step>
           <Step name="등록 완료">
             <PropertyComplete />
