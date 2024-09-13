@@ -13,6 +13,8 @@ import DashBoard from '@/pages/DashBoard';
 import PropertyKeywords from '@/components/PropertyAdd/PropertyKeywords';
 import Search from '@/pages/Search';
 import PropertySearch from '@/pages/PropertySearch';
+import Favorite from '@/pages/Favorite';
+import CounselList from '@/pages/CounselList';
 
 export const router = createBrowserRouter([
   {
@@ -55,6 +57,8 @@ export const router = createBrowserRouter([
       { path: '/keywordTest', element: <PropertyKeywords /> },
       { path: '/search', element: <Search /> },
       { path: '/property', element: <PropertySearch /> },
+      { path: '/favorite', element: <Favorite /> },
+      { path: '/counsel-list', element: <CounselList /> },
     ],
   },
 ]);

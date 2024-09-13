@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label';
 import { getPropertyInfo } from '@/constants/getPropertyInfo';
 import { useFunnel } from '@/hooks/useFunnel';
 import useResponsive from '@/hooks/useResponsive';
-import { formatAmount, getPropertyLabel } from '@/lib/utils';
+import { formatAmount, getPropertyLabel, removePhoneNumberHyphens } from '@/lib/utils';
 import { Area, SalesInformation } from '@/types/types';
 import { ArrowLineDown, Heart } from '@phosphor-icons/react';
 import { useQuery } from '@tanstack/react-query';
@@ -88,14 +88,31 @@ const PropertyDetail = () => {
     }));
   };
 
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === 'phoneNumber') {
+      const isValid = isPhoneValidation(value);
+      if (!isValid) {
+        console.log('Invalid phone number format');
+        // 여기서 유효성 검사 실패 시 사용자에게 메시지를 표시하는 로직 추가 가능
+      }
+    }
+  };
+
   useEffect(() => {
     const { name, phoneNumber, preferredAt } = counselForm;
     setisCounselFormValidation(name !== '' && isPhoneValidation(phoneNumber) && preferredAt !== undefined);
   }, [counselForm]);
 
   const handleCounselRegister = () => {
+    const phoneNumber = removePhoneNumberHyphens(counselForm.phoneNumber);
+    const updatedCounselForm = {
+      ...counselForm,
+      phoneNumber: phoneNumber,
+    };
+
     // 상담신청 api
-    console.log('상담 등록:', counselForm);
+    console.log('상담 등록:', updatedCounselForm);
     handleClose(false);
     showToast();
   };
