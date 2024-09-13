@@ -9,6 +9,7 @@ import { ToggleSmall } from '../ui/toggleSmall';
 import { useMutation } from '@tanstack/react-query';
 import { CustomerData } from '@/types/types';
 import { DialogClose, DialogTitle } from '@/components/ui/dialogNewCustomer';
+import SingleDatePicker from '../common/SingleDatePicker';
 
 export default function NewCustomer({
   onAddCustomer,
@@ -23,8 +24,8 @@ export default function NewCustomer({
   const [consultingMessage, setConsultingMessage] = useState('');
   const [preferredAt, setPreferredAt] = useState('');
 
-  const handleSelect = (value: string, type: 'operator' | 'status') => {
-    if (type === 'operator') {
+  const handleSelect = (value: string, type: 'consultant' | 'status') => {
+    if (type === 'consultant') {
       setSelectedConsultant(value);
     } else if (type === 'status') {
       setSelectedConsultingStatus(value);
@@ -103,7 +104,7 @@ export default function NewCustomer({
               items={operatorId}
               defaultLabel="a1-1"
               buttonWidth="w-[115px]"
-              onSelect={(event) => handleSelect(event, 'operator')}
+              onSelect={(event) => handleSelect(event, 'consultant')}
             />
           </div>
           <div className="flex flex-col">
@@ -119,12 +120,26 @@ export default function NewCustomer({
         {selectedConsultingStatus === '상담대기' ? (
           <>
             <label className="py-3 mt-6">희망 상담 일자</label>
-            <Input
+            <SingleDatePicker
+              defaultLabel="상담날짜 선택"
+              onChange={(date) => {
+                if (date) {
+                  const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+                    .toISOString()
+                    .split('T')[0]
+                    .replace(/-/g, '.');
+                  setPreferredAt(localDate);
+                } else {
+                  setPreferredAt('');
+                }
+              }}
+            />
+            {/* <Input
               type="date"
               className="w-[187px] py-4 px-5 rounded-5"
               value={preferredAt}
               onChange={(event) => setPreferredAt(event.target.value)}
-            />
+            /> */}
           </>
         ) : (
           <>

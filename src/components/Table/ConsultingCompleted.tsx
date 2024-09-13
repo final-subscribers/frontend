@@ -20,6 +20,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '../ui/input';
 import { operatorIdAll, customerRating } from '../../lib/dropdownItems';
+import SingleDatePicker from '@/components/common/SingleDatePicker';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -30,6 +31,7 @@ export function ConsultingCompleted<TData, TValue>({ columns, data }: DataTableP
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [selectedConsultant, setSelectedConsultant] = useState<string>('a1-1');
   const [selectedRating, setSelectedRating] = useState<string>('고객등급');
+  const [date, setDate] = useState<Date | undefined>();
 
   const [pagination, setPagination] = useState({
     pageIndex: 0, //초기 인덱스
@@ -82,6 +84,19 @@ export function ConsultingCompleted<TData, TValue>({ columns, data }: DataTableP
     setCurrentPage(table.getState().pagination.pageIndex + 1);
   }, [table.getState().pagination.pageIndex]);
 
+  useEffect(() => {
+    if (date) {
+      const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+      const formattedDate = localDate.toISOString().split('T')[0].replace(/-/g, '.'); // Format date to YYYY.MM.DD
+      setColumnFilters((filters) => [
+        ...filters.filter((filter) => filter.id !== 'preferredAt'),
+        { id: 'preferredAt', value: formattedDate },
+      ]);
+    } else {
+      setColumnFilters((filters) => filters.filter((filter) => filter.id !== 'preferredAt'));
+    }
+  }, [date]);
+
   const handlePageClick = (page: number) => {
     setCurrentPage(page);
     table.setPageIndex(page - 1); // Adjust based on your pagination logic
@@ -99,6 +114,7 @@ export function ConsultingCompleted<TData, TValue>({ columns, data }: DataTableP
           className="w-[435px] pl-14 mr-7"
         />
         <div className="space-x-3">
+          <SingleDatePicker defaultLabel="상담날짜 선택" onChange={setDate} />
           <DropdownWithReset
             items={customerRating}
             defaultLabel={'고객등급' || selectedRating}

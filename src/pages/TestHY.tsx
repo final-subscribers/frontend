@@ -2,13 +2,13 @@ import Dropdown from '@/components/common/Dropdown';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { customerRating, optionSupport, paymentSupport, time, transportation } from '@/lib/dropdownItems';
 import { scroller, Element } from 'react-scroll';
-import { ConsultingPending } from '@/components/Table/ConsultingPending';
-import { ConsultingCompleted } from '@/components/Table/ConsultingCompleted';
-import { columnsPending } from '@/components/ui/columnsPending';
-import { columnsCompleted } from '@/components/ui/columnsCompleted';
+// import { ConsultingPending } from '@/components/Table/ConsultingPending';
+// import { ConsultingCompleted } from '@/components/Table/ConsultingCompleted';
+// import { columnsPending } from '@/components/ui/columnsPending';
+// import { columnsCompleted } from '@/components/ui/columnsCompleted';
 import { consultingPending, consultingCompleted, myProperty } from '@/lib/tableItems';
-import { MyProperty } from '@/components/Table/MyProperty';
-import { columnsMyProperty } from '@/components/ui/columnsMyProperyt';
+// import { MyPropertyTable } from '@/components/Table/MyPropertyTable';
+// import { columnsMyProperty } from '@/components/ui/columnsMyProperyt';
 import CustomerInquiry from '@/components/CustomerService/CustomerInquiry';
 import ReactDOM from 'react-dom/client';
 // import { useDragger } from '../hooks/useDragger';
@@ -162,11 +162,11 @@ const TestHY = () => {
       </div>
 
       {/* 테이블 */}
-      <div className="container mx-auto py-10 ">
+      {/* <div className="container mx-auto py-10 ">
         <ConsultingPending columns={columnsPending(handleViewClick)} data={consultingPendingData} />
         <ConsultingCompleted columns={columnsCompleted(handleViewClick)} data={consultingCompletedData} />
-        <MyProperty columns={columnsMyProperty} data={myPropertyData} />
-      </div>
+        <MyPropertyTable columns={columnsMyProperty} data={myPropertyData} />
+      </div> */}
 
       {/* 이동 가능 컴포넌트 */}
       <div

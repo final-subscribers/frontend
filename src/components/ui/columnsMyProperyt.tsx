@@ -5,11 +5,11 @@ import { PencilSimple, TrashSimple } from '@phosphor-icons/react';
 export interface MyProperty {
   id: number;
   name: string;
+  createdAt: string;
+  endDate: string;
   total_number: number;
-  pending: number;
-  status: string;
-  created_at: string;
-  end_date: string;
+  pending: boolean;
+  consultation_pending: number;
 }
 
 export const columnsMyProperty: ColumnDef<MyProperty>[] = [
@@ -22,27 +22,30 @@ export const columnsMyProperty: ColumnDef<MyProperty>[] = [
     header: '세대수',
   },
   {
-    accessorKey: 'pending',
+    accessorKey: 'consultation_pending',
     header: '상담대기',
   },
   {
-    accessorKey: 'status',
+    accessorKey: 'pending',
     header: '모집상태',
     cell: ({ row }) => {
-      const contentsData = row.original;
-      return (
+      return row.original.pending === true ? (
         <Label size="m" variant="highlight">
           모집중
+        </Label>
+      ) : (
+        <Label size="m" variant="assistive" className="!text-static-default">
+          모집완료
         </Label>
       );
     },
   },
   {
-    accessorKey: 'end_date',
+    accessorKey: 'endDate',
     header: '마감기한',
   },
   {
-    accessorKey: 'created_at',
+    accessorKey: 'createdAt',
     header: '등록일',
   },
   {

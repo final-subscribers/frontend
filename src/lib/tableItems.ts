@@ -19,11 +19,11 @@ interface ConsultingCompleted {
 interface MyProperty {
   id: number;
   name: string;
+  createdAt: string;
+  endDate: string;
   total_number: number;
-  pending: number;
-  status: string;
-  created_at: string;
-  end_date: string;
+  pending: boolean;
+  consultation_pending: number;
 }
 
 export const consultingPending: ConsultingPending[] = [
@@ -144,27 +144,45 @@ export const myProperty: MyProperty[] = [
     id: 13,
     name: '다산신도시',
     total_number: 345,
-    pending: 5,
-    status: '모집중',
-    created_at: '2024-07-20',
-    end_date: '2024-09-20',
+    consultation_pending: 5,
+    pending: true,
+    createdAt: '2024-07-20',
+    endDate: '2024-09-20',
   },
   {
     id: 14,
     name: '양주신도시',
     total_number: 345,
-    pending: 5,
-    status: '모집중',
-    created_at: '2024-07-20',
-    end_date: '2024-09-20',
+    consultation_pending: 5,
+    pending: true,
+    createdAt: '2024-07-20',
+    endDate: '2024-09-20',
   },
   {
     id: 15,
     name: '계양 학마을서원',
     total_number: 345,
-    pending: 5,
-    status: '모집중',
-    created_at: '2024-07-20',
-    end_date: '2024-09-20',
+    consultation_pending: 5,
+    pending: false,
+    createdAt: '2024-07-20',
+    endDate: '2024-09-20',
+  },
+  {
+    id: 15,
+    name: '계양 학마을서원',
+    total_number: 345,
+    consultation_pending: 5,
+    pending: false,
+    createdAt: '2024-07-20',
+    endDate: '2024-09-20',
+  },
+  {
+    id: 15,
+    name: '계양 학마을서원',
+    total_number: 345,
+    consultation_pending: 5,
+    pending: false,
+    createdAt: '2024-07-20',
+    endDate: '2024-09-20',
   },
 ];

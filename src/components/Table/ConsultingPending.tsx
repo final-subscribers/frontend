@@ -14,21 +14,54 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '../ui/input';
 import { operatorIdAll } from '../../lib/dropdownItems';
+import SingleDatePicker from '@/components/common/SingleDatePicker';
+
+// import DefaultPagination from '../common/DefaultPagination';
+// import axios from 'axios';
+// import { useQuery } from '@tanstack/react-query';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  // totalPage: number;
 }
 
 export function ConsultingPending<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [selectedConsultant, setSelectedConsultant] = useState<string>('a1-1');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [date, setDate] = useState<Date | undefined>();
+  // const [search, setSearch] = useState<string>('');
+  // const [preferredAt, setPreferredAt] = useState<string>('');
 
   const [pagination, setPagination] = useState({
     pageIndex: 0, //초기 인덱스
     pageSize: 5, //페이지 길이
   });
-  const [currentPage, setCurrentPage] = useState(1);
+  // const fetchConsultingPending = async (
+  //   page: number,
+  //   search: string,
+  //   consultant: string,
+  //   preferredAt: string,
+  // ) => {
+  //   const res = await axios.get(`/api/admin/properties/{propertyId}/consultations/pending`, {
+  //     params: {
+  //       search,
+  //       consultant,
+  //       preferred_at: preferredAt,
+  //       page,
+  //       size: 5,
+  //     },
+  //   });
+  //   return res.data;
+  // };
+
+  // const { data } = useQuery({
+  //   queryKey: ['consultingPending', currentPage, search, selectedConsultant, preferredAt],
+  //   queryFn: () => fetchConsultingPending(currentPage, search, selectedConsultant, preferredAt),
+  //   keepPreviousData: true,
+  // });
+  // const totalPages = data?.totalPages || 1;
 
   const table = useReactTable({
     data,
@@ -61,6 +94,8 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
 
   const resetFilters = () => {
     table.setGlobalFilter('');
+    // setSearch('');
+    // setPreferredAt('');
     setColumnFilters([]);
     setSelectedConsultant('상담사');
   };
@@ -68,6 +103,19 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
   useEffect(() => {
     setCurrentPage(table.getState().pagination.pageIndex + 1);
   }, [table.getState().pagination.pageIndex]);
+
+  useEffect(() => {
+    if (date) {
+      const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+      const formattedDate = localDate.toISOString().split('T')[0].replace(/-/g, '.'); // Format date to YYYY.MM.DD
+      setColumnFilters((filters) => [
+        ...filters.filter((filter) => filter.id !== 'preferredAt'),
+        { id: 'preferredAt', value: formattedDate },
+      ]);
+    } else {
+      setColumnFilters((filters) => filters.filter((filter) => filter.id !== 'preferredAt'));
+    }
+  }, [date]);
 
   const handlePageClick = (page: number) => {
     setCurrentPage(page);
@@ -85,13 +133,16 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
           onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="w-[435px] pl-14 mr-7"
         />
-        <DropdownWithReset
-          items={operatorIdAll}
-          defaultLabel={'상담사' || selectedConsultant}
-          value={selectedConsultant}
-          onSelect={handleSelect}
-          buttonWidth="w-[122px]"
-        />
+        <div className="flex gap-3">
+          <SingleDatePicker defaultLabel="상담날짜 선택" onChange={setDate} />
+          <DropdownWithReset
+            items={operatorIdAll}
+            defaultLabel={'상담사' || selectedConsultant}
+            value={selectedConsultant}
+            onSelect={handleSelect}
+            buttonWidth="w-[122px]"
+          />
+        </div>
         <div className="flex py-4 px-6 gap-3 absolute right-0 cursor-pointer">
           <span className="text-label-lg text-assistive-strong" onClick={resetFilters}>
             조건 초기화
@@ -144,6 +195,8 @@ export function ConsultingPending<TData, TValue>({ columns, data }: DataTablePro
           )}
         </TableBody>
       </Table>
+      {/* <DefaultPagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} /> */}
+
       <section className="flex items-center justify-center space-x-3 py-4 mt-11">
         <button
           className="border-none p-1"

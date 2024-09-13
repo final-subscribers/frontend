@@ -13,6 +13,9 @@ import {
 } from '@tanstack/react-table';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Plus } from '@phosphor-icons/react';
+import { Link } from 'react-router-dom';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -22,7 +25,7 @@ interface Identifiable {
   id: number;
 }
 
-export function MyProperty<TData extends Identifiable, TValue>({
+export function MyPropertyTable<TData extends Identifiable, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -92,10 +95,22 @@ export function MyProperty<TData extends Identifiable, TValue>({
   return (
     <>
       <div className="flex">
-        <h1 className="py-[10px] pl-6 pr-3 text-title-sm font-bold text-static-default">매물 목록</h1>
-        <span className="py-[10px] text-title-sm font-bold text-primary-default">
-          {table.getCoreRowModel().rows.length}
-        </span>
+        <div className="flex items-end mb-3">
+          <h1 className="py-[10px] pl-6 pr-3 text-title-sm font-bold text-static-default">매물 목록</h1>
+          <span className="py-[10px] text-title-sm font-bold text-primary-default">
+            {table.getCoreRowModel().rows.length}
+          </span>
+        </div>
+        <div className="flex-grow mb-7">
+          <div className="flex justify-end">
+            <Link to="/property-add">
+              <Button variant="primary" size="lg" className="gap-4">
+                매물등록
+                <Plus size={24} weight="bold" />
+              </Button>
+            </Link>
+          </div>
+        </div>
       </div>
       <Table>
         <TableHeader>

@@ -19,6 +19,7 @@ export default function CustomerInquiry({
   phoneNumber,
   createdAt,
   preferredAt,
+  consultant,
   consultingMessage,
   onConsultingClick,
   closePopup,
