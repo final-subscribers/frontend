@@ -141,11 +141,11 @@ export default function CustomerService() {
             return (
               <QueryClientProvider client={queryClient}>
                 {showConsulting ? (
-                  // @ts-ignore: Unreachable code error
                   <CustomerConsulting
                     {...props}
                     onBackClick={handleBackToInquiry}
                     closePopup={handleClosePopup}
+                    // @ts-ignore: Unreachable code error
                     onAddCustomer={addNewCustomer}
                   />
                 ) : (

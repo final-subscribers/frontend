@@ -63,6 +63,7 @@ const TestHY = () => {
     });
   }
 
+  // @ts-ignore: Unreachable code error
   const handleViewClick = (props: any) => {
     const width = 517;
     const height = 830;
