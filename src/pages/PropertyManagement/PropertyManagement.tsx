@@ -3,6 +3,7 @@ import { MyPropertyTable } from '@/components/Table/MyPropertyTable';
 import { columnsMyProperty } from '@/components/ui/columnsMyProperyt';
 import SampleImg from '../../../public/Imagesample.png';
 import Breadcrumb from '@/components/common/Breadcrumb';
+import NoProperty from '@/components/CustomerService/NoProperty';
 
 // table에 사용하는 데이터
 const myPropertyData = myProperty.map((property) => ({
@@ -23,6 +24,9 @@ export default function PropertyManagement() {
         <h1 className="w-full py-3 px-6 mb-11 text-center text-heading-lg font-bold ">매물관리</h1>
 
         {/* 이 위치에 매물 카드 들어갑니다. */}
+        {/* <div className="flex h-[412px] items-center">
+          <NoProperty />
+        </div> */}
         <article className="flex flex-col mb-10">
           <div className="flex mb-6">
             <img src={SampleImg} className="object-cover w-[272px] h-[153px]" />
