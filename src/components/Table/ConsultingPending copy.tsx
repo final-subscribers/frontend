@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DropdownWithReset from '../common/DropdownWithReset';
-import { MagnifyingGlass } from '@phosphor-icons/react';
-import {
-  CaretRight,
-  CaretLeft,
-  CaretDoubleLeft,
-  CaretDoubleRight,
-  ArrowClockwise,
-} from '@phosphor-icons/react';
+import { MagnifyingGlass, ArrowClockwise } from '@phosphor-icons/react';
+import { CaretRight, CaretLeft, CaretDoubleLeft, CaretDoubleRight } from '@phosphor-icons/react';
 import {
   ColumnDef,
   flexRender,
@@ -19,41 +13,76 @@ import {
 } from '@tanstack/react-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '../ui/input';
-import { operatorIdAll, customerRating } from '../../lib/dropdownItems';
+import { operatorIdAll } from '../../lib/dropdownItems';
 import SingleDatePicker from '@/components/common/SingleDatePicker';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+// import DefaultPagination from '../common/DefaultPagination';
+// import { BASE_URL } from '@/lib/constants';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  selectedConsultant: string; // Add this line
-  setSelectedConsultant: React.Dispatch<React.SetStateAction<string>>; // Add this line
-  currentPage: number; // Add this line
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>; // Add this line
-  date: Date | undefined; // Add this line
-  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>; // Add this line
+  // totalPage: number;
 }
 
-export function ConsultingCompleted<TData, TValue>({
-  columns,
-  data,
-  selectedConsultant,
-  setSelectedConsultant,
-  currentPage,
-  setCurrentPage,
-  date,
-  setDate,
-}: DataTableProps<TData, TValue>) {
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+const fetchPendingConsultations = async ({
+  queryKey,
+}: {
+  queryKey: [string, { search: string; consultant: string; preferredAt: Date | undefined; page: number }];
+}) => {
+  const [_key, { search, consultant, preferredAt, page }] = queryKey;
+  const { data } = await axios.get(`/api/admin/properties/{propertyId}/consultations/pending`, {
+    params: {
+      search,
+      consultant,
+      preferred_at: preferredAt,
+      page,
+      size: 5,
+    },
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return data;
+};
 
-  const [selectedRating, setSelectedRating] = useState<string>('고객등급');
+export function ConsultingPending<TData, TValue>({ columns }: DataTableProps<TData, TValue>) {
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [selectedConsultant, setSelectedConsultant] = useState<string>('a1-1');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [date, setDate] = useState<Date | undefined>();
+  // const [search, setSearch] = useState<string>('');
+  // const [preferredAt, setPreferredAt] = useState<string>('');
 
   const [pagination, setPagination] = useState({
     pageIndex: 0, //초기 인덱스
     pageSize: 5, //페이지 길이
   });
 
+  const {
+    data: consultationData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [
+      'pendingConsultations',
+      { search: '', consultant: selectedConsultant, preferredAt: date, page: currentPage },
+    ],
+    queryFn: fetchPendingConsultations,
+  });
+
+  // const [tableData, setTableData] = useState<TData[]>(data);
+
+  // useEffect(() => {
+  //   if (consultationData) {
+  //     // Update your table data with the fetched data
+  //     setTableData(consultationData.consultPendingSummaries);
+  //   }
+  // }, [consultationData]);
+
   const table = useReactTable({
-    data,
+    data: consultationData?.consultPendingSummaries || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -72,25 +101,21 @@ export function ConsultingCompleted<TData, TValue>({
   const startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
   const endPage = Math.min(totalPages, startPage + pagesToShow - 1);
 
-  const handleSelect = (filterType: 'consultant' | 'tier', value: string, defaultLabel: string) => {
-    if (value === defaultLabel) {
-      setColumnFilters((filters) => filters.filter((filter) => filter.id !== filterType));
+  const handleSelect = (value: string) => {
+    if (value === '초기화') {
+      setColumnFilters((filters) => filters.filter((filter) => filter.id !== 'consultant'));
     } else {
-      setColumnFilters([{ id: filterType, value }, ...columnFilters.filter((f) => f.id !== filterType)]);
+      setColumnFilters([{ id: 'consultant', value }]);
     }
-
-    if (filterType === 'consultant') {
-      setSelectedConsultant(value);
-    } else if (filterType === 'tier') {
-      setSelectedRating(value);
-    }
+    setSelectedConsultant(value);
   };
 
   const resetFilters = () => {
     table.setGlobalFilter('');
+    // setSearch('');
+    // setPreferredAt('');
     setColumnFilters([]);
     setSelectedConsultant('상담사');
-    setSelectedRating('고객등급');
   };
 
   useEffect(() => {
@@ -112,12 +137,12 @@ export function ConsultingCompleted<TData, TValue>({
 
   const handlePageClick = (page: number) => {
     setCurrentPage(page);
-    table.setPageIndex(page - 1); // Adjust based on your pagination logic
+    table.setPageIndex(page - 1);
   };
 
   return (
     <>
-      <div className="flex mb-8 mt-10 relative">
+      <section className="flex mb-8 mt-10 relative items-center">
         <MagnifyingGlass size={24} className={'text-assistive-divider absolute left-7 top-5'} />
         <Input
           type="text"
@@ -126,75 +151,77 @@ export function ConsultingCompleted<TData, TValue>({
           onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="w-[435px] pl-14 mr-7"
         />
-        <div className="space-x-3">
+        <div className="flex gap-3">
           <SingleDatePicker defaultLabel="상담날짜 선택" onChange={setDate} />
           <DropdownWithReset
-            items={customerRating}
-            defaultLabel={selectedRating || '고객등급'}
-            value={selectedRating}
-            buttonWidth="w-[138px]"
-            onSelect={(value) => handleSelect('tier', value, '고객등급')}
-          />
-          <DropdownWithReset
             items={operatorIdAll}
-            defaultLabel={selectedConsultant || '상담사'}
+            defaultLabel={'상담사' || selectedConsultant}
             value={selectedConsultant}
+            onSelect={handleSelect}
             buttonWidth="w-[122px]"
-            onSelect={(value) => handleSelect('consultant', value, '상담사')}
           />
         </div>
         <div className="flex py-4 px-6 gap-3 absolute right-0 cursor-pointer">
-          <span className="cursor-pointer text-label-lg text-assistive-strong" onClick={resetFilters}>
+          <span className="text-label-lg text-assistive-strong" onClick={resetFilters}>
             조건 초기화
           </span>
           <ArrowClockwise size={24} weight="light" className="text-assistive-strong" />
         </div>
-      </div>
+      </section>
       <div className="flex">
-        <h1 className="py-[10px] pl-6 pr-3 text-title-sm font-bold text-static-default">총 상담완료</h1>
+        <h1 className="py-[10px] pl-6 pr-3 text-title-sm font-bold text-static-default">총 상담대기</h1>
         <span className="py-[10px] text-title-sm font-bold text-primary-default">
           {table.getCoreRowModel().rows.length}
         </span>
       </div>
 
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+      {/* ... existing JSX ... */}
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : error ? (
+        <div>Error loading data</div>
+      ) : (
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                {columns.map((_, index) => (
+                  <TableCell key={index} className="h-24 text-center">
+                    -
                   </TableCell>
                 ))}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              {columns.map((_, index) => (
-                <TableCell key={index} className="h-24 text-center">
-                  -
-                </TableCell>
-              ))}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            )}
+          </TableBody>
+        </Table>
+      )}
+      {/* <DefaultPagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} /> */}
+
       <section className="flex items-center justify-center space-x-3 py-4 mt-11">
         <button
           className="border-none p-1"
@@ -251,3 +278,16 @@ export function ConsultingCompleted<TData, TValue>({
     </>
   );
 }
+
+// response
+// "content": {
+//   "consultPendingSummaries": [
+//       {
+//           "preferredAt": "2025-01-01",
+//           "createdAt": "2024-08-20",
+//           "consultant": "a-10",
+//           "name": "2:37",
+//           "phoneNumber": "01012341899",
+//           "addConsultation": "true" //true 라면 추가 상담 뱃지 (lms가 아니라면 추가뱃지)
+//       },
+//     ]}

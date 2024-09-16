@@ -1,3 +1,4 @@
+// import { useConsultPendingSummaries } from '@/api/consulting';
 import { ComponentType } from 'react';
 import { ConsultingPending } from '@/components/Table/ConsultingPending';
 import { CustomerData } from '@/types/types';
@@ -21,10 +22,17 @@ import { useState, useRef } from 'react';
 import { Dialog, DialogContent, DialogTrigger, DialogDescription } from '@/components/ui/dialogNewCustomer';
 import NoProperty from '../../components/CustomerService/NoProperty';
 import { sampleResponse } from './data';
-import { useQueries } from '@tanstack/react-query';
-import { fetchSidebarData, fetchPendingConsultations, fetchCompletedConsultations } from '@/api/consulting';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+// import { BASE_URL } from '@/lib/constants';
 
 const queryClient = new QueryClient();
+
+const fetchSidebarData = async (propertyId: number) => {
+  const response = await axios.get(`/api/admin/properties/${propertyId}/consultations/sidebar`);
+  console.log('Fetched sidebar data:', response.data); // Debug log
+  return response.data;
+};
 
 export default function CustomerService() {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,63 +49,13 @@ export default function CustomerService() {
   });
   const popupWindowRef = useRef<Window | null>(null);
 
-  const [selectedConsultant, setSelectedConsultant] = useState<string>('a1-1');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [date, setDate] = useState<Date | undefined>();
-
-  const results = useQueries({
-    queries: [
-      {
-        queryKey: [
-          'pendingConsultations',
-          {
-            propertyId: selectedProperty.id,
-            search: '',
-            consultant: selectedConsultant,
-            preferredAt: date,
-            page: currentPage,
-          },
-        ],
-        queryFn: fetchPendingConsultations,
-      },
-      {
-        queryKey: [
-          'completedConsultations',
-          {
-            propertyId: selectedProperty.id,
-            search: '',
-            tier: '',
-            consultant: '',
-            preferredAt: undefined,
-            page: 0,
-          },
-        ],
-        queryFn: fetchCompletedConsultations,
-      },
-      {
-        queryKey: ['sidebarData', selectedProperty.id],
-        queryFn: () => fetchSidebarData(selectedProperty.id),
-        enabled: !!selectedProperty.id,
-      },
-    ],
+  const { data: sidebarData } = useQuery({
+    queryKey: ['sidebarData', selectedProperty.id],
+    queryFn: () => fetchSidebarData(selectedProperty.id),
+    enabled: !!selectedProperty.id,
   });
 
-  const [pendingConsultationsResult, completedConsultationsResult, sidebarDataResult] = results;
-
-  const isLoading =
-    pendingConsultationsResult.isLoading ||
-    completedConsultationsResult.isLoading ||
-    sidebarDataResult.isLoading;
-  const error =
-    pendingConsultationsResult.error || completedConsultationsResult.error || sidebarDataResult.error;
-
-  const pendingConsultationsData = pendingConsultationsResult.data;
-  const completedConsultationsData = completedConsultationsResult.data;
-  const sidebarData = sidebarDataResult.data;
-
-  const pendingCustomersData = pendingConsultationsData?.contents?.consultPendingSummaries || [];
-  const completedCustomersData = completedConsultationsData?.contents?.consultCompletedSummaries || [];
-  console.log(pendingCustomersData); // Debug log
+  console.log('Sidebar data:', sidebarData); // Debug log
 
   const addNewCustomer = (newCustomer: CustomerData) => {
     const customerWithPropertyId = { ...newCustomer, id: selectedProperty.id };
@@ -111,8 +69,8 @@ export default function CustomerService() {
     });
   };
 
-  // const pendingCustomers = customers.filter((customer) => customer.status === 'pending');
-  // const completedCustomers = customers.filter((customer) => customer.status === 'complete');
+  const pendingCustomers = customers.filter((customer) => customer.status === 'pending');
+  const completedCustomers = customers.filter((customer) => customer.status === 'complete');
 
   const accordionSections = [
     {
@@ -135,10 +93,7 @@ export default function CustomerService() {
     const selected = selectedFromPending || selectedFromCompleted;
 
     if (selected) {
-      const selectedPropertyDetails = await queryClient.fetchQuery({
-        queryKey: ['sidebarData', selected.id],
-        queryFn: () => fetchSidebarData(selected.id),
-      });
+      const selectedPropertyDetails = await fetchSidebarData(selected.id);
       console.log('Selected property details:', selectedPropertyDetails); // Debug log
       setSelectedProperty({
         ...selected,
@@ -147,10 +102,10 @@ export default function CustomerService() {
     }
   };
 
-  // const filteredPendingCustomers = pendingCustomers.filter((customer) => customer.id === selectedProperty.id);
-  // const filteredCompletedCustomers = completedCustomers.filter(
-  //   (customer) => customer.id === selectedProperty.id,
-  // );
+  const filteredPendingCustomers = pendingCustomers.filter((customer) => customer.id === selectedProperty.id);
+  const filteredCompletedCustomers = completedCustomers.filter(
+    (customer) => customer.id === selectedProperty.id,
+  );
 
   const isSampleResponseEmpty =
     !sampleResponse ||
@@ -307,27 +262,15 @@ export default function CustomerService() {
             <TabsContent value="pending">
               <ConsultingPending
                 columns={columnsPending(handleInquiryClick)}
-                data={pendingCustomersData}
-                isLoading={isLoading}
-                error={error}
-                selectedConsultant={selectedConsultant}
-                setSelectedConsultant={setSelectedConsultant}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                date={date}
-                setDate={setDate}
+                // @ts-ignore: Unreachable code error
+                data={filteredPendingCustomers}
               />
             </TabsContent>
             <TabsContent value="completed">
               <ConsultingCompleted
                 columns={columnsCompleted(handleCompletedClick)}
-                data={completedCustomersData}
-                selectedConsultant={selectedConsultant} // Add this line
-                setSelectedConsultant={setSelectedConsultant} // Add this line
-                currentPage={currentPage} // Add this line
-                setCurrentPage={setCurrentPage} // Add this line
-                date={date} // Add this line
-                setDate={setDate} // Add this line
+                // @ts-ignore: Unreachable code error
+                data={filteredCompletedCustomers}
               />
             </TabsContent>
           </Tabs>
@@ -336,3 +279,31 @@ export default function CustomerService() {
     </main>
   );
 }
+
+// response
+// {
+//   "sideBarPendingResponseList": [// 모집중(최대 20개 출력),
+//     {
+//          "id": 1,
+//           "name": "Example Property Name"
+//     }
+//   ],
+//   "sideBarCompletedResponseList": [
+//       {
+//           "id": 2,
+//           "name": "Example Property Name"
+//       }
+//   ],
+//   "sideBarSelectedPropertyResponse": { // 현재 사이드바에서 선택된 매물 정보
+//       "id": 2,
+//       "name": "Example Property Name", //매물 이름
+//       "file": "image url", //이미지
+//       "companyName": "Example Company",
+//       "constructor": "Example Constructor",
+//       "totalNumber": 500,
+//       "startDate": "2026-01-01",
+//       "endDate": "2024-01-01",
+//       "propertyType": "APARTMENT"
+//   }
+// }
+// }
