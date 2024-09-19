@@ -140,7 +140,7 @@ const handlers = [
           imageUrl:
             'https://delivery183.org/PROPERTY_IMAGE/8de749ab-7fd0-4e5d-95e7-a88711a4cc9c%3Aswiper.png', // 대표 사진 url
           id: 13, // 매물id
-          name: '잠실 푸르���오', // 매물명
+          name: '잠실 푸르지오', // 매물명
           consultationCreatedAt: '2024-07-20', // 상담 신청 날짜
           message: '상담 신청합니다!', // 신청 내용
           memberName: '길보미', // 고객명
@@ -197,14 +197,10 @@ const handlers = [
 
   http.get('/api/common/home?page={page}', () => {
     return HttpResponse.json({
-      homeImagesUrl: [
-        'https://delivery183.org/PROPERTY_IMAGE/8de749ab-7fd0-4e5d-95e7-a88711a4cc9c%3Aswiper.png',
-        'https://delivery183.org/PROPERTY_IMAGE/8de749ab-7fd0-4e5d-95e7-a88711a4cc9c%3Aswiper.png',
-        'https://delivery183.org/PROPERTY_IMAGE/8de749ab-7fd0-4e5d-95e7-a88711a4cc9c%3Aswiper.png',
-        'https://delivery183.org/PROPERTY_IMAGE/8de749ab-7fd0-4e5d-95e7-a88711a4cc9c%3Aswiper.png',
-        'https://delivery183.org/PROPERTY_IMAGE/8de749ab-7fd0-4e5d-95e7-a88711a4cc9c%3Aswiper.png',
-        'https://delivery183.org/PROPERTY_IMAGE/8de749ab-7fd0-4e5d-95e7-a88711a4cc9c%3Aswiper.png',
-        'https://delivery183.org/PROPERTY_IMAGE/8de749ab-7fd0-4e5d-95e7-a88711a4cc9c%3Aswiper.png',
+      HomeImagesUrl: [
+        'https://delivery183.org/MARKETING/4ca28725-c17e-43c9-84a6-314e328b3b0b%3Abyebyebyebyebye',
+        'https://delivery183.org/MARKETING/4ca28725-c17e-43c9-84a6-314e328b3b0b%3Abyebyebyebyebye',
+        'https://delivery183.org/MARKETING/4ca28725-c17e-43c9-84a6-314e328b3b0b%3Abyebyebyebyebye',
       ],
       content: {
         properties: [
