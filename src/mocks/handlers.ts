@@ -140,7 +140,7 @@ const handlers = [
           imageUrl:
             'https://delivery183.org/PROPERTY_IMAGE/8de749ab-7fd0-4e5d-95e7-a88711a4cc9c%3Aswiper.png', // 대표 사진 url
           id: 13, // 매물id
-          name: '잠실 푸르지오', // 매물명
+          name: '잠실 푸르���오', // 매물명
           consultationCreatedAt: '2024-07-20', // 상담 신청 날짜
           message: '상담 신청합니다!', // 신청 내용
           memberName: '길보미', // 고객명
@@ -287,6 +287,7 @@ const handlers = [
     allPosts.set(1, newPost);
     return HttpResponse.json(newPost, { status: 200 });
   }),
+
   http.get('/api/admin/properties/:propertyId/consultations/sidebar', (req) => {
     const { propertyId } = req.params;
     propertyId;
@@ -329,11 +330,11 @@ const handlers = [
       ],
       sideBarSelectedPropertyResponse: {
         id: 2,
-        name: 'Example Property Name',
+        name: '잠실 푸르지오',
         image: null,
-        propertyName: 'Example Property Name',
-        companyName: 'Example Company',
-        constructor: 'Example Constructor',
+        propertyName: '잠실 푸르지오',
+        companyName: '(주)건설개발',
+        constructor: '자이',
         totalNumber: 500,
         startDate: '2024-01-01',
         endDate: '2026-01-01',
@@ -341,6 +342,7 @@ const handlers = [
       },
     });
   }),
+
   http.get('/api/admin/my-properties/table?page={page}&size={size}', (req) => {
     const { page, size } = req.params;
     page;
@@ -550,6 +552,21 @@ const handlers = [
         },
       ],
     });
+  }),
+
+  http.post('/api/admin/properties/:propertyId/consultations', async (req) => {
+    const { propertyId } = req.params;
+    propertyId;
+    const newCustomer = await req.request.json();
+    console.log('New customer data:', newCustomer);
+
+    return HttpResponse.json(
+      {
+        id: 1,
+        ...(typeof newCustomer === 'object' && newCustomer !== null ? newCustomer : {}),
+      },
+      { status: 200 },
+    );
   }),
 ];
 

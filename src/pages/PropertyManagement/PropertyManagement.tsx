@@ -5,25 +5,7 @@ import SampleImg from '../../../public/Imagesample.png';
 import Breadcrumb from '@/components/common/Breadcrumb';
 import NoProperty from '@/components/CustomerService/NoProperty';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-// import { BASE_URL } from '@/lib/constants';
-
-// export const getAuthHeaders = () => {
-//   const token = sessionStorage.getItem('accessToken');
-//   return token ? { 'access-token': token } : {};
-// };
-
-const fetchPropertyTable = async ({ queryKey }: { queryKey: [string, { page: number; size: number }] }) => {
-  const [_key, { page, size }] = queryKey;
-  // const headers = {
-  //   'Content-Type': 'application/json',
-  //   ...getAuthHeaders,
-  // };
-  const { data } = await axios.get(`/api/admin/my-properties/table?page=${page}&size=${size}`, {
-    // headers,
-  });
-  return data.contents || [];
-};
+import { fetchPropertyTable } from '@/api/property';
 
 export default function PropertyManagement() {
   const page = 0;

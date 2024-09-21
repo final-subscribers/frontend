@@ -20,9 +20,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState, useRef } from 'react';
 import { Dialog, DialogContent, DialogTrigger, DialogDescription } from '@/components/ui/dialogNewCustomer';
 import NoProperty from '../../components/CustomerService/NoProperty';
-import { sampleResponse } from './data';
 import { useQueries } from '@tanstack/react-query';
-import { fetchSidebarData, fetchPendingConsultations, fetchCompletedConsultations } from '@/api/consulting';
+import {
+  fetchSidebarData,
+  fetchPendingConsultations,
+  fetchCompletedConsultations,
+  fetchAddNewCustomer,
+} from '@/api/consulting';
 
 const queryClient = new QueryClient();
 
@@ -75,9 +79,8 @@ export default function CustomerService() {
         queryFn: fetchCompletedConsultations,
       },
       {
-        queryKey: ['sidebarData', selectedProperty.id],
-        queryFn: () => fetchSidebarData(selectedProperty.id),
-        enabled: !!selectedProperty.id,
+        queryKey: ['sidebarData', { propertyId: selectedProperty.id }],
+        queryFn: fetchSidebarData,
       },
     ],
   });
@@ -99,16 +102,20 @@ export default function CustomerService() {
   const completedCustomersData = completedConsultationsData?.contents?.consultCompletedSummaries || [];
   console.log(pendingCustomersData); // Debug log
 
-  const addNewCustomer = (newCustomer: CustomerData) => {
+  const addNewCustomer = async (newCustomer: CustomerData) => {
     const customerWithPropertyId = { ...newCustomer, id: selectedProperty.id };
 
-    setCustomers((prevCustomers) => {
-      // 전화번호가 동일한 고객은 상담대기에서 제거
-      const updatedCustomers = prevCustomers.filter(
-        (customer) => customer.phoneNumber !== newCustomer.phoneNumber,
-      );
-      return [...updatedCustomers, customerWithPropertyId];
-    });
+    try {
+      const response = await fetchAddNewCustomer(selectedProperty.id, customerWithPropertyId);
+      setCustomers((prevCustomers) => {
+        const updatedCustomers = prevCustomers.filter(
+          (customer) => customer.phoneNumber !== newCustomer.phoneNumber,
+        );
+        return [...updatedCustomers, response];
+      });
+    } catch (error) {
+      console.error('Failed to add new customer:', error);
+    }
   };
 
   // const pendingCustomers = customers.filter((customer) => customer.status === 'pending');
@@ -117,32 +124,29 @@ export default function CustomerService() {
   const accordionSections = [
     {
       title: '모집중',
-      items: sampleResponse?.sideBarPendingResponseList?.map((item: { name: string }) => item.name) || [],
+      items: sidebarData?.sideBarPendingResponseList?.map((item: { name: string }) => item.name) || [],
     },
     {
       title: '모집완료',
-      items: sampleResponse?.sideBarCompletedResponseList?.map((item: { name: string }) => item.name) || [],
+      items: sidebarData?.sideBarCompletedResponseList?.map((item: { name: string }) => item.name) || [],
     },
   ];
 
-  const handlePropertySelect = async (name: string) => {
-    const selectedFromPending = sampleResponse?.sideBarPendingResponseList.find(
+  const handlePropertySelect = (name: string) => {
+    const selectedFromPending = sidebarData?.sideBarPendingResponseList.find(
       (property: { name: string }) => property.name === name,
     );
-    const selectedFromCompleted = sampleResponse?.sideBarCompletedResponseList.find(
+    const selectedFromCompleted = sidebarData?.sideBarCompletedResponseList.find(
       (property: { name: string }) => property.name === name,
     );
     const selected = selectedFromPending || selectedFromCompleted;
 
     if (selected) {
-      const selectedPropertyDetails = await queryClient.fetchQuery({
-        queryKey: ['sidebarData', selected.id],
-        queryFn: () => fetchSidebarData(selected.id),
-      });
+      const selectedPropertyDetails = sidebarData.sideBarSelectedPropertyResponse;
       console.log('Selected property details:', selectedPropertyDetails); // Debug log
       setSelectedProperty({
         ...selected,
-        ...selectedPropertyDetails.sideBarSelectedPropertyResponse,
+        ...selectedPropertyDetails,
       });
     }
   };
@@ -152,10 +156,9 @@ export default function CustomerService() {
   //   (customer) => customer.id === selectedProperty.id,
   // );
 
-  const isSampleResponseEmpty =
-    !sampleResponse ||
-    (!sampleResponse.sideBarPendingResponseList.length &&
-      !sampleResponse.sideBarCompletedResponseList.length);
+  const isSidebarDataEmpty =
+    !sidebarData ||
+    (!sidebarData.sideBarPendingResponseList.length && !sidebarData.sideBarCompletedResponseList.length);
 
   // popup 윈도우
   const openPopupWindow = <P extends {}>(
@@ -259,12 +262,14 @@ export default function CustomerService() {
         <AccordionMenu sections={accordionSections} onItemSelect={handlePropertySelect} />
       </aside>
 
-      {isSampleResponseEmpty ? (
+      {isSidebarDataEmpty ? (
         <NoProperty />
       ) : (
         <section className="container mx-auto py-10 ">
           <article className="flex flex-col mb-10">
-            <p className="ml-3 text-body-lg font-normal text-assistive-strong">아파트 민간분양</p>
+            <p className="ml-3 text-body-lg font-normal text-assistive-strong">
+              {selectedProperty.propertyType}
+            </p>
             <h1 className="ml-3 text-title-2xl font-bold">{selectedProperty.name}</h1>
             <div className="flex">
               <img src={SampleImg} className="object-cover w-[320px] h-[180px]" />
@@ -322,12 +327,12 @@ export default function CustomerService() {
               <ConsultingCompleted
                 columns={columnsCompleted(handleCompletedClick)}
                 data={completedCustomersData}
-                selectedConsultant={selectedConsultant} // Add this line
-                setSelectedConsultant={setSelectedConsultant} // Add this line
-                currentPage={currentPage} // Add this line
-                setCurrentPage={setCurrentPage} // Add this line
-                date={date} // Add this line
-                setDate={setDate} // Add this line
+                selectedConsultant={selectedConsultant}
+                setSelectedConsultant={setSelectedConsultant}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                date={date}
+                setDate={setDate}
               />
             </TabsContent>
           </Tabs>
