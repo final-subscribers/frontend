@@ -25,12 +25,12 @@ import SingleDatePicker from '@/components/common/SingleDatePicker';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  selectedConsultant: string; // Add this line
-  setSelectedConsultant: React.Dispatch<React.SetStateAction<string>>; // Add this line
-  currentPage: number; // Add this line
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>; // Add this line
-  date: Date | undefined; // Add this line
-  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>; // Add this line
+  selectedConsultant: string;
+  setSelectedConsultant: React.Dispatch<React.SetStateAction<string>>;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  date: Date | undefined;
+  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
 }
 
 export function ConsultingCompleted<TData, TValue>({

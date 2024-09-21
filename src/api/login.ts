@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { loginSchema } from '@/types/types';
 import { BASE_URL } from '@/lib/constants';
+import Cookies from 'js-cookie';
 
 const getCookie = (name: string) => {
   const value = `; ${document.cookie}`;
@@ -11,7 +12,16 @@ const getCookie = (name: string) => {
 
 export const getAuthHeaders = () => {
   const token = getCookie('accessToken');
-  return token ? { 'access-token': token } : {};
+  return token ? { accessToken: token } : {};
+};
+
+const setCookie = (name: string, value: string, days: number) => {
+  Cookies.set(name, value, {
+    expires: days,
+    path: '/',
+    secure: true,
+    sameSite: 'None',
+  });
 };
 
 export const login = async (email: string, password: string) => {
@@ -26,13 +36,21 @@ export const login = async (email: string, password: string) => {
       });
     }
 
-    const accessToken = response.data.accessToken;
-    if (accessToken) {
-      document.cookie = `accessToken=${accessToken}; path=/; secure; samesite=strict`;
-      console.log('Access token saved to cookie:', accessToken);
-    } else {
-      throw new Error('No access token in response data');
-    }
+    const { accessToken, refreshToken } = response.data;
+
+    // Store tokens in cookies
+    setCookie('accessToken', accessToken, 2);
+    setCookie('refreshToken', refreshToken, 2);
+
+    return response.data;
+
+    // const accessToken = response.data.accessToken;
+    // if (accessToken) {
+    //   document.cookie = `accessToken=${accessToken}; path=/; secure; samesite=none`;
+    //   console.log('Access token saved to cookie:', accessToken);
+    // } else {
+    //   throw new Error('No access token in response data');
+    // }
 
     return Object.keys(zodErrors).length > 0
       ? { errors: zodErrors }

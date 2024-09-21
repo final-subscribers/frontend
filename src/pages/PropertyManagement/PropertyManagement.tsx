@@ -1,11 +1,12 @@
 // import { myProperty } from '@/lib/tableItems';
 import { MyPropertyTable } from '@/components/Table/MyPropertyTable';
 import { columnsMyProperty } from '@/components/ui/columnsMyProperyt';
-import SampleImg from '../../../public/Imagesample.png';
+// import SampleImg from '../../../public/Imagesample.png';
 import Breadcrumb from '@/components/common/Breadcrumb';
 import NoProperty from '@/components/CustomerService/NoProperty';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPropertyTable } from '@/api/property';
+import PropertyManagementCard from '@/components/PropertyManagement/PropertyManagementCard';
 
 export default function PropertyManagement() {
   const page = 0;
@@ -22,6 +23,7 @@ export default function PropertyManagement() {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading properties</div>;
+
   return (
     <main className="flex">
       <section className="container mx-auto py-10 ">
@@ -34,17 +36,7 @@ export default function PropertyManagement() {
             <NoProperty />
           </div>
         ) : (
-          <article className="flex flex-col mb-10">
-            <div className="flex mb-6">
-              <img
-                src={myPropertyData[0].image || SampleImg}
-                alt={myPropertyData[0].name}
-                className="object-cover w-[272px] h-[153px]"
-              />
-            </div>
-            <h1 className="mb-5 text-title-xl font-bold">{myPropertyData[0].name}</h1>
-            <p className="text-detail-lg font-normal text-assistive-strong">{`${myPropertyData[0].propertyType} ${myPropertyData[0].saleType}`}</p>
-          </article>
+          <PropertyManagementCard />
         )}
 
         {/* 매물 리스트 테이블 */}

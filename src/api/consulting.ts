@@ -2,12 +2,23 @@ import axios from 'axios';
 import { getAuthHeaders } from './login';
 import { BASE_URL } from '@/lib/constants';
 
+const getStoredCookie = () => {
+  return document.cookie
+    .split('; ')
+    .find((row) => row.startsWith('accessToken='))
+    ?.split('=')[1];
+};
+
 export const fetchSidebarData = async ({ queryKey }: { queryKey: [string, { propertyId: number }] }) => {
-  const [_key, { propertyId }] = queryKey; // Corrected destructuring
+  const [_key, { propertyId }] = queryKey;
   const response = await axios.get(`${BASE_URL}/api/admin/properties/${propertyId}/consultations/sidebar`, {
+    // headers: {
+    //   'Content-Type': 'application/json',
+    //   ...getAuthHeaders(),
+    // },
     headers: {
       'Content-Type': 'application/json',
-      ...getAuthHeaders(),
+      Cookie: `accessToken=${getStoredCookie()}`,
     },
     withCredentials: true,
   });
@@ -32,13 +43,19 @@ export const fetchPendingConsultations = async ({
       page,
       size: 5,
     },
-    headers: {
-      'Content-Type': 'application/json',
-      ...getAuthHeaders(),
-    },
+    // headers: {
+    //   'Content-Type': 'application/json',
+    //   ...getAuthHeaders(),
+    // },
     withCredentials: true,
   });
-  return response.data;
+  const { contents } = response.data;
+  const consultPendingSummaries = contents[0]?.consultPendingSummaries || [];
+
+  return {
+    ...response.data,
+    consultPendingSummaries,
+  };
 };
 
 export const fetchCompletedConsultations = async ({
@@ -66,13 +83,19 @@ export const fetchCompletedConsultations = async ({
       page,
       size: 5,
     },
-    headers: {
-      'Content-Type': 'application/json',
-      ...getAuthHeaders(),
-    },
+    // headers: {
+    //   'Content-Type': 'application/json',
+    //   ...getAuthHeaders(),
+    // },
     withCredentials: true,
   });
-  return response.data;
+  const { contents } = response.data;
+  const consultCompletedSummaries = contents[0]?.consultCompletedSummaries || [];
+
+  return {
+    ...response.data,
+    consultCompletedSummaries,
+  };
 };
 
 export const fetchAddNewCustomer = async (propertyId: number, customerData: any) => {
