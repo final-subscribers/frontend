@@ -63,6 +63,8 @@ const PropertyDetail = () => {
         : `${BASE_URL}/api/common/properties/${id}`;
 
     const res = await axios.get<SalesInformation>(url, { withCredentials: true });
+    console.log(res.data);
+
     return res.data;
   };
 
@@ -202,7 +204,7 @@ const PropertyDetail = () => {
           isCounselRegister={isCounselRegister}
         />
         <div className="flex flex-col">
-          <TabsNavigation marketingFiles={data?.marketing !== undefined ? 1 : 0} />
+          <TabsNavigation marketingFiles={data?.marketing ? 1 : 0} />
           <div id="areasTab" className="pt-16 mobile:pt-9">
             <div className="flex items-center justify-between mb-6">
               <p className="text-title-2xl tablet:text-title-lg mobile:text-title-lg-m font-bold">
@@ -286,7 +288,7 @@ const PropertyDetail = () => {
               </div>
             ))}
           </div>
-          {data?.marketing !== undefined && (
+          {data?.marketing && (
             <div id="detailsTab" className="pt-16 mobile:pt-9">
               <MarketingViewer marketingFiles={data.marketing || []} />
             </div>

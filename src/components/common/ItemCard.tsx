@@ -13,7 +13,8 @@ export interface ItemCardProps {
   propertyType?: string; // 분양유형
   salesType?: string; // 분양형태
   totalNumber?: number; // 세대수
-  keywords?: string[]; // 키워드
+  infra?: string[];
+  benefit?: string[];
   price?: number; // 가격
   discountPrice?: number | null; // 할인가격
   like?: boolean; // 찜 -> 상태관리 해야함
@@ -31,7 +32,8 @@ const ItemCard = ({
   propertyType = '',
   salesType = '',
   totalNumber,
-  keywords,
+  infra,
+  benefit,
   price = 0,
   discountPrice = null,
   like,
@@ -91,7 +93,12 @@ const ItemCard = ({
             </div>
 
             <div className="absolute bottom-3 left-3 flex gap-2">
-              {keywords?.map((kw, index) => (
+              {benefit?.map((kw, index) => (
+                <Label key={index} size="m" variant="accent" keyword={getPropertyLabel(kw)}>
+                  {getPropertyLabel(kw)}
+                </Label>
+              ))}
+              {infra?.map((kw, index) => (
                 <Label key={index} size="m" variant="accent" keyword={getPropertyLabel(kw)}>
                   {getPropertyLabel(kw)}
                 </Label>
@@ -122,7 +129,7 @@ const ItemCard = ({
                   {formatAmount(price)}
                 </span>
               )}
-              <div className={`${!discountPrice && 'mt-7'}`}>
+              <div className={`${!discountPrice && 'mt-6'}`}>
                 {discountRate > 0 && (
                   <span className="text-accent-strong text-title-xl font-bold mr-2">{discountRate}%</span>
                 )}
@@ -140,14 +147,14 @@ const ItemCard = ({
           className={`${cardSizeClass[size]} flex flex-col bg-white rounded-5  border border-assistive-divider cursor-pointer`}>
           <div className="flex gap-4  px-4 pt-5 pb-4 border-b border-assistive-divider">
             <div className="w-[180px]">
-              <div className="flex gap-2 mb-3">
-                {keywords?.map((kw, index) => (
-                  <Label
-                    key={index}
-                    size="s"
-                    variant="accent"
-                    keyword={getPropertyLabel(kw)}
-                    className="text-[11px]">
+              <div className="flex gap-1 mb-3">
+                {benefit?.map((kw, index) => (
+                  <Label key={index} size="s" variant="accent" className="text-[11px]">
+                    {getPropertyLabel(kw)}
+                  </Label>
+                ))}
+                {infra?.map((kw, index) => (
+                  <Label key={index} size="s" variant="primary" className="text-[11px]">
                     {getPropertyLabel(kw)}
                   </Label>
                 ))}
@@ -167,7 +174,7 @@ const ItemCard = ({
                       {formatAmount(price)}
                     </span>
                   )}
-                  <div className={`h-6 ${!discountPrice && 'mt-5'}`}>
+                  <div className={`h-6 ${!discountPrice && 'mt-4'}`}>
                     {discountRate > 0 && (
                       <span className="text-accent-strong text-title-base-m font-bold mr-2">
                         {discountRate}%

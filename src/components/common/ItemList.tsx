@@ -13,7 +13,8 @@ export interface ItemListProps {
   propertyType?: string; // 분양유형
   salesType?: string; // 분양형태
   totalNumber?: number; // 세대수
-  keywords?: string[]; // 키워드
+  benefit?: string[];
+  infra?: string[];
   price?: number; // 가격
   discountPrice?: number; // 할인가격
   like?: boolean; // 찜
@@ -30,7 +31,8 @@ const ItemList = ({
   propertyType = '',
   salesType = '',
   totalNumber,
-  keywords,
+  benefit,
+  infra,
   price = 0,
   discountPrice = 0,
   like,
@@ -95,8 +97,13 @@ const ItemList = ({
           </div>
           <div className={`flex flex-col w-full gap-4 items-center ${size === 'm' ? '' : 'w-[364px]'}`}>
             <div className="flex gap-2">
-              {keywords?.map((kw, index) => (
-                <Label key={index} size={labelSize} variant="accent" keyword={getPropertyLabel(kw)}>
+              {benefit?.map((kw, index) => (
+                <Label key={index} size={labelSize} variant="accent">
+                  {getPropertyLabel(kw)}
+                </Label>
+              ))}
+              {infra?.map((kw, index) => (
+                <Label key={index} size={labelSize} variant="primary">
                   {getPropertyLabel(kw)}
                 </Label>
               ))}
