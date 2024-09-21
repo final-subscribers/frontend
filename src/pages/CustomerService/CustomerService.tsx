@@ -156,34 +156,38 @@ export default function CustomerService() {
       const selected = selectedFromPending || selectedFromCompleted;
 
       if (selected) {
-        const selectedPropertyDetails = sidebarData.sideBarSelectedPropertyResponse;
-        console.log('Selected property details:', selectedPropertyDetails); // Debug log
-        setSelectedProperty({
+        setSelectedProperty((prevState) => ({
+          ...prevState,
           id: selected.id,
-          image: selectedPropertyDetails.image,
-          propertyName: selectedPropertyDetails.name,
-          companyName: selectedPropertyDetails.companyName,
-          constructor: selectedPropertyDetails.constructor,
-          totalNumber: selectedPropertyDetails.totalNumber,
-          startDate: selectedPropertyDetails.startDate,
-          endDate: selectedPropertyDetails.endDate,
-          propertyType: selectedPropertyDetails.propertyType,
-        });
+        }));
       }
     }
   };
 
   useEffect(() => {
     if (selectedProperty.id) {
-      queryClient.invalidateQueries({ queryKey: ['sidebarData', { propertyId: selectedProperty.id }] });
-      queryClient.invalidateQueries({
-        queryKey: ['pendingConsultations', { propertyId: selectedProperty.id }],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ['completedConsultations', { propertyId: selectedProperty.id }],
-      });
+      queryClient.invalidateQueries({ queryKey: ['sidebarData'] });
+      queryClient.invalidateQueries({ queryKey: ['pendingConsultations'] });
+      queryClient.invalidateQueries({ queryKey: ['completedConsultations'] });
     }
-  }, [selectedProperty, queryClient]);
+  }, [selectedProperty.id, queryClient]);
+
+  useEffect(() => {
+    if (sidebarData?.sideBarSelectedPropertyResponse) {
+      const selectedPropertyDetails = sidebarData.sideBarSelectedPropertyResponse;
+      setSelectedProperty((prevState) => ({
+        ...prevState,
+        image: selectedPropertyDetails.image,
+        propertyName: selectedPropertyDetails.name,
+        companyName: selectedPropertyDetails.companyName,
+        constructor: selectedPropertyDetails.constructor,
+        totalNumber: selectedPropertyDetails.totalNumber,
+        startDate: selectedPropertyDetails.startDate,
+        endDate: selectedPropertyDetails.endDate,
+        propertyType: selectedPropertyDetails.propertyType,
+      }));
+    }
+  }, [sidebarData]);
 
   // const filteredPendingCustomers = pendingCustomers.filter((customer) => customer.id === selectedProperty.id);
   // const filteredCompletedCustomers = completedCustomers.filter(
@@ -331,7 +335,7 @@ export default function CustomerService() {
                   </DialogTrigger>
                 </div>
                 <DialogContent>
-                  <NewCustomer onAddCustomer={addNewCustomer} />
+                  <NewCustomer onAddCustomer={addNewCustomer} propertyId={selectedProperty.id.toString()} />
                   <DialogDescription />
                 </DialogContent>
               </Dialog>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAuthHeaders } from './login';
+// import { getAuthHeaders } from './login';
 import { BASE_URL } from '@/lib/constants';
 
 const getStoredCookie = () => {
@@ -103,10 +103,10 @@ export const fetchAddNewCustomer = async (propertyId: number, customerData: any)
     `${BASE_URL}/api/admin/properties/${propertyId}/consultations`,
     customerData,
     {
-      headers: {
-        'Content-Type': 'application/json',
-        ...getAuthHeaders(),
-      },
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   ...getAuthHeaders(),
+      // },
       withCredentials: true,
     },
   );

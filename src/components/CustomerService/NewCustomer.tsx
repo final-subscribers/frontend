@@ -10,11 +10,14 @@ import { useMutation } from '@tanstack/react-query';
 import { CustomerData } from '@/types/types';
 import { DialogClose, DialogTitle } from '@/components/ui/dialogNewCustomer';
 import SingleDatePicker from '../common/SingleDatePicker';
+import { BASE_URL } from '@/lib/constants';
 
 export default function NewCustomer({
   onAddCustomer,
+  propertyId,
 }: {
   onAddCustomer: (newCustomer: CustomerData) => void;
+  propertyId: string;
 }) {
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -39,15 +42,23 @@ export default function NewCustomer({
 
   const mutation = useMutation({
     mutationFn: async (newCustomer: CustomerData) => {
-      const response = await axios.post('/api/admin/properties/{propertyId}/consultations', newCustomer, {
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        `${BASE_URL}/api/admin/properties/${propertyId}/consultations`,
+        newCustomer,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
         },
-      });
+      );
       if (response.status !== 200 && response.status !== 201) {
         throw new Error('에러가 발생했습니다 ');
       }
       return response.data;
+    },
+    onSuccess: (data) => {
+      onAddCustomer(data);
     },
   });
 
@@ -62,9 +73,7 @@ export default function NewCustomer({
       tier: selectedRating || '',
       medium: 'phone',
     };
-    onAddCustomer(customerData);
     mutation.mutate(customerData);
-    console.log(customerData);
   };
 
   return (
