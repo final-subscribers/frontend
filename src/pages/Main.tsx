@@ -188,6 +188,7 @@ const Main = () => {
                     keywords: property.keywords,
                     price: property.price,
                     discountPrice: property.discountPrice,
+                    discountPercent: property.discountPercent,
                     like: property.like,
                     onLikeToggle: () => property.id,
                     rank: index + 1 + (currentPage - 1) * 5,

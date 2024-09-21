@@ -1,8 +1,10 @@
 import { Heart } from '@phosphor-icons/react';
 import { Label } from '../ui/label';
 import { formatAmount, getPropertyLabel } from '@/lib/utils';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useLike from '@/hooks/useLike';
+import { useRecoilValue } from 'recoil';
+import { loginState } from '@/recoilstate/login/atoms';
 
 export interface ItemListProps {
   size: 'l' | 'm'; // 사이즈
@@ -16,7 +18,8 @@ export interface ItemListProps {
   benefit?: string[];
   infra?: string[];
   price?: number; // 가격
-  discountPrice?: number; // 할인가격
+  discountPrice?: number | null; // 할인가격
+  discountPercent?: number | null;
   like?: boolean; // 찜
   rank?: number; // 순위 -> 홈 화면에서만 사용
   onLikeToggle?: () => void;
@@ -34,15 +37,22 @@ const ItemList = ({
   benefit,
   infra,
   price = 0,
-  discountPrice = 0,
+  discountPrice = null,
+  discountPercent = null,
   like,
   rank,
   onLikeToggle,
 }: ItemListProps) => {
   const { liked, toggleLike } = useLike(like || false, id);
-  const discountRate = discountPrice !== null ? Math.round(((price - discountPrice) / price) * 100) : 0; // 할인율 계산
+  const loginData = useRecoilValue(loginState);
+  const navigate = useNavigate();
 
   const handleLikeToggle = () => {
+    if (!loginData.isLoggedIn || loginData.userInfo?.role !== 'MEMBER') {
+      navigate('/login');
+      return;
+    }
+
     if (onLikeToggle) {
       toggleLike();
       onLikeToggle();
@@ -116,15 +126,15 @@ const ItemList = ({
               </span>
             )}
             <div className="h-[30px]">
-              {discountRate > 0 && (
+              {discountPercent !== null && (
                 <span
                   className={`text-accent-strong ${size === 'm' ? 'text-title-lg' : 'text-title-xl'} font-bold mr-2`}>
-                  {discountRate}%
+                  {discountPercent}%
                 </span>
               )}
               <span
                 className={`text-static-default ${size === 'm' ? 'text-title-lg' : 'text-title-xl'} font-bold`}>
-                {formatAmount(discountPrice | price)}
+                {formatAmount(discountPrice || price)}
               </span>
             </div>
           </div>
