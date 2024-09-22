@@ -11,7 +11,6 @@ const DashBoard = () => {
       </div>
       <main className="w-[1200px] mx-auto flex flex-col gap-11 py-12">
         <DashBoardCards />
-
         <DashBoardProjectChart />
         <DashBoardPropertyGraph />
       </main>

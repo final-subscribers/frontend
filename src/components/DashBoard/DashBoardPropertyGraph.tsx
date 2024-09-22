@@ -15,10 +15,10 @@ interface PropertyItem {
 }
 const DashBoardPropertyGraph = () => {
   const [selectStatus, setSelectStatus] = React.useState<'openList' | 'closedList'>(
-    recruitmentStatus[0].value as 'openList' | 'closedList',
+    recruitmentStatus[0]?.value as 'openList' | 'closedList',
   );
   const [selectProperty, setSelectProperty] = React.useState<string>();
-  const [graphInterval, setGraphInterval] = React.useState<string>(timePeriods[0].value);
+  const [graphInterval, setGraphInterval] = React.useState<string>(timePeriods[0]?.value);
 
   const [selectedDaily, setSelectedDaily] = React.useState<Date>(new Date());
   const [selectedWeekly, setSelectedWeekly] = React.useState<Date>(new Date());
@@ -56,7 +56,7 @@ const DashBoardPropertyGraph = () => {
   });
   React.useEffect(() => {
     if (statusData && statusData[selectStatus]) {
-      setSelectProperty(statusData[selectStatus][0].value);
+      setSelectProperty(statusData[selectStatus][0]?.value);
     }
   }, [statusData, selectStatus]);
   // 매물 초기화
@@ -221,15 +221,15 @@ const DashBoardPropertyGraph = () => {
       <div className="flex gap-4">
         <DropdownWithReset
           items={recruitmentStatus}
-          defaultLabel={recruitmentStatus[0].label}
+          defaultLabel={recruitmentStatus[0]?.label}
           buttonWidth="w-[150px]"
           onSelect={(value) => handleSelectStatus(value as 'openList' | 'closedList')}
           value={selectStatus}
         />
-        {statusData && statusData[selectStatus] ? (
+        {statusData && statusData[selectStatus]?.length !== 0 ? (
           <DropdownWithReset
             items={statusData[selectStatus]}
-            defaultLabel={statusData[selectStatus][0].label}
+            defaultLabel={statusData[selectStatus][0]?.label}
             onSelect={(value) => handleSelectProperty(value)}
             value={selectProperty}
           />
