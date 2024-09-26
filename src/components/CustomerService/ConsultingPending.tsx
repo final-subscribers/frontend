@@ -92,7 +92,7 @@ export function ConsultingPending<TData, TValue>({ columns, propertyId }: DataTa
           </div>
         </div>
         <div className="flex gap-3">
-          <SingleDatePicker defaultLabel="상담날짜 선택" onChange={setDate} />
+          <SingleDatePicker defaultLabel={!date ? '상담날짜 선택' : ''} onChange={setDate} />
           <DropdownWithReset
             items={operatorIdAll}
             defaultLabel={selectedConsultant || '상담사'}
