@@ -36,7 +36,6 @@ const Main = () => {
         ...getAuthHeaders(),
       },
     });
-    console.log(res.data);
 
     return res.data;
   };
@@ -46,7 +45,6 @@ const Main = () => {
     queryFn: () => fetchProperties(currentPage - 1),
     refetchOnWindowFocus: true,
   });
-  console.log('data: ', data);
 
   const totalPages = data?.totalPages || 1;
 

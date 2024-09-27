@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import useLike from '@/hooks/useLike';
 import { useRecoilValue } from 'recoil';
 import { loginState } from '@/recoilstate/login/atoms';
-import { useQueryClient } from '@tanstack/react-query';
 
 export interface ItemListProps {
   size: 'l' | 'm'; // 사이즈
@@ -48,7 +47,6 @@ const ItemList = ({
   const loginData = useRecoilValue(loginState);
   const navigate = useNavigate();
 
-  const queryClient = useQueryClient();
   const handleLikeToggle = async () => {
     if (!loginData.isLoggedIn || loginData.userInfo?.role !== 'MEMBER') {
       navigate('/login');
@@ -59,7 +57,6 @@ const ItemList = ({
     if (onLikeToggle) {
       onLikeToggle();
     }
-    // queryClient.invalidateQueries({ queryKey: ['properties'] });
   };
 
   const listSizeClass = {
